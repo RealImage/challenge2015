@@ -43,7 +43,7 @@ https://data.moviebuff.com/martin-scorsese
 https://data.moviebuff.com/taxi-driver
 
 ##Submissions
-Feel free to fork this repo and submit a pull request with your code. If you would like to use a private repo or hide your solution, do add `rajeshr` and `sudhirj` as collaborators and let us know at sudhir.j@moviebuff.com
+Feel free to fork this repo and submit a pull request with your code. If you would like to use a private repo or hide your solution, do add `@rajeshr` and `@sudhirj` as collaborators and let us know at sudhir.j@moviebuff.com
 
 ###Judging Criteria
 * Accuracy
