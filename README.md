@@ -1,10 +1,10 @@
 #Degrees of Separation
 
+####We're giving away Amazon.in gift vouchers worth Rs. 10,000 each to exceptional solutions to this problem.
+
 ---
 
-We're giving away Amazon.in gift vouchers worth Rs. 10,000 each to exceptional solutions to this problem.
-
-###With cinema going global these days, every one of the [A-Z]ollywoods are now connected. Use the wealth of data available at [Moviebuff](http://www.moviebuff.com) to see how. 
+With cinema going global these days, every one of the [A-Z]ollywoods are now connected. Use the wealth of data available at [Moviebuff](http://www.moviebuff.com) to see how. 
 
 Write a Go program that behaves the following way:
 
