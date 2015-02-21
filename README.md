@@ -4,9 +4,7 @@
 
 We're giving away Amazon.in gift vouchers worth Rs. 10,000 each to exceptional solutions to this problem.
 
----
-
-With cinema going global these days, every one of the [A-Z]ollywoods are now connected. Use the wealth of data available at [Moviebuff](http://www.moviebuff.com) to see how. 
+###With cinema going global these days, every one of the [A-Z]ollywoods are now connected. Use the wealth of data available at [Moviebuff](http://www.moviebuff.com) to see how. 
 
 Write a Go program that behaves the following way:
 
@@ -47,6 +45,10 @@ https://data.moviebuff.com/the-wolf-of-wall-street
 https://data.moviebuff.com/martin-scorsese
 
 https://data.moviebuff.com/taxi-driver
+
+##Notes
+* If you receive HTTP errors when trying to fetch the data, that might be the CDN throttling you. Luckily, Go has some very elegant idioms for rate limiting :)
+* There may be a discrepancy in some cases where a movie appears on an actor's list but not vice versa. These issues are usually resolved in a few hours, so feel free to either ignore them or handle them in some way. 
 
 ##Submissions
 Feel free to fork this repo and submit a pull request with your code. If you would like to use a private repo or hide your solution, do add `@rajeshr` and `@sudhirj` as collaborators and let us know at sudhir.j@moviebuff.com
