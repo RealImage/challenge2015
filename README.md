@@ -48,7 +48,7 @@ https://data.moviebuff.com/taxi-driver
 
 ##Notes
 * If you receive HTTP errors when trying to fetch the data, that might be the CDN throttling you. Luckily, Go has some very elegant idioms for rate limiting :)
-* There may be a discrepancy in some cases where a movie appears on an actor's list but not vice versa. These issues are usually resolved in a few hours, so feel free to either ignore them or handle them in some way. 
+* There may be a discrepancy in some cases where a movie appears on an actor's list but not vice versa. This usually happens when we edit data while exporting it, so feel free to either ignore these mismatches or handle them in some way.
 
 ##Submissions
 Feel free to fork this repo and submit a pull request with your code. If you would like to use a private repo or hide your solution, do add `@rajeshr` and `@sudhirj` as collaborators and let us know at sudhir.j@moviebuff.com
