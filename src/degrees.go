@@ -10,12 +10,12 @@ import (
 	"time"
 )
 
-const BURST_DELAY = 1
+const BURST_DELAY = 15
 
 type link struct {
 	Source    connection
-	Target connection
-	Movie  string
+	Target    connection
+	Movie     string
 }
 
 type path struct {
@@ -43,7 +43,6 @@ func (path path) addFirstLink(src string) path {
 }
 
 func (path path) addLink(src *person, next connection, movie *movie) path {
-	//	fmt.Println("Adding link", src.Name, next.Name)
 	src_connection := connection{Url: src.Url, Name: src.Name, Role: movie.getRole(src.Url)}
 	path.Links = append(path.Links, link{Source: src_connection, Target: next, Movie: movie.Name})
 	return path
@@ -92,7 +91,8 @@ func (movie *movie) getRole(personId string) string {
 			return member.Role
 		}
 	}
-	panic(errors.New(fmt.Sprintf("Role could not be found for %s in movie %s", personId, movie.Url)))
+	fmt.Sprintf("Role could not be found for %s in movie %s", personId, movie.Url)
+	return ""
 }
 
 var apiRootUrl = "http://data.moviebuff.com/"
@@ -169,22 +169,18 @@ func connect(source string, target string) (path, int) {
 		go fetchPerson(personSoFar, personChan)
 		currentPersonInPath := <-personChan
 		movies := fetchMovies(currentPersonInPath.Movies)
-		//fmt.Println(len(movies))
 		for _, movie := range movies {
 			if _, ok := processedMovies[movie.Url]; ok {
 				continue
 			}
 			people := movie.getPeopleInvolved()
-			//fmt.Println(currentPersonInPath.Name, movie.Url, len(people))
 			for _, personNextLevel := range people {
 				if personNextLevel.Url == target {
-					//fmt.Println("Found")
 					return pathSoFar.addLink(&currentPersonInPath, personNextLevel, &movie), nodesExpanded
 				}
 				if _, ok := processedPersons[personNextLevel.Url]; !ok {
 					nextPossiblePath := pathSoFar.addLink(&currentPersonInPath, personNextLevel, &movie)
 					fringe.push(nextPossiblePath)
-					//fmt.Println(nextPossiblePath)
 					processedPersons[personNextLevel.Url] = true
 				}
 				nodesExpanded++
@@ -203,9 +199,7 @@ func fetchPerson(personId string, personChan chan person) {
 	var person person
 	err = json.Unmarshal(body, &person)
 	if err != nil {
-		value := string(body[:])
-		fmt.Println(personId)
-		fmt.Println(value)
+		fmt.Printf("parse error for %s, so ignoring\n", personId)
 	}
 	personChan <- person
 }
@@ -239,7 +233,6 @@ func fetchMovies(moviesConnection []connection) []movie {
 }
 
 func fetchMovie(movieId string, movieChannel chan movie) {
-	//	fmt.Println("fetching " + movieId)
 	var body []byte
 	var err error
 	body, err = fetchResponse(apiRootUrl+movieId)
@@ -247,11 +240,8 @@ func fetchMovie(movieId string, movieChannel chan movie) {
 	var movie movie
 	err = json.Unmarshal(body, &movie)
 	if err != nil {
-		value := string(body[:])
-		fmt.Println(movieId)
-		fmt.Println(value)
+		fmt.Printf("parse error for %s, so ignoring\n", movieId)
 	}
-	//	fmt.Println("Done " + movieId)
 	movieChannel <- movie
 }
 
@@ -260,7 +250,7 @@ func fetchResponse(url string) ([]byte, error) {
 		res, err := http.Get(url)
 		if err != nil {
 			time.Sleep(200)
-			fmt.Println(err, " so retrying")
+			fmt.Println(err, ", so retrying")
 			continue
 		}
 		defer res.Body.Close()
