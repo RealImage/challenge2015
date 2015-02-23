@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -168,7 +167,8 @@ func connect(source string, target string) path {
 
 	for {
 		if fringe.isEmpty() {
-			panic(errors.New("No solution"))
+			fmt.Printf("No connection between %s and %s", source, target)
+			return newPath(source)
 		}
 		pathSoFar := fringe.pop()
 		personSoFar := pathSoFar.lastPerson()
