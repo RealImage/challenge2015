@@ -3,7 +3,6 @@ package main
 import (
 	"encoding/json"
 	"errors"
-	//	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -11,6 +10,32 @@ import (
 )
 
 const BURST_DELAY = 15
+
+var moviesCache map[string]movie
+var personCache map[string]person
+
+const apiRootUrl = "http://data.moviebuff.com/"
+
+func init() {
+	moviesCache = make(map[string]movie)
+	personCache = make(map[string]person)
+}
+
+func main() {
+	http.HandleFunc("/degree", func(w http.ResponseWriter, r *http.Request) {
+		source := r.FormValue("source")
+		target := r.FormValue("target")
+		fmt.Printf("Request for %s and %s\n", source, target)
+		path := connect(source, target)
+		bytes, err := json.Marshal(getJsonResponse(path))
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(path)
+		w.Write(bytes)
+	})
+	http.ListenAndServe(":8080", nil)
+}
 
 type link struct {
 	Source connection `json:"source"`
@@ -20,6 +45,33 @@ type link struct {
 
 type path struct {
 	Links []link
+}
+
+type connection struct {
+	Url  string `json:"url"`
+	Name string `json:"name"`
+	Role string `json:"role"`
+}
+type person struct {
+	Url    string
+	Name   string
+	Movies []connection
+}
+
+type movie struct {
+	Url  string
+	Name string
+	Cast []connection
+	Crew []connection
+}
+
+type degreeResult struct {
+	Degrees int    `json:"degrees"`
+	Links   []link `json:"links"`
+}
+
+type pathQueue struct {
+	queue []path
 }
 
 func newPath(src string) path {
@@ -52,29 +104,6 @@ func (path path) lastPerson() string {
 	return path.Links[len(path.Links)-1].Target.Url
 }
 
-type connection struct {
-	Url  string `json:"url"`
-	Name string `json:"name"`
-	Role string `json:"role"`
-}
-type person struct {
-	Url    string
-	Name   string
-	Movies []connection
-}
-
-type movie struct {
-	Url  string
-	Name string
-	Cast []connection
-	Crew []connection
-}
-
-type degreeResult struct {
-	Degrees int    `json:"degrees"`
-	Links   []link `json:"links"`
-}
-
 func (movie *movie) getPeopleInvolved() []connection {
 	crew := movie.filterProductionCompany()
 	return append(movie.Cast, crew...)
@@ -100,12 +129,6 @@ func (movie *movie) getRole(personId string) string {
 	return ""
 }
 
-var apiRootUrl = "http://data.moviebuff.com/"
-
-type pathQueue struct {
-	queue []path
-}
-
 func newPathQueue(initialPath path) *pathQueue {
 	queue := &pathQueue{make([]path, 0)}
 	queue.push(initialPath)
@@ -126,33 +149,16 @@ func (pathQueue *pathQueue) isEmpty() bool {
 	return len(pathQueue.queue) == 0
 }
 
-func main() {
-	http.HandleFunc("/degree", func(w http.ResponseWriter, r *http.Request) {
-		source := r.FormValue("source")
-		target := r.FormValue("target")
-		fmt.Printf("Request for %s and %s\n", source, target)
-		path, _ := connect(source, target)
-		bytes, err := json.Marshal(getJsonResponse(path))
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(path)
-		w.Write(bytes)
-	})
-	http.ListenAndServe(":8080", nil)
-}
-
 func getJsonResponse(path path) degreeResult {
 	return degreeResult{len(path.Links) - 1, path.Links[1:]}
 }
 
-func connect(source string, target string) (path, int) {
+func connect(source string, target string) path {
 	path := newPath(source)
 	fringe := newPathQueue(path)
 	processedMovies := make(map[string]bool)
 	processedPersons := make(map[string]bool)
 	processedPersons[source] = true
-	nodesExpanded := 0
 
 	for {
 		if fringe.isEmpty() {
@@ -162,7 +168,7 @@ func connect(source string, target string) (path, int) {
 		personSoFar := pathSoFar.lastPerson()
 		//		fmt.Println("-->", personSoFar)
 		if personSoFar == target {
-			return pathSoFar, nodesExpanded
+			return pathSoFar
 		}
 
 		personChan := make(chan person)
@@ -176,22 +182,24 @@ func connect(source string, target string) (path, int) {
 			people := movie.getPeopleInvolved()
 			for _, personNextLevel := range people {
 				if personNextLevel.Url == target {
-					return pathSoFar.addLink(&currentPersonInPath, personNextLevel, &movie), nodesExpanded
+					return pathSoFar.addLink(&currentPersonInPath, personNextLevel, &movie)
 				}
 				if _, ok := processedPersons[personNextLevel.Url]; !ok {
 					nextPossiblePath := pathSoFar.addLink(&currentPersonInPath, personNextLevel, &movie)
 					fringe.push(nextPossiblePath)
 					processedPersons[personNextLevel.Url] = true
 				}
-				nodesExpanded++
 			}
 			processedMovies[movie.Url] = true
 		}
 	}
-	return path, nodesExpanded
+	return path
 }
 
 func fetchPerson(personId string, personChan chan person) {
+	if personFromCache, ok := personCache[personId]; ok {
+		personChan <- personFromCache
+	}
 	var body []byte
 	var err error
 	body, err = fetchResponse(apiRootUrl + personId)
@@ -201,6 +209,7 @@ func fetchPerson(personId string, personChan chan person) {
 	if err != nil {
 		fmt.Printf("parse error for %s, so ignoring\n", personId)
 	}
+	personCache[personId] = person
 	personChan <- person
 }
 
@@ -233,6 +242,9 @@ func fetchMovies(moviesConnection []connection) []movie {
 }
 
 func fetchMovie(movieId string, movieChannel chan movie) {
+	if movieFromCache, ok := moviesCache[movieId]; ok {
+		movieChannel <- movieFromCache
+	}
 	var body []byte
 	var err error
 	body, err = fetchResponse(apiRootUrl + movieId)
@@ -242,6 +254,7 @@ func fetchMovie(movieId string, movieChannel chan movie) {
 	if err != nil {
 		fmt.Printf("parse error for %s, so ignoring\n", movieId)
 	}
+	moviesCache[movieId] = movie
 	movieChannel <- movie
 }
 
