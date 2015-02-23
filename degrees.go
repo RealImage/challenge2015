@@ -25,9 +25,9 @@ func init() {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		runServer(port)
-	} else {
 		runStandAlone()
+	} else {
+		runServer(port)
 	}
 }
 
