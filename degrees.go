@@ -23,19 +23,24 @@ func init() {
 }
 
 func main() {
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = "8080"
+		fmt.Println("No PORT environment variable detected. Setting to ", port)
+	}
 	http.HandleFunc("/degree", func(w http.ResponseWriter, r *http.Request) {
-		source := r.FormValue("source")
-		target := r.FormValue("target")
-		fmt.Printf("Request for %s and %s\n", source, target)
-		path := connect(source, target)
-		bytes, err := json.Marshal(getJsonResponse(path))
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(path)
-		w.Write(bytes)
-	})
-	http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+			source := r.FormValue("source")
+			target := r.FormValue("target")
+			fmt.Printf("Request for %s and %s\n", source, target)
+			path := connect(source, target)
+			bytes, err := json.Marshal(getJsonResponse(path))
+			if err != nil {
+				fmt.Println(err)
+			}
+			fmt.Println(path)
+			w.Write(bytes)
+		})
+	http.ListenAndServe(":"+port, nil)
 }
 
 type link struct {
@@ -102,7 +107,7 @@ func (path path) addLink(src *person, next connection, movie *movie) path {
 }
 
 func (path path) lastPerson() string {
-	return path.Links[len(path.Links)-1].Target.Url
+	return path.Links[len(path.Links) - 1].Target.Url
 }
 
 func (movie *movie) getPeopleInvolved() []connection {
@@ -203,7 +208,7 @@ func fetchPerson(personId string, personChan chan person) {
 	}
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl + personId)
+	body, err = fetchResponse(apiRootUrl+personId)
 
 	var person person
 	err = json.Unmarshal(body, &person)
@@ -248,7 +253,7 @@ func fetchMovie(movieId string, movieChannel chan movie) {
 	}
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl + movieId)
+	body, err = fetchResponse(apiRootUrl+movieId)
 
 	var movie movie
 	err = json.Unmarshal(body, &movie)
