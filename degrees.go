@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"time"
+	"flag"
 )
 
 const BURST_DELAY = 15
@@ -24,22 +25,10 @@ func init() {
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
-		fmt.Println("No PORT environment variable detected. Setting to ", port)
+		runServer(port)
+	} else {
+		runStandAlone()
 	}
-	http.HandleFunc("/degree", func(w http.ResponseWriter, r *http.Request) {
-			source := r.FormValue("source")
-			target := r.FormValue("target")
-			fmt.Printf("Request for %s and %s\n", source, target)
-			path := connect(source, target)
-			bytes, err := json.Marshal(getJsonResponse(path))
-			if err != nil {
-				fmt.Println(err)
-			}
-			fmt.Println(path)
-			w.Write(bytes)
-		})
-	http.ListenAndServe(":"+port, nil)
 }
 
 type link struct {
@@ -77,6 +66,30 @@ type degreeResult struct {
 
 type pathQueue struct {
 	queue []path
+}
+
+func runServer(port string) {
+	http.HandleFunc("/degree", func(w http.ResponseWriter, r *http.Request) {
+			source := r.FormValue("source")
+			target := r.FormValue("target")
+			fmt.Printf("Request for %s and %s\n", source, target)
+			path := connect(source, target)
+			bytes, err := json.Marshal(getJsonResponse(path))
+			if err != nil {
+				fmt.Println(err)
+			}
+			fmt.Println(path)
+			w.Write(bytes)
+		})
+	http.ListenAndServe(":"+port, nil)
+}
+
+func runStandAlone() {
+	flag.Parse()
+	args := flag.Args()
+	source, target := args[0], args[1]
+	path := connect(source, target)
+	fmt.Println(path)
 }
 
 func newPath(src string) path {
