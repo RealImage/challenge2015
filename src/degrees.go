@@ -13,9 +13,9 @@ import (
 const BURST_DELAY = 15
 
 type link struct {
-	Source    connection
-	Target    connection
-	Movie     string
+	Source connection `json:"source"`
+	Target connection `json:"target"`
+	Movie  string     `json:"movie"`
 }
 
 type path struct {
@@ -49,13 +49,13 @@ func (path path) addLink(src *person, next connection, movie *movie) path {
 }
 
 func (path path) lastPerson() string {
-	return path.Links[len(path.Links) - 1].Target.Url
+	return path.Links[len(path.Links)-1].Target.Url
 }
 
 type connection struct {
-	Url  string
-	Name string
-	Role string
+	Url  string `json:"url"`
+	Name string `json:"name"`
+	Role string `json:"role"`
 }
 type person struct {
 	Url    string
@@ -68,6 +68,11 @@ type movie struct {
 	Name string
 	Cast []connection
 	Crew []connection
+}
+
+type degreeResult struct {
+	Degrees int    `json:"degrees"`
+	Links   []link `json:"links"`
 }
 
 func (movie *movie) getPeopleInvolved() []connection {
@@ -122,28 +127,23 @@ func (pathQueue *pathQueue) isEmpty() bool {
 }
 
 func main() {
-	//	flag.Parse()
-	//
-	//	args := flag.Args()
-	//	source, target := args[0], args[1]
-
 	http.HandleFunc("/degree", func(w http.ResponseWriter, r *http.Request) {
-			source := r.FormValue("source")
-			target := r.FormValue("target")
-			fmt.Printf("Request for %s and %s\n", source, target)
-			path, _ := connect(source, target)
-			bytes, err := json.Marshal(path.Links[1:])
-			if err != nil {
-				fmt.Println(err)
-			}
-			fmt.Println(path)
-			w.Write(bytes)
-		})
+		source := r.FormValue("source")
+		target := r.FormValue("target")
+		fmt.Printf("Request for %s and %s\n", source, target)
+		path, _ := connect(source, target)
+		bytes, err := json.Marshal(getJsonResponse(path))
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(path)
+		w.Write(bytes)
+	})
 	http.ListenAndServe(":8080", nil)
+}
 
-	//	path, nodesExpanded := connect(source, target)
-	//	fmt.Println("Nodes Expanded :", nodesExpanded)
-	//	fmt.Println(path)
+func getJsonResponse(path path) degreeResult {
+	return degreeResult{len(path.Links) - 1, path.Links[1:]}
 }
 
 func connect(source string, target string) (path, int) {
@@ -194,7 +194,7 @@ func connect(source string, target string) (path, int) {
 func fetchPerson(personId string, personChan chan person) {
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl+personId)
+	body, err = fetchResponse(apiRootUrl + personId)
 
 	var person person
 	err = json.Unmarshal(body, &person)
@@ -235,7 +235,7 @@ func fetchMovies(moviesConnection []connection) []movie {
 func fetchMovie(movieId string, movieChannel chan movie) {
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl+movieId)
+	body, err = fetchResponse(apiRootUrl + movieId)
 
 	var movie movie
 	err = json.Unmarshal(body, &movie)
