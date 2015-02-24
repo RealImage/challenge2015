@@ -80,6 +80,7 @@ func runServer(port string) {
 			fmt.Println(err)
 		}
 		fmt.Println(path)
+		w.Header().Set("Content-Type", "application/json")
 		w.Write(bytes)
 	})
 	err := http.ListenAndServe(":"+port, nil)
