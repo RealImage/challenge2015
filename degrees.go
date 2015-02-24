@@ -17,9 +17,12 @@ var personCache map[string]person
 
 const apiRootUrl = "http://data.moviebuff.com/"
 
+var iscached = flag.Bool("cached", false, "set for caching requests")
+
 func init() {
 	moviesCache = make(map[string]movie)
 	personCache = make(map[string]person)
+	flag.Parse()
 }
 
 func main() {
@@ -88,7 +91,6 @@ func runServer(port string) {
 }
 
 func runStandAlone() {
-	flag.Parse()
 	args := flag.Args()
 	source, target := args[0], args[1]
 	path := connect(source, target)
@@ -230,12 +232,12 @@ func fetchSinglePerson(personId string) person {
 }
 
 func fetchPerson(personId string, personChan chan person) {
-	if personFromCache, ok := personCache[personId]; ok {
+	if personFromCache, ok := personCache[personId]; *iscached && ok {
 		personChan <- personFromCache
 	}
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl + personId)
+	body, err = fetchResponse(apiRootUrl+personId)
 
 	var person person
 	err = json.Unmarshal(body, &person)
@@ -275,7 +277,7 @@ func fetchMovies(moviesConnection []connection) []movie {
 }
 
 func fetchMovie(movieId string, movieChannel chan movie) {
-	if movieFromCache, ok := moviesCache[movieId]; ok {
+	if movieFromCache, ok := moviesCache[movieId]; *iscached && ok {
 		movieChannel <- movieFromCache
 	}
 	var body []byte
