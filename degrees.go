@@ -34,10 +34,15 @@ func main() {
 	}
 }
 
+type movieLink struct {
+	Name string `json:"name"`
+	Url  string `json:"url`
+}
+
 type link struct {
-	Source connection `json:"source"`
-	Target connection `json:"target"`
-	Movie  string     `json:"movie"`
+	Source    connection `json:"source"`
+	Target    connection `json:"target"`
+	MovieLink movieLink  `json:"movieLink"`
 }
 
 type path struct {
@@ -107,7 +112,7 @@ func (path path) String() string {
 	pathToTarget := path.Links[1:]
 	str := fmt.Sprintf("\nDegrees of separation : %d", len(pathToTarget))
 	for i, link := range pathToTarget {
-		str = fmt.Sprintf("%s\n\n%d. Movie: %s\n%s: %s \n%s: %s", str, i+1, link.Movie, link.Source.Role, link.Source.Name, link.Target.Role, link.Target.Name)
+		str = fmt.Sprintf("%s\n\n%d. Movie: %s\n%s: %s \n%s: %s", str, i+1, link.MovieLink, link.Source.Role, link.Source.Name, link.Target.Role, link.Target.Name)
 	}
 	return str
 }
@@ -119,7 +124,7 @@ func (path path) addFirstLink(src string) path {
 
 func (path path) addLink(src *person, next connection, movie *movie) path {
 	src_connection := connection{Url: src.Url, Name: src.Name, Role: movie.getRole(src.Url)}
-	path.Links = append(path.Links, link{Source: src_connection, Target: next, Movie: movie.Name})
+	path.Links = append(path.Links, link{Source: src_connection, Target: next, MovieLink: movieLink{Name: movie.Name, Url: movie.Url}})
 	return path
 }
 
@@ -237,7 +242,7 @@ func fetchPerson(personId string, personChan chan person) {
 	}
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl+personId)
+	body, err = fetchResponse(apiRootUrl + personId)
 
 	var person person
 	err = json.Unmarshal(body, &person)
