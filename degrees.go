@@ -2,12 +2,12 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"time"
-	"flag"
 )
 
 const BURST_DELAY = 15
@@ -69,19 +69,21 @@ type pathQueue struct {
 }
 
 func runServer(port string) {
+	fmt.Println("Listening on " + port)
 	http.HandleFunc("/degree", func(w http.ResponseWriter, r *http.Request) {
-			source := r.FormValue("source")
-			target := r.FormValue("target")
-			fmt.Printf("Request for %s and %s\n", source, target)
-			path := connect(source, target)
-			bytes, err := json.Marshal(getJsonResponse(path))
-			if err != nil {
-				fmt.Println(err)
-			}
-			fmt.Println(path)
-			w.Write(bytes)
-		})
-	http.ListenAndServe(":"+port, nil)
+		source := r.FormValue("source")
+		target := r.FormValue("target")
+		fmt.Printf("Request for %s and %s\n", source, target)
+		path := connect(source, target)
+		bytes, err := json.Marshal(getJsonResponse(path))
+		if err != nil {
+			fmt.Println(err)
+		}
+		fmt.Println(path)
+		w.Write(bytes)
+	})
+	err := http.ListenAndServe(":"+port, nil)
+	perror(err)
 }
 
 func runStandAlone() {
@@ -119,7 +121,7 @@ func (path path) addLink(src *person, next connection, movie *movie) path {
 }
 
 func (path path) lastPerson() string {
-	return path.Links[len(path.Links) - 1].Target.Url
+	return path.Links[len(path.Links)-1].Target.Url
 }
 
 func (movie *movie) getPeopleInvolved() []connection {
@@ -178,21 +180,25 @@ func connect(source string, target string) path {
 	processedPersons := make(map[string]bool)
 	processedPersons[source] = true
 
+	finalTarget := fetchSinglePerson(target)
+	if finalTarget.Url == "" {
+		fmt.Printf("Not a valid target %s", target)
+		return newPath(source)
+	}
+
 	for {
 		if fringe.isEmpty() {
 			fmt.Printf("No connection between %s and %s", source, target)
 			return newPath(source)
 		}
 		pathSoFar := fringe.pop()
-		personSoFar := pathSoFar.lastPerson()
+		personSoFarId := pathSoFar.lastPerson()
 		//		fmt.Println("-->", personSoFar)
-		if personSoFar == target {
+		if personSoFarId == target {
 			return pathSoFar
 		}
 
-		personChan := make(chan person)
-		go fetchPerson(personSoFar, personChan)
-		currentPersonInPath := <-personChan
+		currentPersonInPath := fetchSinglePerson(personSoFarId)
 		movies := fetchMovies(currentPersonInPath.Movies)
 		for _, movie := range movies {
 			if _, ok := processedMovies[movie.Url]; ok {
@@ -215,13 +221,20 @@ func connect(source string, target string) path {
 	return path
 }
 
+func fetchSinglePerson(personId string) person {
+	personChan := make(chan person)
+	go fetchPerson(personId, personChan)
+	fetchedPerson := <-personChan
+	return fetchedPerson
+}
+
 func fetchPerson(personId string, personChan chan person) {
 	if personFromCache, ok := personCache[personId]; ok {
 		personChan <- personFromCache
 	}
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl+personId)
+	body, err = fetchResponse(apiRootUrl + personId)
 
 	var person person
 	err = json.Unmarshal(body, &person)
@@ -266,7 +279,7 @@ func fetchMovie(movieId string, movieChannel chan movie) {
 	}
 	var body []byte
 	var err error
-	body, err = fetchResponse(apiRootUrl+movieId)
+	body, err = fetchResponse(apiRootUrl + movieId)
 
 	var movie movie
 	err = json.Unmarshal(body, &movie)
