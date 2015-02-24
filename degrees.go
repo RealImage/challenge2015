@@ -112,7 +112,7 @@ func (path path) String() string {
 	pathToTarget := path.Links[1:]
 	str := fmt.Sprintf("\nDegrees of separation : %d", len(pathToTarget))
 	for i, link := range pathToTarget {
-		str = fmt.Sprintf("%s\n\n%d. Movie: %s\n%s: %s \n%s: %s", str, i+1, link.MovieLink, link.Source.Role, link.Source.Name, link.Target.Role, link.Target.Name)
+		str = fmt.Sprintf("%s\n\n%d. Movie: %s\n%s: %s \n%s: %s", str, i+1, link.MovieLink.Name, link.Source.Role, link.Source.Name, link.Target.Role, link.Target.Name)
 	}
 	return str
 }
