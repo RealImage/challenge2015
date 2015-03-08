@@ -411,6 +411,7 @@ func populateInitialStack(entityOne ...string) (PersonTwo string, stop bool) {
 
 	stop = false
 	xx := make([]Person, 2)
+	done := make(chan bool, 1)
 	var result Person
 
 	tempMap0 := make(map[string]Movie)
@@ -478,7 +479,16 @@ func populateInitialStack(entityOne ...string) (PersonTwo string, stop bool) {
 	tempPer := make([]PersonStack, 0)
 	tempPer = append(tempPer, PersonStack{Person: result.Name, PersonUrl: result.Url})
 
-	putgPersonStack(&gPersonStack{p: tempPer})
+	//putgPersonStack(&gPersonStack{p: tempPer})
+
+	getRateLimitedCastnCrew(tempPer, result, done, PersonTwo)
+	VisitedPerson.MarkVisitedPerson(result.Url)
+
+	okay := <-done
+	if okay == false {
+		stop = true
+	}
+
 
 	return
 
