@@ -184,7 +184,7 @@ This function will have to fetch the url passed and also maintain the
 rate limit...
 */
 
-func getPersonDetail(urlname string, sendPerson chan Person, errorchan chan bool) {
+func getPersonDetail(urlname string, sendPerson chan Person, errorchan chan string) {
 
 	var actor Person
 	var flagAtemps int = 0
@@ -192,7 +192,7 @@ func getPersonDetail(urlname string, sendPerson chan Person, errorchan chan bool
 
 		if urlname == "" {
 			fmt.Println("Url is null")
-			errorchan <- true
+			errorchan <- urlname
 			return
 		}
 		resp, err := http.Get((url + urlname))
@@ -204,7 +204,7 @@ func getPersonDetail(urlname string, sendPerson chan Person, errorchan chan bool
 				continue
 			} else {
 				fmt.Println("\n Failed to fetch person", urlname)
-				errorchan <- true
+				errorchan <- urlname
 				return
 			}
 
@@ -214,19 +214,19 @@ func getPersonDetail(urlname string, sendPerson chan Person, errorchan chan bool
 		jasontxt, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			panic("io error")
-			errorchan <- true
+			errorchan <- urlname
 			return
 		}
 
 		err = json.Unmarshal(jasontxt, &actor)
 
 		if err != nil {
-			errorchan <- true
+			errorchan <- urlname
 			return
 		}
 
 		if len(actor.MovieList) == 0 {
-			errorchan <- true
+			errorchan <- urlname
 			return
 		}
 
@@ -417,7 +417,7 @@ func populateInitialStack(entityOne ...string) (PersonTwo string, stop bool) {
 	tempMap1 := make(map[string]Movie)
 
 	perosnChan := make(chan Person, 2)
-	errChan := make(chan bool, 2)
+	errChan := make(chan string, 2)
 
 	for _, val := range entityOne {
 		go getPersonDetail(val, perosnChan, errChan)
@@ -440,9 +440,12 @@ func populateInitialStack(entityOne ...string) (PersonTwo string, stop bool) {
 				}
 
 			}
-		case _ = <-errChan:
+		case failedPersonUrl := <-errChan:
 			{
-				//fmt.Println("err received ")
+				fmt.Println("This Url ", failedPersonUrl, " doesn't exist so aborting further search")
+				stop = true
+				return
+
 			}
 		}
 
@@ -461,17 +464,6 @@ func populateInitialStack(entityOne ...string) (PersonTwo string, stop bool) {
 
 	len1 := len(xx[0].MovieList)
 	len2 := len(xx[1].MovieList)
-
-	if len1 == 0 {
-		fmt.Println("This Url ", xx[0].Url, " Doesn't exist so aborting further search")
-		stop = true
-		return
-
-	} else if len1 == 0 {
-		fmt.Println("This Url ", xx[1].Url, " Doesn't exist so aborting further search")
-		stop = true
-		return
-	}
 
 	if (len1 > len2) && (len2 > 0) {
 		result = xx[1]
@@ -495,7 +487,7 @@ func populateInitialStack(entityOne ...string) (PersonTwo string, stop bool) {
 func getRelationDegree(entityOne string, PersonTwo string) {
 
 	localPersonChan := make(chan Person) //unbuffered chan why? cos we pick person data sequntially
-	localErroChan := make(chan bool)
+	localErroChan := make(chan string)
 	done := make(chan bool, 1)
 	var err, stop bool
 	var currPerson gPersonStack
