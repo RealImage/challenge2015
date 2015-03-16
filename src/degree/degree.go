@@ -23,6 +23,29 @@ type Degree struct {
 }
 
 func (d *Degree) FindDegree(src string, target string) {
+	var err error
+	for j := 0; j < 20; j++ {
+		// Get the person's data
+		_, err = getPersonData(src)
+		if err == nil {
+			break
+		}
+	}
+	if err != nil {
+		fmt.Println("Invalid person url")
+		return
+	}
+	for j := 0; j < 20; j++ {
+		// Get the person's data
+		_, err = getPersonData(target)
+		if err == nil {
+			break
+		}
+	}
+	if err != nil {
+		fmt.Println("Invalid person url")
+		return
+	}
 	d.graphIn = make(chan result)
 	d.out = make(chan bool)
 	d.source = src

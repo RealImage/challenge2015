@@ -1,0 +1,46 @@
+To run:
+set Gopath(path till gophercon)
+eg, "C:\Git\RealImage\RealImage\gophercon"
+
+browse to folder degree(It will only find the degree of seperation) or degreewithconnections(It will find the degree of seperation along with connections)
+
+go build
+go install
+then,
+
+degree person-1 person-2 
+OR
+degreewithconnections person-1 person-2
+
+Eg,
+degreewithconnections christopher-nolan will-smith
+
+Success = true
+Degree of seperation: 2
+Connections :
+1 .Movie: Transcendence
+Executive Producer : Christopher Nolan
+Art Director / Art : Tom Frohling
+2 .Movie: Concussion
+Art Director : Tom Frohling
+Actor : Will Smith
+Time taken to find degree = 6.5229817
+
+degreewithconnections angelina-jolie rajinikanth
+
+Success = true
+Degree of seperation: 3
+Connections :
+1 .Movie: Unbroken
+Producer : Angelina Jolie
+Executive Producer / Production : Jon Jashni
+2 .Movie: Black Hat
+Producer : Jon Jashni
+Stunt Coordinator / Stunts : Doug Coleman
+3 .Movie: Ra.One
+Stunt Performer : Doug Coleman
+Special Appearance : Rajinikanth
+Time taken to find degree = 66.0129778
+
+
+NOTE: Rarely it crashes, Rerun it. Working on fixing the bug.
