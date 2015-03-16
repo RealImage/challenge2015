@@ -189,7 +189,9 @@ func main() {
 	if len(os.Args) >= 3 {
 		if os.Args[1] != os.Args[2] {
 			d := new(Degree)
+			start := time.Now()
 			d.FindDegree(os.Args[1], os.Args[2])
+			fmt.Println("Time taken to find degree =", time.Since(start).Seconds())
 		}
 	} else {
 		fmt.Println("Please provide sufficient args")
