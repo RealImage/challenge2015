@@ -11,14 +11,17 @@ import (
 )
 
 // Set the rate of operations/sec
-var rl = rate.New(100, time.Second)
+var rl *rate.RateLimiter
 
 // Get the movie details using the movie url
 func getMovieData(url string) (movie, error) {
+	if rl == nil {
+		rl = rate.New(conf.Rate, time.Second)
+	}
 	for {
 		if ok, _ := rl.Try(); ok {
 			// Get the movies data
-			re, err := http.Get("http://data.moviebuff.com/" + url)
+			re, err := http.Get(conf.Url + url)
 			if err != nil {
 				return movie{}, err
 			}
@@ -42,10 +45,13 @@ func getMovieData(url string) (movie, error) {
 
 // Get person details using his/her url
 func getPersonData(url string) (person, error) {
+	if rl == nil {
+		rl = rate.New(conf.Rate, time.Second)
+	}
 	for {
 		if ok, _ := rl.Try(); ok {
 			// Get the person data
-			re, err := http.Get("http://data.moviebuff.com/" + url)
+			re, err := http.Get(conf.Url + url)
 			if err != nil {
 				return person{}, err
 			}

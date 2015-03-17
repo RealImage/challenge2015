@@ -1,7 +1,9 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
 	"runtime"
 	"sync"
@@ -63,12 +65,14 @@ func (d *Degree) FindDegree(src string, target string) {
 	d.graphIn <- r
 	ok := <-d.out
 	fmt.Println("Success =", ok)
-	fmt.Println("Degree of seperation:", d.degree)
-	fmt.Println("Connections :")
-	for i := range d.connections {
-		fmt.Println(i+1, ".Movie:", d.connections[i].movie)
-		fmt.Println(d.connections[i].firstRole, ":", d.connections[i].first)
-		fmt.Println(d.connections[i].secondRole, ":", d.connections[i].second)
+	if ok {
+		fmt.Println("Degree of seperation:", d.degree)
+		fmt.Println("Connections :")
+		for i := range d.connections {
+			fmt.Println(i+1, ".Movie:", d.connections[i].movie)
+			fmt.Println(d.connections[i].firstRole, ":", d.connections[i].first)
+			fmt.Println(d.connections[i].secondRole, ":", d.connections[i].second)
+		}
 	}
 }
 
@@ -265,19 +269,40 @@ func (d *Degree) handleInput() {
 	}
 }
 
+func parseConfig() error {
+	data, err := ioutil.ReadFile("config.json")
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+	err = json.Unmarshal(data, &conf)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+	return nil
+}
+
 func main() {
-	// set the amount of CPU to be used
-	numCPU := runtime.NumCPU()
-	runtime.GOMAXPROCS((numCPU * 3) / 4)
-	// sanity check
-	if len(os.Args) >= 3 {
-		if os.Args[1] != os.Args[2] {
-			d := new(Degree)
-			start := time.Now()
-			d.FindDegree(os.Args[1], os.Args[2])
-			fmt.Println("Time taken to find degree =", time.Since(start).Seconds())
+	err := parseConfig()
+	if err == nil {
+		// set the amount of CPU to be used
+		if conf.NumCPU > 0 {
+			runtime.GOMAXPROCS(conf.NumCPU)
+		} else {
+			numCPU := runtime.NumCPU()
+			runtime.GOMAXPROCS((numCPU * 3) / 4)
 		}
-	} else {
-		fmt.Println("Please provide sufficient args")
+		// sanity check
+		if len(os.Args) >= 3 {
+			if os.Args[1] != os.Args[2] {
+				d := new(Degree)
+				start := time.Now()
+				d.FindDegree(os.Args[1], os.Args[2])
+				fmt.Println("Time taken to find degree =", time.Since(start).Seconds(), " Secs")
+			}
+		} else {
+			fmt.Println("Please provide sufficient args")
+		}
 	}
 }

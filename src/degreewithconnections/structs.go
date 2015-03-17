@@ -5,6 +5,14 @@ type result struct {
 	currentDegree int
 }
 
+type config struct {
+	Rate   int    `json:"rate"`
+	Url    string `json:"url"`
+	NumCPU int    `json:"numCPU"`
+}
+
+var conf config
+
 type urls struct {
 	url         string
 	connections []connection

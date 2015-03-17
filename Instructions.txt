@@ -1,4 +1,9 @@
+Config.json:
+	
+Configuration file where you set the rate limit, main url and number of cores to be used
+
 To run:
+
 set Gopath(path till gophercon)
 eg, "C:\Git\RealImage\RealImage\gophercon"
 
@@ -18,29 +23,30 @@ degreewithconnections christopher-nolan will-smith
 Success = true
 Degree of seperation: 2
 Connections :
-1 .Movie: Transcendence
-Executive Producer : Christopher Nolan
-Art Director / Art : Tom Frohling
-2 .Movie: Concussion
-Art Director : Tom Frohling
+1 .Movie: The Dark Knight
+Screenplay Writer, Story Writer : Christopher Nolan
+Sound Re-recording Mixer / Sound : John P Fasal
+2 .Movie: Independence Day
+Sound Designer : John P Fasal
 Actor : Will Smith
-Time taken to find degree = 6.5229817
+Time taken to find degree = 1.800779 Secs
+
 
 degreewithconnections angelina-jolie rajinikanth
 
 Success = true
 Degree of seperation: 3
 Connections :
-1 .Movie: Unbroken
-Producer : Angelina Jolie
-Executive Producer / Production : Jon Jashni
-2 .Movie: Black Hat
-Producer : Jon Jashni
-Stunt Coordinator / Stunts : Doug Coleman
-3 .Movie: Ra.One
-Stunt Performer : Doug Coleman
-Special Appearance : Rajinikanth
-Time taken to find degree = 66.0129778
+1 .Movie: Maleficent
+Actress : Angelina Jolie
+Supporting Actress : Miranda Richardson
+2 .Movie: Provoked: A True Story
+Supporting Actor : Miranda Richardson
+Music Director / Music : AR Rahman
+3 .Movie: Rana
+Music Director : AR Rahman
+Actor : Rajinikanth
+Time taken to find degree = 7.3995483 Secs
 
 
-NOTE: Rarely it crashes, Rerun it. Working on fixing the bug.
+NOTE: If it crashes reduce the rate in config.json file.
