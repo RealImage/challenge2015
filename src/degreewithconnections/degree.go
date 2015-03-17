@@ -6,7 +6,6 @@ import (
 	"runtime"
 	"sync"
 	"time"
-	//"github.com/trustmaster/goflow"
 )
 
 type Degree struct {
@@ -73,11 +72,9 @@ func (d *Degree) FindDegree(src string, target string) {
 	}
 }
 
-func (d *Degree) handleMovie(url string, r *result, i int, pName string, pRole string) {
-	//	fmt.Println(url)
+func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string, degree int, conns []connection) {
 	var m movie
 	var err error
-	var nextUrls []urls
 	for j := 0; j < 20; j++ {
 		// Get the movie data
 		m, err = getMovieData(url)
@@ -86,19 +83,22 @@ func (d *Degree) handleMovie(url string, r *result, i int, pName string, pRole s
 		}
 	}
 	if err != nil {
-
+		var newUrls []urls
+		d.nextUrlsChan <- newUrls
 	} else {
+		var newUrls []urls
 		// Iterate through the list of casts
 		for cst := range m.Cast {
 			if d.personUrls[m.Cast[cst].Url] != true {
 				// Sanity check(If the currentdegree is greater than degree no need to continue)
-				if r.currentDegree < d.degree || d.degree == 0 {
+				if degree < d.degree || d.degree == 0 {
 					// Leave the current person, might lead to infinite loop if not checked
-					if m.Cast[cst].Url != r.currentUrls[i].url {
+					if m.Cast[cst].Url != pUrl {
 						// If the current cast is the target
 						if m.Cast[cst].Url == d.target {
-							d.degree = r.currentDegree
-							connections := r.currentUrls[i].connections
+							d.degree = degree
+							var connections []connection
+							connections = append(connections, conns...)
 							connections = append(connections, connection{m.Name, pName, pRole, m.Cast[cst].Name, m.Cast[cst].Role})
 							d.connections = connections
 							// close the channel
@@ -106,9 +106,12 @@ func (d *Degree) handleMovie(url string, r *result, i int, pName string, pRole s
 							close(d.graphIn)
 							break
 						} else {
-							connections := r.currentUrls[i].connections
+							var connections []connection
+							connections = append(connections, conns...)
 							connections = append(connections, connection{m.Name, pName, pRole, m.Cast[cst].Name, m.Cast[cst].Role})
-							nextUrls = append(nextUrls, urls{m.Cast[cst].Url, connections})
+
+							u := urls{m.Cast[cst].Url, connections}
+							newUrls = append(newUrls, u)
 						}
 					}
 				}
@@ -118,13 +121,14 @@ func (d *Degree) handleMovie(url string, r *result, i int, pName string, pRole s
 		for crw := range m.Crew {
 			if d.personUrls[m.Crew[crw].Url] != true {
 				// Sanity check(If the currentdegree is greater than degree no need to continue)
-				if r.currentDegree < d.degree || d.degree == 0 {
+				if degree < d.degree || d.degree == 0 {
 					// Leave the current person, might lead to infinite loop if not checked
-					if m.Crew[crw].Url != r.currentUrls[i].url {
+					if m.Crew[crw].Url != pUrl {
 						// If the current crew is the target
 						if m.Crew[crw].Url == d.target {
-							d.degree = r.currentDegree
-							connections := r.currentUrls[i].connections
+							d.degree = degree
+							var connections []connection
+							connections = append(connections, conns...)
 							connections = append(connections, connection{m.Name, pName, pRole, m.Crew[crw].Name, m.Crew[crw].Role})
 							d.connections = connections
 							// close the channel
@@ -132,28 +136,30 @@ func (d *Degree) handleMovie(url string, r *result, i int, pName string, pRole s
 							close(d.graphIn)
 							break
 						} else {
-							connections := r.currentUrls[i].connections
+							var connections []connection
+							connections = append(connections, conns...)
 							connections = append(connections, connection{m.Name, pName, pRole, m.Crew[crw].Name, m.Crew[crw].Role})
-							nextUrls = append(nextUrls, urls{m.Crew[crw].Url, connections})
+							u := urls{m.Crew[crw].Url, connections}
+							newUrls = append(newUrls, u)
+
 						}
 					}
 				}
 			}
 		}
+		d.nextUrlsChan <- newUrls
 	}
-	//	fmt.Println(nextUrls)
-	d.nextUrlsChan <- nextUrls
 }
 
-func (d *Degree) handlePerson(r *result, i int) {
+func (d *Degree) handlePerson(url string, degree int, connections []connection) {
 	defer d.wg.Done()
-	//	fmt.Println(r.currentUrls[i].url)
 	var err error
 	var per person
 	var nextUrls []urls
+
 	for j := 0; j < 20; j++ {
 		// Get the person's data
-		per, err = getPersonData(r.currentUrls[i].url)
+		per, err = getPersonData(url)
 		if err == nil {
 			break
 		}
@@ -168,74 +174,10 @@ func (d *Degree) handlePerson(r *result, i int) {
 			if d.movieUrls[per.Movies[mv].Url] != true {
 				d.movieUrls[per.Movies[mv].Url] = true
 				mvCount++
-				go d.handleMovie(per.Movies[mv].Url, r, i, per.Name, per.Movies[mv].Role)
-				//				var m movie
-				//				for j := 0; j < 20; j++ {
-				//					// Get the movie data
-				//					m, err = getMovieData(per.Movies[mv].Url)
-				//					if err == nil {
-				//						break
-				//					}
-				//				}
-				//				if err != nil {
-
-				//				} else {
-				//					// Iterate through the list of casts
-				//					for cst := range m.Cast {
-				//						// Sanity check(If the currentdegree is greater than degree no need to continue)
-				//						if r.currentDegree < d.degree || d.degree == 0 {
-				//							// Leave the current person, might lead to infinite loop if not checked
-				//							if m.Cast[cst].Url != r.currentUrls[i].url {
-				//								// If the current cast is the target
-				//								if m.Cast[cst].Url == d.target {
-				//									d.degree = r.currentDegree
-				//									connections := r.currentUrls[i].connections
-				//									connections = append(connections, connection{m.Name, per.Name, per.Movies[mv].Role, m.Cast[cst].Name, m.Cast[cst].Role})
-				//									d.connections = connections
-				//									// close the channel
-				//									d.out <- true
-				//									close(d.graphIn)
-				//									break
-				//								} else {
-				//									connections := r.currentUrls[i].connections
-				//									connections = append(connections, connection{m.Name, per.Name, per.Movies[mv].Role, m.Cast[cst].Name, m.Cast[cst].Role})
-				//									d.nextUrls = append(d.nextUrls, urls{m.Cast[cst].Url, connections})
-				//								}
-				//							}
-				//						}
-				//					}
-				//					// Iterate through the list of crews
-				//					for crw := range m.Crew {
-				//						// Sanity check(If the currentdegree is greater than degree no need to continue)
-				//						if r.currentDegree < d.degree || d.degree == 0 {
-				//							// Leave the current person, might lead to infinite loop if not checked
-				//							if m.Crew[crw].Url != r.currentUrls[i].url {
-				//								// If the current crew is the target
-				//								if m.Crew[crw].Url == d.target {
-				//									d.degree = r.currentDegree
-				//									connections := r.currentUrls[i].connections
-				//									connections = append(connections, connection{m.Name, per.Name, per.Movies[mv].Role, m.Crew[crw].Name, m.Crew[crw].Role})
-				//									d.connections = connections
-				//									// close the channel
-				//									d.out <- true
-				//									close(d.graphIn)
-				//									break
-				//								} else {
-				//									connections := r.currentUrls[i].connections
-				//									connections = append(connections, connection{m.Name, per.Name, per.Movies[mv].Role, m.Crew[crw].Name, m.Crew[crw].Role})
-				//									d.nextUrls = append(d.nextUrls, urls{m.Crew[crw].Url, connections})
-				//								}
-				//							}
-				//						}
-				//					}
-				//				}
+				go d.handleMovie(per.Movies[mv].Url, url, per.Name, per.Movies[mv].Role, degree, connections)
 			}
 		}
-		//		for j := 0; j < mvCount; j++ {
-		//			tempUrls := <-d.nextUrlsChan
-		//			nextUrls = append(nextUrls, tempUrls...)
-		//		}
-		//		fmt.Println(mvCount)
+
 		for {
 			if mvCount == 0 {
 				break
@@ -246,7 +188,9 @@ func (d *Degree) handlePerson(r *result, i int) {
 					break
 				} else {
 					mvCount--
-					nextUrls = append(nextUrls, tempUrls...)
+					if len(tempUrls) > 0 {
+						nextUrls = append(nextUrls, tempUrls...)
+					}
 				}
 			default:
 				time.Sleep(1 * time.Microsecond)
@@ -267,7 +211,7 @@ func (d *Degree) findDegree(r result) {
 			noPerson++
 			d.personUrls[r.currentUrls[i].url] = true
 			d.wg.Add(1)
-			go d.handlePerson(&r, i)
+			go d.handlePerson(r.currentUrls[i].url, r.currentDegree, r.currentUrls[i].connections)
 		}
 	}
 
@@ -282,24 +226,20 @@ func (d *Degree) findDegree(r result) {
 				break
 			} else {
 				noPerson--
-
-				d.nextUrls = append(d.nextUrls, tempUrls...)
+				if len(tempUrls) > 0 {
+					d.nextUrls = append(d.nextUrls, tempUrls...)
+				}
 			}
 		default:
 			time.Sleep(1 * time.Microsecond)
 		}
 	}
-	//	for j := 0; j < noPerson; j++ {
-	//		tempUrls := <-d.nextUrlsChan
-	//		d.nextUrls = append(d.nextUrls, tempUrls...)
-	//	}
 	d.wg.Wait()
 
 	if len(d.nextUrls) > 0 {
 		// Send the url list again(Recursion)
 		res := result{d.nextUrls, r.currentDegree}
 		d.nextUrls = nil
-		//		fmt.Println(res)
 		d.graphIn <- res
 	} else {
 		d.out <- false
@@ -312,7 +252,6 @@ func (d *Degree) handleInput() {
 		// Get the url list
 		select {
 		case r, ok := <-d.graphIn:
-
 			// Check if the channel is closed
 			if !ok {
 				d.out <- false
