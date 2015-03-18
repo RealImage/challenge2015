@@ -29,9 +29,10 @@ type Degree struct {
 
 func (d *Degree) FindDegree(src string, target string) {
 	var err error
+	var srcObj, trgtObj person
 	for j := 0; j < 20; j++ {
 		// Get the person's data
-		_, err = getPersonData(src)
+		srcObj, err = getPersonData(src)
 		if err == nil {
 			break
 		}
@@ -42,7 +43,7 @@ func (d *Degree) FindDegree(src string, target string) {
 	}
 	for j := 0; j < 20; j++ {
 		// Get the person's data
-		_, err = getPersonData(target)
+		trgtObj, err = getPersonData(target)
 		if err == nil {
 			break
 		}
@@ -51,16 +52,24 @@ func (d *Degree) FindDegree(src string, target string) {
 		fmt.Println("Invalid person url")
 		return
 	}
+	// Traversing through the person with less no of movies is efficient
+	if len(trgtObj.Movies) > len(srcObj.Movies) {
+		d.source = src
+		d.target = target
+	} else {
+		d.source = target
+		d.target = src
+	}
+
 	d.graphIn = make(chan result)
 	d.out = make(chan bool)
 	d.nextUrlsChan = make(chan []urls)
 	d.urlsChan = make(chan []urls)
-	d.source = src
-	d.target = target
+
 	d.personUrls = make(map[string]bool)
 	d.movieUrls = make(map[string]bool)
 	r := result{}
-	r.currentUrls = append(r.currentUrls, urls{src, nil})
+	r.currentUrls = append(r.currentUrls, urls{d.source, nil})
 	go d.handleInput()
 	d.graphIn <- r
 	ok := <-d.out
