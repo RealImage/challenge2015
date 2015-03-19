@@ -36,6 +36,7 @@ func (d *Degree) FindDegree(src string, target string) {
 		if err == nil {
 			break
 		}
+		time.Sleep(10 * time.Millisecond)
 	}
 	if err != nil {
 		fmt.Println("Invalid person url")
@@ -47,6 +48,7 @@ func (d *Degree) FindDegree(src string, target string) {
 		if err == nil {
 			break
 		}
+		time.Sleep(10 * time.Millisecond)
 	}
 	if err != nil {
 		fmt.Println("Invalid person url")
@@ -94,6 +96,7 @@ func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string
 		if err == nil {
 			break
 		}
+		time.Sleep(10 * time.Millisecond)
 	}
 	if err != nil {
 		var newUrls []urls
@@ -176,6 +179,7 @@ func (d *Degree) handlePerson(url string, degree int, connections []connection) 
 		if err == nil {
 			break
 		}
+		time.Sleep(10 * time.Millisecond)
 	}
 	if err != nil {
 
@@ -304,11 +308,14 @@ func main() {
 		}
 		// sanity check
 		if len(os.Args) >= 3 {
+			// No point calculating degree between the same person
 			if os.Args[1] != os.Args[2] {
 				d := new(Degree)
 				start := time.Now()
 				d.FindDegree(os.Args[1], os.Args[2])
 				fmt.Println("Time taken to find degree =", time.Since(start).Seconds(), " Secs")
+			} else {
+				fmt.Println("Both are the same person, please give different person urls")
 			}
 		} else {
 			fmt.Println("Please provide sufficient args")
