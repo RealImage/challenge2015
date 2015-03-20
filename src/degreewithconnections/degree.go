@@ -112,15 +112,19 @@ func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string
 		}
 		time.Sleep(10 * time.Millisecond)
 	}
+
 	if err != nil {
 		var newUrls []urls
 		d.nextUrlsChan <- newUrls
 	} else {
 		var newUrls []urls
+		var personIsPresent bool
 		// Iterate through the list of casts
 		for cst := range m.Cast {
+			if m.Cast[cst].Url == pUrl {
+				personIsPresent = true
+			}
 			if d.isPersonParsed(m.Cast[cst].Url) != true {
-
 				d.Lock()
 				mainDegree := d.degree
 				d.Unlock()
@@ -155,6 +159,9 @@ func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string
 		}
 		// Iterate through the list of crews
 		for crw := range m.Crew {
+			if m.Crew[crw].Url == pUrl {
+				personIsPresent = true
+			}
 			if d.isPersonParsed(m.Crew[crw].Url) != true {
 				d.Lock()
 				mainDegree := d.degree
@@ -188,7 +195,12 @@ func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string
 				}
 			}
 		}
-		d.nextUrlsChan <- newUrls
+		// Handling the case where movie appears on the actor's list but not vice versa
+		if personIsPresent {
+			d.nextUrlsChan <- newUrls
+		} else {
+			d.nextUrlsChan <- nil
+		}
 	}
 }
 
