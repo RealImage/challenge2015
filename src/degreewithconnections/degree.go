@@ -21,10 +21,10 @@ type Degree struct {
 	urlsChan     chan []urls
 	personUrls   map[string]bool
 	movieUrls    map[string]bool
-
-	wg          sync.WaitGroup
-	nextUrls    []urls
-	connections []connection
+	wg           sync.WaitGroup
+	nextUrls     []urls
+	connections  []connection
+	sync.Mutex
 }
 
 func (d *Degree) FindDegree(src string, target string) {
@@ -87,6 +87,20 @@ func (d *Degree) FindDegree(src string, target string) {
 	}
 }
 
+func (d *Degree) isPersonParsed(url string) bool {
+	d.Lock()
+	res := d.personUrls[url]
+	d.Unlock()
+	return res
+}
+
+func (d *Degree) isMovieParsed(url string) bool {
+	d.Lock()
+	res := d.movieUrls[url]
+	d.Unlock()
+	return res
+}
+
 func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string, degree int, conns []connection) {
 	var m movie
 	var err error
@@ -105,18 +119,24 @@ func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string
 		var newUrls []urls
 		// Iterate through the list of casts
 		for cst := range m.Cast {
-			if d.personUrls[m.Cast[cst].Url] != true {
+			if d.isPersonParsed(m.Cast[cst].Url) != true {
+
+				d.Lock()
+				mainDegree := d.degree
+				d.Unlock()
 				// Sanity check(If the currentdegree is greater than degree no need to continue)
-				if degree < d.degree || d.degree == 0 {
+				if degree < mainDegree || mainDegree == 0 {
 					// Leave the current person, might lead to infinite loop if not checked
 					if m.Cast[cst].Url != pUrl {
 						// If the current cast is the target
 						if m.Cast[cst].Url == d.target {
-							d.degree = degree
 							var connections []connection
 							connections = append(connections, conns...)
 							connections = append(connections, connection{m.Name, pName, pRole, m.Cast[cst].Name, m.Cast[cst].Role})
+							d.Lock()
+							d.degree = degree
 							d.connections = connections
+							d.Unlock()
 							// close the channel
 							d.out <- true
 							close(d.graphIn)
@@ -135,18 +155,23 @@ func (d *Degree) handleMovie(url string, pUrl string, pName string, pRole string
 		}
 		// Iterate through the list of crews
 		for crw := range m.Crew {
-			if d.personUrls[m.Crew[crw].Url] != true {
+			if d.isPersonParsed(m.Crew[crw].Url) != true {
+				d.Lock()
+				mainDegree := d.degree
+				d.Unlock()
 				// Sanity check(If the currentdegree is greater than degree no need to continue)
-				if degree < d.degree || d.degree == 0 {
+				if degree < mainDegree || mainDegree == 0 {
 					// Leave the current person, might lead to infinite loop if not checked
 					if m.Crew[crw].Url != pUrl {
 						// If the current crew is the target
 						if m.Crew[crw].Url == d.target {
-							d.degree = degree
 							var connections []connection
 							connections = append(connections, conns...)
 							connections = append(connections, connection{m.Name, pName, pRole, m.Crew[crw].Name, m.Crew[crw].Role})
+							d.Lock()
+							d.degree = degree
 							d.connections = connections
+							d.Unlock()
 							// close the channel
 							d.out <- true
 							close(d.graphIn)
@@ -188,8 +213,10 @@ func (d *Degree) handlePerson(url string, degree int, connections []connection) 
 		mvCount := 0
 		for mv := range per.Movies {
 			// Check if the movie is already traversed
-			if d.movieUrls[per.Movies[mv].Url] != true {
+			if d.isMovieParsed(per.Movies[mv].Url) != true {
+				d.Lock()
 				d.movieUrls[per.Movies[mv].Url] = true
+				d.Unlock()
 				mvCount++
 				go d.handleMovie(per.Movies[mv].Url, url, per.Name, per.Movies[mv].Role, degree, connections)
 			}
@@ -224,9 +251,11 @@ func (d *Degree) findDegree(r result) {
 	// Iterate through all the users
 	for i := range r.currentUrls {
 		// Check if the person is already traversed
-		if d.personUrls[r.currentUrls[i].url] != true {
+		if d.isPersonParsed(r.currentUrls[i].url) != true {
 			noPerson++
+			d.Lock()
 			d.personUrls[r.currentUrls[i].url] = true
+			d.Unlock()
 			d.wg.Add(1)
 			go d.handlePerson(r.currentUrls[i].url, r.currentDegree, r.currentUrls[i].connections)
 		}
@@ -244,7 +273,9 @@ func (d *Degree) findDegree(r result) {
 			} else {
 				noPerson--
 				if len(tempUrls) > 0 {
+					d.Lock()
 					d.nextUrls = append(d.nextUrls, tempUrls...)
+					d.Unlock()
 				}
 			}
 		default:
