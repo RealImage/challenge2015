@@ -27,11 +27,11 @@ func main() {
 }
 
 func startLogger() {
-	logMode := ""
+	logMode := "file"
 	var err error
 	switch logMode {
 	case "file":
-		out, err = os.Create("/degrees.log")
+		out, err = os.Create("/users/logs/degrees.log")
 		if err != nil {
 			fmt.Println(err)
 		}
