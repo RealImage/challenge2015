@@ -178,7 +178,9 @@ class DegreeSeparation
 				return true if (personRef.url == @Destination)
 
 				if (personRef.ref == nil && @needToBuildTree[depth])
-					@needToBuildTree[depth+1], personRef.ref = buildSubTree(personRef)
+					  if (@needToBuildTree[depth+1] != false)
+						  @needToBuildTree[depth+1], personRef.ref = buildSubTree(personRef)
+					  end
 				elsif (personRef.ref != nil)
 					return findSmallestDegree(personRef,depth+1)
 				end
