@@ -20,13 +20,12 @@ import (
 	"log"
 	"os"
 	"runtime"
+	"strings"
 	"time"
-
-	"github.com/davecheney/profile"
 )
 
 func main() {
-	defer profile.Start(profile.CPUProfile).Stop()
+	//defer profile.Start(profile.CPUProfile).Stop()
 
 	//check if argument is passed correctly
 	if len(os.Args) != 3 {
@@ -34,8 +33,8 @@ func main() {
 	} else {
 
 		//retrieve the inputs
-		src := os.Args[1]
-		dest := os.Args[2]
+		src := strings.ToLower(os.Args[1])
+		dest := strings.ToLower(os.Args[2])
 
 		//parse configuration file
 		config, err := processConfig()

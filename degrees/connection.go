@@ -21,6 +21,13 @@ import (
 	"net/http"
 )
 
+const (
+	retrieveErr     = "Error in fetching address"
+	readErr         = "Error in reading the body of http responce; Error: "
+	unmarshalErr    = "Error in unmarshaling the url details; Error: "
+	notConnectedErr = "Given celebrities are not connected"
+)
+
 type Connection struct {
 	person1          string
 	person2          string
@@ -47,7 +54,7 @@ func (c *Connection) findRelationShip() (bool, error) {
 	//if there is no url to be searched next
 	//then that mean no connection possible
 	if len(c.urlBeingExplored) == 0 {
-		return false, errors.New("Given celebrity are not connected")
+		return false, errors.New("Given celebrities are not connected")
 	}
 
 	for _, v := range c.urlBeingExplored {
@@ -55,7 +62,8 @@ func (c *Connection) findRelationShip() (bool, error) {
 		//get all the movie of this person
 		poi, err := c.fetchData(v.url)
 		if err != nil {
-			return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
+			//return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
+			continue
 		}
 		for _, movie := range poi.Movies {
 			if c.connected[movie.Url] {
@@ -66,7 +74,8 @@ func (c *Connection) findRelationShip() (bool, error) {
 			//for each movies checkout the cast and crew
 			cnc, err := c.fetchData(movie.Url)
 			if err != nil {
-				return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
+				//return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
+				continue
 			}
 
 			for _, conn := range cnc.Cast {
@@ -81,8 +90,26 @@ func (c *Connection) findRelationShip() (bool, error) {
 				rel.person2 = conn.Name
 				rel.role2 = conn.Role
 				if conn.Url == c.person2 {
-					c.result = v.relation
-					c.result = append(c.result, rel)
+					c.result = append(v.relation, rel)
+					return true, nil
+				}
+				c.connected[conn.Url] = true
+				c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
+			}
+
+			for _, conn := range cnc.Crew {
+				if c.connected[conn.Url] {
+					continue
+				}
+				//new connection
+				var rel relation
+				rel.movie = movie.Name
+				rel.person1 = poi.Name
+				rel.role1 = movie.Role
+				rel.person2 = conn.Name
+				rel.role2 = conn.Role
+				if conn.Url == c.person2 {
+					c.result = append(v.relation, rel)
 					return true, nil
 				}
 				c.connected[conn.Url] = true
