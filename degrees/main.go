@@ -52,11 +52,10 @@ func main() {
 		t1 := time.Now()
 		//Get relationship
 		go func() {
-			relations, err := connection.GetRelationship()
+			err := connection.GetRelationship()
 			if err != nil {
 				log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
 			}
-			printResult(relations, t1)
 		}()
 		<-connection.finish
 

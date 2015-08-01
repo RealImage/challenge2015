@@ -68,18 +68,22 @@ func (c *Connection) foundMovie(url url, movie credit, name string) {
 			cred = v
 		}
 	}
-	var rel relation
-	rel.movie = movie.Name
-	rel.person1 = name
-	rel.role1 = movie.Role
-	rel.person2 = c.person2
-	rel.role2 = cred.Role
+	rel := relation{movie.Name, name, movie.Role, c.person2, cred.Role}
 	c.result = append(url.relation, rel)
-	fmt.Println("finished ", c.result)
 	c.finish <- true
-
 }
-
+func (c *Connection) isExplored(url string) bool {
+	c.rw.RLock()
+	ok := c.connected[url]
+	c.rw.RUnlock()
+	if ok {
+		return true
+	}
+	c.rw.Lock()
+	c.connected[url] = true
+	c.rw.Unlock()
+	return false
+}
 func (c *Connection) findRelationShip() error {
 	//swap urlToExplore and urlExplored
 	temp := c.urlBeingExplored
@@ -87,18 +91,15 @@ func (c *Connection) findRelationShip() error {
 	c.urlToExplore = temp
 	//if there is no url to be searched next
 	//then that mean no connection possible
-	fmt.Println("dbbndfbndflbkndfkbndfb", len(c.urlBeingExplored))
+	fmt.Println("People to explore: ", len(c.urlBeingExplored))
 	if len(c.urlBeingExplored) == 0 {
 		return errors.New("Given celebrities are not connected")
 	}
-	isFound := false
 	for _, v := range c.urlBeingExplored {
-		if isFound {
-			break
-		}
-		c.wg.Add(1)
+
 		//for each entry get people they are connected to
 		//get all the movie of this person
+		c.wg.Add(1)
 		go func(v url) {
 			defer c.wg.Done()
 
@@ -107,86 +108,46 @@ func (c *Connection) findRelationShip() error {
 				//return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
 				return
 			}
+			//check wether movies of this person match that of person2
 			for _, movie := range poi.Movies {
 				if c.person2Mv[movie.Url] {
 					c.foundMovie(v, movie, poi.Name)
-					isFound = true
 					return
 				}
 			}
 
+			//no movie matched. explore new people from these movies
 			for _, movie := range poi.Movies {
 
-				c.rw.RLock()
-				ok := c.connected[movie.Url]
-				c.rw.RUnlock()
-				if ok {
+				if c.isExplored(movie.Url) {
 					continue
 				}
-				c.rw.Lock()
-				c.connected[movie.Url] = true
-				c.rw.Unlock()
 				c.wg.Add(1)
 				go func(movie credit) {
 					defer c.wg.Done()
 					//for each movies checkout the cast and crew
-
 					cnc, err := c.fetchData(movie.Url)
 					if err != nil {
 						//return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
 						return
 					}
 
-					finish := c.getPeopleToExplore(cnc.Cast)
-					if finish {
-						return
-					}
-
 					for _, conn := range cnc.Cast {
-						c.rw.RLock()
-						ok := c.connected[conn.Url]
-						c.rw.RUnlock()
-						if ok {
+						if c.isExplored(conn.Url) {
 							continue
 						}
-						//new connection
-						var rel relation
-						rel.movie = movie.Name
-						rel.person1 = poi.Name
-						rel.role1 = movie.Role
-						rel.person2 = conn.Name
-						rel.role2 = conn.Role
-						if conn.Url == c.person2 {
-							c.result = append(v.relation, rel)
-							return
-						}
-						c.rw.Lock()
-						c.connected[conn.Url] = true
-						c.rw.Unlock()
+						//new relation
+						rel := relation{movie.Name, poi.Name, movie.Role, conn.Name, conn.Role}
 						c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
 					}
 
 					for _, conn := range cnc.Crew {
-						c.rw.RLock()
-						ok := c.connected[conn.Url]
-						c.rw.RUnlock()
-						if ok {
+						if c.isExplored(conn.Url) {
 							continue
 						}
 						//new connection
-						var rel relation
-						rel.movie = movie.Name
-						rel.person1 = poi.Name
-						rel.role1 = movie.Role
-						rel.person2 = conn.Name
-						rel.role2 = conn.Role
-						if conn.Url == c.person2 {
-							c.result = append(v.relation, rel)
-							return
-						}
-						c.rw.Lock()
-						c.connected[conn.Url] = true
-						c.rw.Unlock()
+						rel := relation{movie.Name, poi.Name, movie.Role, conn.Name, conn.Role}
+
 						c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
 					}
 				}(movie)
@@ -194,31 +155,27 @@ func (c *Connection) findRelationShip() error {
 			}
 		}(v)
 	}
-	fmt.Println("Waiting")
+
 	c.wg.Wait()
 	return nil
 }
 
-func (c *Connection) getPeopleToExplore(cast []credit) bool {
-	return false
-}
-func (c *Connection) GetRelationship() ([]relation, error) {
+func (c *Connection) GetRelationship() error {
 	if c.person1 == c.person2 {
 		//0 degree Separation
 		c.finish <- true
-		return nil, nil
+		return nil
 	}
 
 	//get details of both person
-
 	p1Details, err := c.fetchData(c.person1)
 	if err != nil {
-		return nil, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
+		return errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
 	}
 
 	p2Details, err := c.fetchData(c.person2)
 	if err != nil {
-		return nil, errors.New("error in retrieving address " + c.bucketAddr + c.person2 + "\n" + err.Error())
+		return errors.New("error in retrieving address " + c.bucketAddr + c.person2 + "\n" + err.Error())
 	}
 
 	if len(p1Details.Movies) > len(p2Details.Movies) {
@@ -242,15 +199,14 @@ func (c *Connection) GetRelationship() ([]relation, error) {
 
 	for {
 		err := c.findRelationShip()
-		if err != nil || c.result != nil {
-			return c.result, err
+		if err != nil {
+			return err
 		}
 	}
 }
 
 //fetchData retrieve the data of a person or movie from the s3 bucket
 func (c *Connection) fetchData(url string) (*Details, error) {
-	//t1 := time.Now()
 	//fetch the data
 	c.rl.Wait()
 	rs, err := http.Get(c.bucketAddr + url)
@@ -258,22 +214,17 @@ func (c *Connection) fetchData(url string) (*Details, error) {
 		fmt.Println("error in retrieving address " + c.bucketAddr + url + "\n" + err.Error())
 		return nil, err
 	}
-	//fmt.Println("Fetch :: ", time.Since(t1), url)
 
-	//t2 := time.Now()
 	//read body of the data
 	data, err := ioutil.ReadAll(rs.Body)
 	if err != nil {
 		return nil, err
 	}
-	//fmt.Println("read :: ", time.Since(t2))
-	//t3 := time.Now()
+
 	var detail Details
 	err = json.Unmarshal(data, &detail)
 	if err != nil {
 		return nil, err
 	}
-	//fmt.Println("unmarshel :: ", time.Since(t3))
-
 	return &detail, nil
 }
