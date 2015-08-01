@@ -21,10 +21,12 @@ import (
 	"os"
 	"runtime"
 	"time"
+
+	"github.com/davecheney/profile"
 )
 
 func main() {
-	profile.
+	defer profile.Start(profile.CPUProfile).Stop()
 
 	//check if argument is passed correctly
 	if len(os.Args) != 3 {

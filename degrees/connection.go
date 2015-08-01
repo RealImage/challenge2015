@@ -17,8 +17,10 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 type Connection struct {
@@ -130,23 +132,28 @@ func (c *Connection) GetRelationship() ([]relation, error) {
 
 //fetchData retrieve the data of a person or movie from the s3 bucket
 func (c *Connection) fetchData(url string) (*Details, error) {
+	t1 := time.Now()
 	//fetch the data
 	rs, err := http.Get(c.bucketAddr + url)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("Fetch :: ", time.Since(t1))
 
+	t2 = time.Now()
 	//read body of the data
 	data, err := ioutil.ReadAll(rs.Body)
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("read :: ", time.Since(t2))
+	t3 = time.Now()
 	var detail Details
 	err = json.Unmarshal(data, &detail)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Println("unmarshel :: ", time.Since(t3))
 
 	return &detail, nil
 }
