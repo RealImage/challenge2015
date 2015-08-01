@@ -77,10 +77,16 @@ func (c *Connection) findRelationShip() error {
 			}
 
 			for _, movie := range poi.Movies {
-				if c.connected[movie.Url] {
+				c.rw.RLock()
+				ok := c.connected[movie.Url]
+				c.rw.RUnlock()
+
+				if ok {
 					continue
 				}
+				c.rw.Lock()
 				c.connected[movie.Url] = true
+				c.rw.Unlock()
 				c.wg.Add(1)
 				go func(movie credit) {
 					defer c.wg.Done()
@@ -92,7 +98,10 @@ func (c *Connection) findRelationShip() error {
 					}
 
 					for _, conn := range cnc.Cast {
-						if c.connected[conn.Url] {
+						c.rw.RLock()
+						ok := c.connected[conn.Url]
+						c.rw.RUnlock()
+						if ok {
 							continue
 						}
 						//new connection
@@ -106,12 +115,17 @@ func (c *Connection) findRelationShip() error {
 							c.result = append(v.relation, rel)
 							return
 						}
+						c.rw.Lock()
 						c.connected[conn.Url] = true
+						c.rw.Unlock()
 						c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
 					}
 
 					for _, conn := range cnc.Crew {
-						if c.connected[conn.Url] {
+						c.rw.RLock()
+						ok := c.connected[conn.Url]
+						c.rw.RUnlock()
+						if ok {
 							continue
 						}
 						//new connection
@@ -125,7 +139,9 @@ func (c *Connection) findRelationShip() error {
 							c.result = append(v.relation, rel)
 							return
 						}
+						c.rw.Lock()
 						c.connected[conn.Url] = true
+						c.rw.Unlock()
 						c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
 					}
 				}(movie)
