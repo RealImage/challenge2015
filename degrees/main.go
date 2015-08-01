@@ -57,9 +57,7 @@ func main() {
 				log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
 			}
 		}()
-		<-connection.finish
-
-		printResult(connection.result, t1)
+		printResult(<-connection.finish, t1)
 	}
 }
 

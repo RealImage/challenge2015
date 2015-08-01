@@ -42,8 +42,7 @@ type Connection struct {
 	person2Detail    *Details
 	urlToExplore     []url
 	urlBeingExplored []url
-	result           []relation
-	finish           chan bool
+	finish           chan []relation
 	rw               sync.RWMutex
 	wg               sync.WaitGroup
 	rl               *rate.RateLimiter
@@ -56,7 +55,7 @@ func (c *Connection) Initialize(person1 string, person2 string, bucketAddr strin
 	c.connected = make(map[string]bool)
 	c.person2Mv = make(map[string]bool)
 	c.rl = rate.New(100, time.Second) // 200 times per second
-	c.finish = make(chan bool)
+	c.finish = make(chan []relation)
 	return nil
 }
 
@@ -69,9 +68,9 @@ func (c *Connection) foundMovie(url url, movie credit, name string) {
 		}
 	}
 	rel := relation{movie.Name, name, movie.Role, c.person2, cred.Role}
-	c.result = append(url.relation, rel)
-	c.finish <- true
+	c.finish <- append(url.relation, rel)
 }
+
 func (c *Connection) isExplored(url string) bool {
 	c.rw.RLock()
 	ok := c.connected[url]
@@ -163,7 +162,7 @@ func (c *Connection) findRelationShip() error {
 func (c *Connection) GetRelationship() error {
 	if c.person1 == c.person2 {
 		//0 degree Separation
-		c.finish <- true
+		c.finish <- nil
 		return nil
 	}
 
