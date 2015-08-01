@@ -51,13 +51,16 @@ func main() {
 
 		t1 := time.Now()
 		//Get relationship
-		relations, err := connection.GetRelationship()
-		if err != nil {
-			log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
-		}
-		fmt.Println("Time Taken: ", time.Since(t1), connection.count)
+		go func() {
+			relations, err := connection.GetRelationship()
+			if err != nil {
+				log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
+			}
+			printResult(relations, t1)
+		}()
+		<-connection.finish
 
-		printResult(relations)
+		printResult(connection.result, t1)
 	}
 }
 
@@ -85,10 +88,12 @@ func processConfig() (*conf, error) {
 }
 
 //printResult prints the output in desired format
-func printResult(relations []relation) {
+func printResult(relations []relation, t1 time.Time) {
+	fmt.Println("Time Taken: ", time.Since(t1))
 	//display the output
 	fmt.Println("\nDegree of saperation: ", len(relations))
 	for i, relation := range relations {
 		fmt.Printf("\n%d. Movie: %s\n%s: %s\n%s: %s\n", i+1, relation.movie, relation.role1, relation.person1, relation.role2, relation.person2)
 	}
+
 }
