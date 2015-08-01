@@ -1,5 +1,5 @@
 {
-	"cpu_core":1,
+	"cpu_core":4,
 	"bucket_address":"http://data.moviebuff.com/"
 }
 

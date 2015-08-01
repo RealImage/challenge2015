@@ -17,8 +17,11 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
+	"sync"
+	"time"
 )
 
 const (
@@ -36,6 +39,9 @@ type Connection struct {
 	urlToExplore     []url
 	urlBeingExplored []url
 	result           []relation
+	count            int
+	rw               sync.RWMutex
+	wg               sync.WaitGroup
 }
 
 func (c *Connection) Initialize(person1 string, person2 string, bucketAddr string) error {
@@ -46,79 +52,89 @@ func (c *Connection) Initialize(person1 string, person2 string, bucketAddr strin
 	return nil
 }
 
-func (c *Connection) findRelationShip() (bool, error) {
+func (c *Connection) findRelationShip() error {
 	//swap urlToExplore and urlExplored
 	temp := c.urlBeingExplored
 	c.urlBeingExplored = c.urlToExplore
 	c.urlToExplore = temp
 	//if there is no url to be searched next
 	//then that mean no connection possible
+	fmt.Println("dbbndfbndflbkndfkbndfb", len(c.urlBeingExplored))
 	if len(c.urlBeingExplored) == 0 {
-		return false, errors.New("Given celebrities are not connected")
+		return errors.New("Given celebrities are not connected")
 	}
 
 	for _, v := range c.urlBeingExplored {
+		c.wg.Add(1)
 		//for each entry get people they are connected to
 		//get all the movie of this person
-		poi, err := c.fetchData(v.url)
-		if err != nil {
-			//return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
-			continue
-		}
-		for _, movie := range poi.Movies {
-			if c.connected[movie.Url] {
-				continue
-			}
-			c.connected[movie.Url] = true
-
-			//for each movies checkout the cast and crew
-			cnc, err := c.fetchData(movie.Url)
+		go func(v url) {
+			defer c.wg.Done()
+			poi, err := c.fetchData(v.url)
 			if err != nil {
 				//return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
-				continue
+				return
 			}
 
-			for _, conn := range cnc.Cast {
-				if c.connected[conn.Url] {
+			for _, movie := range poi.Movies {
+				if c.connected[movie.Url] {
 					continue
 				}
-				//new connection
-				var rel relation
-				rel.movie = movie.Name
-				rel.person1 = poi.Name
-				rel.role1 = movie.Role
-				rel.person2 = conn.Name
-				rel.role2 = conn.Role
-				if conn.Url == c.person2 {
-					c.result = append(v.relation, rel)
-					return true, nil
-				}
-				c.connected[conn.Url] = true
-				c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
-			}
+				c.connected[movie.Url] = true
+				c.wg.Add(1)
+				go func(movie credit) {
+					defer c.wg.Done()
+					//for each movies checkout the cast and crew
+					cnc, err := c.fetchData(movie.Url)
+					if err != nil {
+						//return false, errors.New("error in retrieving address " + c.bucketAddr + c.person1 + "\n" + err.Error())
+						return
+					}
 
-			for _, conn := range cnc.Crew {
-				if c.connected[conn.Url] {
-					continue
-				}
-				//new connection
-				var rel relation
-				rel.movie = movie.Name
-				rel.person1 = poi.Name
-				rel.role1 = movie.Role
-				rel.person2 = conn.Name
-				rel.role2 = conn.Role
-				if conn.Url == c.person2 {
-					c.result = append(v.relation, rel)
-					return true, nil
-				}
-				c.connected[conn.Url] = true
-				c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
-			}
-		}
+					for _, conn := range cnc.Cast {
+						if c.connected[conn.Url] {
+							continue
+						}
+						//new connection
+						var rel relation
+						rel.movie = movie.Name
+						rel.person1 = poi.Name
+						rel.role1 = movie.Role
+						rel.person2 = conn.Name
+						rel.role2 = conn.Role
+						if conn.Url == c.person2 {
+							c.result = append(v.relation, rel)
+							return
+						}
+						c.connected[conn.Url] = true
+						c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
+					}
 
+					for _, conn := range cnc.Crew {
+						if c.connected[conn.Url] {
+							continue
+						}
+						//new connection
+						var rel relation
+						rel.movie = movie.Name
+						rel.person1 = poi.Name
+						rel.role1 = movie.Role
+						rel.person2 = conn.Name
+						rel.role2 = conn.Role
+						if conn.Url == c.person2 {
+							c.result = append(v.relation, rel)
+							return
+						}
+						c.connected[conn.Url] = true
+						c.urlToExplore = append(c.urlToExplore, url{conn.Url, append(v.relation, rel)})
+					}
+				}(movie)
+
+			}
+		}(v)
 	}
-	return false, nil
+	c.wg.Wait()
+	return nil
 }
 
 func (c *Connection) GetRelationship() ([]relation, error) {
@@ -148,8 +164,8 @@ func (c *Connection) GetRelationship() ([]relation, error) {
 	c.connected[c.person1] = true
 
 	for {
-		ok, err := c.findRelationShip()
-		if err != nil || ok {
+		err := c.findRelationShip()
+		if err != nil || c.result != nil {
 			return c.result, err
 		}
 	}
@@ -157,22 +173,24 @@ func (c *Connection) GetRelationship() ([]relation, error) {
 
 //fetchData retrieve the data of a person or movie from the s3 bucket
 func (c *Connection) fetchData(url string) (*Details, error) {
-	//t1 := time.Now()
+	t1 := time.Now()
 	//fetch the data
+	c.count++
 	rs, err := http.Get(c.bucketAddr + url)
 	if err != nil {
+		fmt.Println("error in retrieving address " + c.bucketAddr + url + "\n" + err.Error())
 		return nil, err
 	}
-	//fmt.Println("Fetch :: ", time.Since(t1))
+	fmt.Println("Fetch :: ", time.Since(t1), url)
 
-	//t2 = time.Now()
+	//t2 := time.Now()
 	//read body of the data
 	data, err := ioutil.ReadAll(rs.Body)
 	if err != nil {
 		return nil, err
 	}
 	//fmt.Println("read :: ", time.Since(t2))
-	//t3 = time.Now()
+	//t3 := time.Now()
 	var detail Details
 	err = json.Unmarshal(data, &detail)
 	if err != nil {

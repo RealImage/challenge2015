@@ -55,7 +55,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
 		}
-		fmt.Println("Time Taken: ", time.Since(t1))
+		fmt.Println("Time Taken: ", time.Since(t1), connection.count)
 
 		printResult(relations)
 	}
