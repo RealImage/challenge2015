@@ -1,6 +1,7 @@
 {
 	"cpu_core":4,
 	"bucket_address":"http://data.moviebuff.com/",
-	"rate-limit":150
+	"rate-limit":100,
+	"connection-retry-count":10
 }
 

@@ -22,6 +22,8 @@ import (
 	"runtime"
 	"strings"
 	"time"
+
+	"gophercon/moviebuff"
 )
 
 func main() {
@@ -43,7 +45,7 @@ func main() {
 		}
 
 		//initialize the connection
-		var connection Connection
+		var connection moviebuff.Connection
 		err = connection.Initialize(src, dest, config)
 		if err != nil {
 			log.Fatalln(err.Error())
@@ -60,7 +62,7 @@ func main() {
 }
 
 //parse configuration file
-func processConfig() (*conf, error) {
+func processConfig() (*moviebuff.Conf, error) {
 	//read config file
 	data, err := ioutil.ReadFile("conf.json")
 	if err != nil {
@@ -68,7 +70,7 @@ func processConfig() (*conf, error) {
 	}
 
 	//unmarshel data
-	var config conf
+	var config moviebuff.Conf
 	err = json.Unmarshal(data, &config)
 	if err != nil {
 		return nil, err
@@ -84,12 +86,11 @@ func processConfig() (*conf, error) {
 }
 
 //printResult prints the output in desired format
-func printResult(relations []relation, t1 time.Time) {
+func printResult(relations []moviebuff.Relation, t1 time.Time) {
 	fmt.Println("Time Taken: ", time.Since(t1))
 	//display the output
 	fmt.Println("\nDegree of saperation: ", len(relations))
 	for i, relation := range relations {
-		fmt.Printf("\n%d. Movie: %s\n%s: %s\n%s: %s\n", i+1, relation.movie, relation.role1, relation.person1, relation.role2, relation.person2)
+		fmt.Printf("\n%d. Movie: %s\n%s: %s\n%s: %s\n", i+1, relation.Movie, relation.Role1, relation.Person1, relation.Role2, relation.Person2)
 	}
-
 }

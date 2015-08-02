@@ -2,22 +2,23 @@
 Purpose 	  : this file contains the struct used
 				in parsing the jsons
 File Name	  : main.go
-Package		  : main
+Package		  : moviebuff
 Date 		  : 01.08.2015
 Author 		  : Mayank Patel
 Date		Name		Modification
 */
 
-//Degrees project main.go
+// moviebuff project moviebuff.go
 //this project get the degree of connection between
 //two celebrity and tells how they are connected
-package main
+package moviebuff
 
 //conf is used to parse the configuration type
-type conf struct {
-	NumCPU  int    `json:"cpu_core"`
-	Address string `json:"bucket_address"`
-	Limit   int    `json:"rate-limit"`
+type Conf struct {
+	NumCPU     int    `json:"cpu_core"`
+	Address    string `json:"bucket_address"`
+	Limit      int    `json:"rate-limit"`
+	RetryCount int    `json:"connection-retry-count"`
 }
 
 //job store the job done by a person in a movie
@@ -40,15 +41,15 @@ type details struct {
 
 type person struct {
 	url      string
-	relation []relation
+	relation []Relation
 }
 
-//relation describe how two person are connected
+//Relation describe how two person are connected
 //to each other
-type relation struct {
-	movie   string
-	person1 string
-	role1   string
-	person2 string
-	role2   string
+type Relation struct {
+	Movie   string
+	Person1 string
+	Role1   string
+	Person2 string
+	Role2   string
 }
