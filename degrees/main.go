@@ -44,20 +44,18 @@ func main() {
 
 		//initialize the connection
 		var connection Connection
-		err = connection.Initialize(src, dest, config.Address)
+		err = connection.Initialize(src, dest, config)
 		if err != nil {
 			log.Fatalln(err.Error())
 		}
 
 		t1 := time.Now()
-		//Get relationship
-		go func() {
-			err := connection.GetRelationship()
-			if err != nil {
-				log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
-			}
-		}()
-		printResult(<-connection.finish, t1)
+		result, err := connection.GetConnection()
+		if err != nil {
+			log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
+		}
+		//wait for the results
+		printResult(result, t1)
 	}
 }
 
@@ -76,10 +74,11 @@ func processConfig() (*conf, error) {
 		return nil, err
 	}
 
-	if config.NumCPU != 0 {
+	//set the maximum number of process to be used
+	if config.NumCPU > 0 {
 		runtime.GOMAXPROCS(config.NumCPU)
 	} else {
-		runtime.GOMAXPROCS(runtime.NumCPU() / 2)
+		runtime.GOMAXPROCS(runtime.NumCPU())
 	}
 	return &config, nil
 }

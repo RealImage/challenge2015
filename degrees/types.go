@@ -17,6 +17,7 @@ package main
 type conf struct {
 	NumCPU  int    `json:"cpu_core"`
 	Address string `json:"bucket_address"`
+	Limit   int    `json:"rate-limit"`
 }
 
 //job store the job done by a person in a movie
@@ -28,7 +29,7 @@ type credit struct {
 
 //url detail contain the information of one entity
 //(movie or actor)
-type Details struct {
+type details struct {
 	Url    string   `json:"url"`
 	Typ    string   `json:"type"`
 	Name   string   `json:"name"`
@@ -37,7 +38,7 @@ type Details struct {
 	Crew   []credit `json:"crew"`
 }
 
-type url struct {
+type person struct {
 	url      string
 	relation []relation
 }
