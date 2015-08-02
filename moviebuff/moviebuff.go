@@ -233,7 +233,7 @@ func (c *Connection) fetchData(url string) (*details, error) {
 	rs, err := http.Get(c.config.Address + url)
 	if err != nil {
 		for i := 0; i < c.config.RetryCount; i++ {
-			fmt.Println("trying again Error: ", i, err.Error())
+			//fmt.Println("trying again Error: ", i, err.Error())
 			c.rl.Wait()
 			rs, err = http.Get(c.config.Address + url)
 			if err == nil {
