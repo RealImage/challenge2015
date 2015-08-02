@@ -21,6 +21,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"strings"
 	"sync"
 	"time"
 
@@ -51,6 +52,7 @@ type Connection struct {
 	rw               sync.RWMutex      //mutax for connected map
 	wg               sync.WaitGroup    //wait group to synchronize the go routine
 	rl               *rate.RateLimiter //rate limiter
+	rp               sync.Mutex
 }
 
 //Initialize initialized the connection struct.
@@ -171,7 +173,7 @@ func (c *Connection) findRelationShip() error {
 							cred = v
 						}
 					}
-					rel := Relation{movie.Name, poi.Name, movie.Role, c.person2, cred.Role}
+					rel := Relation{movie.Name, poi.Name, movie.Role, c.p2Detail.Name, cred.Role}
 
 					//search complete. finish the program
 					c.finish <- append(p.relation, rel)
@@ -231,10 +233,16 @@ func (c *Connection) fetchData(url string) (*details, error) {
 	rs, err := http.Get(c.config.Address + url)
 	if err != nil {
 		for i := 0; i < c.config.RetryCount; i++ {
-			time.Sleep(time.Second)
+			fmt.Println("trying again Error: ", i, err.Error())
+			c.rl.Wait()
 			rs, err = http.Get(c.config.Address + url)
 			if err == nil {
 				break
+			}
+			if strings.Contains(err.Error(), "too many open files") {
+				for j := 0; j < c.config.Limit/4; j++ {
+					c.rl.Wait()
+				}
 			}
 		}
 		if err != nil {
@@ -242,6 +250,7 @@ func (c *Connection) fetchData(url string) (*details, error) {
 			return nil, err
 		}
 	}
+	defer rs.Body.Close()
 
 	//read body of the data
 	data, err := ioutil.ReadAll(rs.Body)
