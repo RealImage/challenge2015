@@ -1,29 +1,37 @@
 #Setup :
 
 1. Open terminal and set the gopath (just above gophercon)
+
 	example - export GOPATH=/home/mypc/work/projects/gopath/
 
 2. Make sure limit of open files is high enough (>50000) for better performance.
-ubuntu os: http://askubuntu.com/questions/162229/how-do-i-increase-the-open-files-limit-for-a-non-root-user
+
+	ubuntu os: http://askubuntu.com/questions/162229/how-do-i-increase-the-open-files-limit-for-a-non-root-user
 
 3. Make sure you have fast internet access for better performance.
 
 #Building the application
 
 1. Go inside degree directory
+
 	example - cd /home/mypc/work/projects/gopath/src/gophercon/degrees
 
 2. build and install
+
 	go get
+
 	go build
+
 	go install
 
 3. run the application
+
 	USASE :: degrees <first-person-name><space><second-person-name>
 		Example :: degrees amitabh-bachchan robert-de-niro
 
 #NOTE :
-1.If you get any tcp error then decrease the rate-count value in the config file conf.json.
+
+1. If you get any tcp error then decrease the rate-count value in the config file conf.json.
 
 #Examples
 ```
