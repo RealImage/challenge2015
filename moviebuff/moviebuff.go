@@ -36,6 +36,7 @@ const (
 	notConnectedErr = "Given celebrities are not connected"
 	addrNilErr      = "Address cannot be empty"
 	notPersonErr    = "Not a person: "
+	usrNotExistErr  = " does not exists"
 )
 
 //Connection struct is used to find out the
@@ -98,7 +99,7 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 	//get details of both person
 	p1Details, err := c.fetchData(c.person1)
 	if err != nil {
-		return nil, err
+		return nil, errors.New(c.person1 + usrNotExistErr)
 	}
 	if p1Details.Typ != "Person" {
 		return nil, errors.New(notPersonErr + c.person1)
@@ -106,7 +107,7 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 
 	p2Details, err := c.fetchData(c.person2)
 	if err != nil {
-		return nil, err
+		return nil, errors.New(c.person2 + usrNotExistErr)
 	}
 
 	if p1Details.Typ != "Person" {
@@ -240,6 +241,7 @@ func (c *Connection) fetchData(url string) (*details, error) {
 	c.rl.Wait()
 	rs, err := http.Get(c.config.Address + url)
 	if err != nil {
+		fmt.Println(err)
 		for i := 0; i < c.config.RetryCount; i++ {
 			//fmt.Println("trying again Error: ", i, err.Error())
 			c.rl.Wait()
