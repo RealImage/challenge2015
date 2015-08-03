@@ -1,7 +1,7 @@
 /*
 Purpose 	  : this file contains the struct used
 				in parsing the jsons
-File Name	  : main.go
+File Name	  : types.go
 Package		  : moviebuff
 Date 		  : 01.08.2015
 Author 		  : Mayank Patel

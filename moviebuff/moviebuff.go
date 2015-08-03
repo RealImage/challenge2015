@@ -2,7 +2,7 @@
 Purpose 	  : this file contain the functions
 				that helps calculate the degree
 				of connection between two celebrity
-File Name	  : connection.go
+File Name	  : moviebuff.go
 Package		  : moviebuff
 Date 		  : 01.08.2015
 Author 		  : Mayank Patel
@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"net"
 	"net/http"
 	"strings"
 	"sync"
@@ -30,13 +31,14 @@ import (
 
 //constants for errors
 const (
+	serverDownErr   = " Server is down or does not exist"
+	notPersonErr    = "Not a person: "
+	usrNotExistErr  = "does not exists: "
 	retrieveErr     = "Error in fetching address "
 	readErr         = "Error in reading the body of http responce; Error: "
 	unmarshalErr    = "Error in unmarshaling the url details; Error: "
 	notConnectedErr = "Given celebrities are not connected"
 	addrNilErr      = "Address cannot be empty"
-	notPersonErr    = "Not a person: "
-	usrNotExistErr  = " does not exists"
 )
 
 //Connection struct is used to find out the
@@ -54,7 +56,6 @@ type Connection struct {
 	rw               sync.RWMutex      //mutax for connected map
 	wg               sync.WaitGroup    //wait group to synchronize the go routine
 	rl               *rate.RateLimiter //rate limiter
-	rp               sync.Mutex
 }
 
 //Initialize initialized the connection struct.
@@ -64,6 +65,11 @@ func (c *Connection) Initialize(person1 string, person2 string, config *Conf) er
 	c.person2 = person2
 
 	if config.Address != "" {
+		//check if address is valid
+		_, err := net.DialTimeout("tcp", config.Address, time.Second)
+		if err != nil {
+			return errors.New(config.Address + serverDownErr)
+		}
 		c.config = config
 	} else {
 		return errors.New(addrNilErr)
@@ -99,7 +105,7 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 	//get details of both person
 	p1Details, err := c.fetchData(c.person1)
 	if err != nil {
-		return nil, errors.New(c.person1 + usrNotExistErr)
+		return nil, errors.New(usrNotExistErr + c.person1)
 	}
 	if p1Details.Typ != "Person" {
 		return nil, errors.New(notPersonErr + c.person1)
