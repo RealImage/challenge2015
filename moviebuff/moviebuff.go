@@ -66,7 +66,7 @@ func (c *Connection) Initialize(person1 string, person2 string, config *Conf) er
 
 	if config.Address != "" {
 		//check if address is valid
-		_, err := net.DialTimeout("tcp", strings.TrimRight(strings.TrimRight(config.Address, "/"), `http\://`)+":80", time.Second)
+		_, err := net.DialTimeout("tcp", strings.TrimLeft(strings.TrimRight(config.Address, "/"), `http://`)+":80", time.Second)
 		if err != nil {
 			return errors.New(config.Address + serverDownErr + err.Error())
 		}
