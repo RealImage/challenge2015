@@ -17,7 +17,6 @@ package moviebuff
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"log"
 	"net"
@@ -61,27 +60,21 @@ type Connection struct {
 //Initialize initialized the connection struct.
 //It takes person 1 and 2 url and configuration
 func (c *Connection) Initialize(person1 string, person2 string, config *Conf) error {
-	c.person1 = person1
-	c.person2 = person2
-
-	if config.Address != "" {
-		//check if address is valid
-		_, err := net.DialTimeout("tcp", strings.TrimLeft(strings.TrimRight(config.Address, "/"), `http://`)+":80", time.Second)
-		if err != nil {
-			return errors.New(config.Address + serverDownErr + err.Error())
-		}
-		c.config = config
-	} else {
+	if config.Address == "" {
 		return errors.New(addrNilErr)
 	}
+
+	//check if address is valid
+	_, err := net.DialTimeout("tcp", strings.TrimLeft(strings.TrimRight(config.Address, "/"), `http://`)+":80", time.Second)
+	if err != nil {
+		return errors.New(config.Address + serverDownErr + err.Error())
+	}
+	c.config = config
 
 	if config.RetryCount <= 0 {
 		log.Println("Invalid connection-retry-count in the configuration file.")
 		c.config.RetryCount = 10
 	}
-
-	c.connected = make(map[string]bool)
-	c.p2Mv = make(map[string]bool)
 
 	if config.Limit > 0 {
 		c.rl = rate.New(config.Limit, time.Second) // config.Limit times per second
@@ -90,7 +83,9 @@ func (c *Connection) Initialize(person1 string, person2 string, config *Conf) er
 		c.rl = rate.New(150, time.Second) //150 times per second
 	}
 
-	c.finish = make(chan []Relation)
+	c.connected, c.p2Mv, c.finish = make(map[string]bool), make(map[string]bool), make(chan []Relation)
+	c.person1, c.person2 = person1, person2
+
 	return nil
 }
 
@@ -122,9 +117,7 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 
 	//start the search from person who have done less movie
 	if len(p1Details.Movies) > len(p2Details.Movies) {
-		temp := c.person1
-		c.person1 = c.person2
-		c.person2 = temp
+		c.person1, c.person2 = c.person2, c.person1
 		for _, v := range p1Details.Movies {
 			c.p2Mv[v.Url] = true
 		}
@@ -136,6 +129,7 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 		}
 		c.p2Detail = p2Details
 	}
+
 	c.urlToExplore = append(c.urlToExplore, person{c.person1, nil})
 	c.connected[c.person1] = true
 	go func() {
@@ -152,24 +146,20 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 
 //findRelationShip calculate the relationship between person1 and person2
 func (c *Connection) findRelationShip() error {
-
-	//swap urlToExplore and urlExplored
-	temp := c.urlBeingExplored
-	c.urlBeingExplored = c.urlToExplore
-	c.urlToExplore = temp
-
 	//if there is no url to be searched next
 	//then that mean no connection possible
-	if len(c.urlBeingExplored) == 0 {
+	if len(c.urlToExplore) == 0 {
 		return errors.New(notConnectedErr)
 	}
 
+	//swap urlToExplore and urlExplored
+	c.urlBeingExplored, c.urlToExplore = c.urlToExplore, c.urlBeingExplored
+
 	//explore all the person to be explored in this depth
+	c.wg.Add(len(c.urlBeingExplored))
 	for _, persn := range c.urlBeingExplored {
-		c.wg.Add(1)
 		go func(p person) {
 			defer c.wg.Done()
-
 			//get all the details of this person of interest
 			poi, err := c.fetchData(p.url)
 			if err != nil {
@@ -242,12 +232,10 @@ func (c *Connection) findRelationShip() error {
 
 //fetchData retrieve the data of a person or movie from the s3 bucket
 func (c *Connection) fetchData(url string) (*details, error) {
-
 	//fetch the data
 	c.rl.Wait()
 	rs, err := http.Get(c.config.Address + url)
 	if err != nil {
-		fmt.Println(err)
 		for i := 0; i < c.config.RetryCount; i++ {
 			//fmt.Println("trying again Error: ", i, err.Error())
 			c.rl.Wait()
@@ -256,13 +244,14 @@ func (c *Connection) fetchData(url string) (*details, error) {
 				break
 			}
 			if strings.Contains(err.Error(), "too many open files") {
+				//throttle the access to fetch data to cool down a bit
 				for j := 0; j < c.config.Limit/4; j++ {
 					c.rl.Wait()
 				}
 			}
 		}
 		if err != nil {
-			fmt.Println(retrieveErr + c.config.Address + url + "\n" + err.Error())
+			log.Println(retrieveErr + c.config.Address + url + "\n" + err.Error())
 			return nil, err
 		}
 	}

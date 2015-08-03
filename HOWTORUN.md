@@ -26,8 +26,9 @@
 
 3. run the application
 
-	USASE :: degrees <first-person-name><space><second-person-name>
-		Example :: degrees amitabh-bachchan robert-de-niro
+	USASE: degrees <first-person-name><space><second-person-name>
+
+	Example: degrees amitabh-bachchan robert-de-niro
 
 #NOTE :
 
