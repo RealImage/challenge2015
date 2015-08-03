@@ -66,9 +66,9 @@ func (c *Connection) Initialize(person1 string, person2 string, config *Conf) er
 
 	if config.Address != "" {
 		//check if address is valid
-		_, err := net.DialTimeout("tcp", config.Address, time.Second)
+		_, err := net.DialTimeout("tcp", strings.TrimRight(config.Address, "/")+":80", time.Second)
 		if err != nil {
-			return errors.New(config.Address + serverDownErr)
+			return errors.New(config.Address + serverDownErr + err.Error())
 		}
 		c.config = config
 	} else {
@@ -245,7 +245,7 @@ func (c *Connection) fetchData(url string) (*details, error) {
 
 	//fetch the data
 	c.rl.Wait()
-	rs, err := http.Get(c.config.Address + url)
+	rs, err := http.Get("http://" + c.config.Address + url)
 	if err != nil {
 		fmt.Println(err)
 		for i := 0; i < c.config.RetryCount; i++ {
