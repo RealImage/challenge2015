@@ -35,6 +35,7 @@ const (
 	unmarshalErr    = "Error in unmarshaling the url details; Error: "
 	notConnectedErr = "Given celebrities are not connected"
 	addrNilErr      = "Address cannot be empty"
+	notPersonErr    = "Not a person: "
 )
 
 //Connection struct is used to find out the
@@ -99,10 +100,17 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 	if err != nil {
 		return nil, err
 	}
+	if p1Details.Typ != "Person" {
+		return nil, errors.New(notPersonErr + c.person1)
+	}
 
 	p2Details, err := c.fetchData(c.person2)
 	if err != nil {
 		return nil, err
+	}
+
+	if p1Details.Typ != "Person" {
+		return nil, errors.New(notPersonErr + c.person2)
 	}
 
 	//start the search from person who have done less movie
