@@ -1,3 +1,7 @@
+//Copyright 2014 Mahendra Kathirvel. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package main
 
 import (
@@ -30,6 +34,7 @@ type degree struct {
 	person2, role2 string
 }
 
+// Used to parse the moviebuff json response
 type info struct {
 	Name   string   `json:"name"`
 	Url    string   `json:"url"`
@@ -39,6 +44,7 @@ type info struct {
 	Crew   []credit `json:"crew"`
 }
 
+// Primary struct to hold the execution data
 type Moviebuff struct {
 	source        string
 	destination   string
@@ -51,6 +57,7 @@ type Moviebuff struct {
 	link          map[string]degree
 }
 
+// Moviebuff data url
 const source = "http://data.moviebuff.com/"
 
 var (
@@ -71,20 +78,24 @@ func main() {
 		log.Fatalln("\nDegree of seperation: 0")
 	}
 
+	// Init variable
 	buff.source, buff.destination = args[0], args[1]
 	buff.p2Movies, buff.visited, buff.link, buff.visitedPerson = make(map[string]movie), make(map[string]bool), make(map[string]degree), make(map[string]bool)
 
-	t := time.Now()
-
-	// Processing person data
+	// Processing person data to start the execution
 	if err := processPersonData(); err != nil {
 		log.Fatalln(err.Error())
 	}
 
+	t1 := time.Now()
+
+	// Find the relation between given person
 	degrees, err := findRelationship()
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
+
+	t2 := time.Now()
 
 	// Print the result
 	fmt.Printf("\nDegree of separation: %d\n\n", len(degrees))
@@ -92,8 +103,9 @@ func main() {
 		fmt.Printf("%d. Movie: %s\n   %s: %s\n   %s: %s\n\n", i+1, ln.movie, ln.role1, ln.person1, ln.role2, ln.person2)
 	}
 
+	// Optional stats
 	fmt.Println("Total request sent: ", totalRequest)
-	fmt.Println("Time taken: ", time.Since(t))
+	fmt.Println("Time taken: ", t2.Sub(t1))
 }
 
 // Process person data
@@ -106,15 +118,11 @@ func processPersonData() error {
 
 	for _, movie := range detail.Movies {
 		buff.p2Movies[movie.Url] = movie
-		//buff.match[movie.Url] = true
 	}
+
 	buff.person2 = detail
 	buff.visit = append(buff.visit, buff.source)
 	buff.visited[buff.source] = true
-
-	// no access to these url
-	//buff.visited["benaroya-pictures"] = true
-	//buff.visited["2929-productions"] = true
 
 	return nil
 }
@@ -134,7 +142,7 @@ func findRelationship() ([]degree, error) {
 
 			person1, err := fetchData(person)
 			if err != nil {
-				if strings.Contains(err.Error(), "invalid character '<' looking for beginning of value") {
+				if strings.Contains(err.Error(), "looking for beginning of value") {
 					continue
 				}
 				return nil, err
@@ -151,6 +159,7 @@ func findRelationship() ([]degree, error) {
 				}
 			}
 
+			// Find new nodes to continue searching
 			for _, p1movie := range person1.Movies {
 
 				if buff.visited[p1movie.Url] {
@@ -161,7 +170,7 @@ func findRelationship() ([]degree, error) {
 
 				p1moviedetail, err := fetchData(p1movie.Url)
 				if err != nil {
-					if strings.Contains(err.Error(), "invalid character '<' looking for beginning of value") {
+					if strings.Contains(err.Error(), "looking for beginning of value") {
 						continue
 					}
 					return nil, err
@@ -200,9 +209,10 @@ func findRelationship() ([]degree, error) {
 	return d, nil
 }
 
+// Fetch and parse the incoming json response
 func fetchData(url string) (*info, error) {
 
-	fmt.Println("REquest sent to: ", url)
+	fmt.Println("Request sent to: ", url)
 	// Throttle the data request
 	time.Sleep(100 * time.Millisecond)
 
