@@ -15,7 +15,13 @@ import (
 	"time"
 )
 
-type credit struct {
+type cast struct {
+	Name string `json:"name"`
+	Url  string `json:"url"`
+	Role string `json:"role"`
+}
+
+type crew struct {
 	Name string `json:"name"`
 	Url  string `json:"url"`
 	Role string `json:"role"`
@@ -28,7 +34,7 @@ type movie struct {
 	Role string `json:"role"`
 }
 
-type degree struct {
+type dos struct {
 	movie          string
 	person1, role1 string
 	person2, role2 string
@@ -36,12 +42,12 @@ type degree struct {
 
 // Used to parse the moviebuff json response
 type info struct {
-	Name   string   `json:"name"`
-	Url    string   `json:"url"`
-	Type   string   `json:"type"`
-	Movies []movie  `json:"movies"`
-	Cast   []credit `json:"cast"`
-	Crew   []credit `json:"crew"`
+	Name   string  `json:"name"`
+	Url    string  `json:"url"`
+	Type   string  `json:"type"`
+	Movies []movie `json:"movies"`
+	Cast   []cast  `json:"cast"`
+	Crew   []crew  `json:"crew"`
 }
 
 // Primary struct to hold the execution data
@@ -54,7 +60,7 @@ type Moviebuff struct {
 	visitedPerson map[string]bool
 	visit         []string
 	visited       map[string]bool
-	link          map[string]degree
+	link          map[string]dos
 }
 
 // Moviebuff data url
@@ -80,18 +86,17 @@ func main() {
 	}
 
 	// Init variable
-	buff.source, buff.destination = args[0], args[1]
-	buff.p2Movies, buff.visited, buff.link, buff.visitedPerson = make(map[string]movie), make(map[string]bool), make(map[string]degree), make(map[string]bool)
+	buff.p2Movies, buff.visited, buff.link, buff.visitedPerson = make(map[string]movie), make(map[string]bool), make(map[string]dos), make(map[string]bool)
 
 	// Processing person data to start the execution
-	if err := processPersonData(); err != nil {
+	if err := processPersonData(args[0], args[1]); err != nil {
 		log.Fatalln(err.Error())
 	}
 
 	t1 := time.Now()
 
 	// Find the relation between given person
-	degrees, err := findRelationship()
+	dos, err := findDos()
 	if err != nil {
 		log.Fatalln(err.Error())
 	}
@@ -99,29 +104,41 @@ func main() {
 	t2 := time.Now()
 
 	// Print the result
-	fmt.Printf("\nDegree of separation: %d\n\n", len(degrees))
-	for i, ln := range degrees {
-		fmt.Printf("%d. Movie: %s\n   %s: %s\n   %s: %s\n\n", i+1, ln.movie, ln.role1, ln.person1, ln.role2, ln.person2)
+	fmt.Printf("\nDegree of separation: %d\n\n", len(dos))
+	for i, d := range dos {
+		fmt.Printf("%d. Movie: %s\n   %s: %s\n   %s: %s\n\n", i+1, d.movie, d.role1, d.person1, d.role2, d.person2)
 	}
 
 	// Optional stats
-	fmt.Println("Total request sent: ", totalRequest)
+	fmt.Println("Total HTTP request sent: ", totalRequest)
 	fmt.Println("Time taken: ", t2.Sub(t1))
 }
 
 // Fetch and store the data in a global variable
-func processPersonData() error {
+func processPersonData(person1, person2 string) error {
 
-	detail, err := fetchData(buff.destination)
+	pn1, err := fetchData(person1)
 	if err != nil {
 		return err
 	}
 
-	for _, movie := range detail.Movies {
+	pn2, err := fetchData(person2)
+	if err != nil {
+		return err
+	}
+
+	if len(pn1.Movies) > len(pn2.Movies) {
+		buff.source, buff.destination = person2, person1
+		buff.person1, buff.person2 = pn2, pn1
+	} else {
+		buff.source, buff.destination = person1, person2
+		buff.person1, buff.person2 = pn1, pn2
+	}
+
+	for _, movie := range buff.person2.Movies {
 		buff.p2Movies[movie.Url] = movie
 	}
 
-	buff.person2 = detail
 	buff.visit = append(buff.visit, buff.source)
 	buff.visited[buff.source] = true
 
@@ -129,14 +146,17 @@ func processPersonData() error {
 }
 
 // Apply BFS to expore the each node
-func findRelationship() ([]degree, error) {
+func findDos() ([]dos, error) {
 
-	var d []degree
+	var d []dos
 	for true {
-		fmt.Printf("Visited Person: %v, %d\n\n", buff.visitedPerson, len(buff.visitedPerson))
+
+		//fmt.Printf("Visited Person: %v, %d\n\n", buff.visitedPerson, len(buff.visitedPerson))
+
 		for _, person := range buff.visit {
-			fmt.Printf("%s\n\n", person)
-			/*if buff.visitedPerson[person] {
+
+			/*fmt.Printf("%s\n\n", person)
+			if buff.visitedPerson[person] {
 				continue
 			}
 			buff.visitedPerson[person] = true
@@ -153,9 +173,9 @@ func findRelationship() ([]degree, error) {
 			for _, p1movie := range person1.Movies {
 				if buff.p2Movies[p1movie.Url].Url == p1movie.Url {
 					if _, found := buff.link[person1.Url]; found {
-						d = append(d, buff.link[person1.Url], degree{p1movie.Name, person1.Name, p1movie.Role, buff.person2.Name, buff.p2Movies[p1movie.Url].Role})
+						d = append(d, buff.link[person1.Url], dos{p1movie.Name, person1.Name, p1movie.Role, buff.person2.Name, buff.p2Movies[p1movie.Url].Role})
 					} else {
-						d = append(d, degree{p1movie.Name, person1.Name, p1movie.Role, buff.person2.Name, buff.p2Movies[p1movie.Url].Role})
+						d = append(d, dos{p1movie.Name, person1.Name, p1movie.Role, buff.person2.Name, buff.p2Movies[p1movie.Url].Role})
 					}
 					return d, nil
 				}
@@ -186,7 +206,7 @@ func findRelationship() ([]degree, error) {
 
 					buff.visited[p1moviecast.Url] = true
 					buff.visit = append(buff.visit, p1moviecast.Url)
-					buff.link[p1moviecast.Url] = degree{p1movie.Name, person1.Name, p1movie.Role, p1moviecast.Name, p1moviecast.Role}
+					buff.link[p1moviecast.Url] = dos{p1movie.Name, person1.Name, p1movie.Role, p1moviecast.Name, p1moviecast.Role}
 				}
 
 				for _, p1moviecrew := range p1moviedetail.Crew {
@@ -197,14 +217,14 @@ func findRelationship() ([]degree, error) {
 
 					buff.visited[p1moviecrew.Url] = true
 					buff.visit = append(buff.visit, p1moviecrew.Url)
-					buff.link[p1moviecrew.Url] = degree{p1movie.Name, person1.Name, p1movie.Role, p1moviecrew.Name, p1moviecrew.Role}
+					buff.link[p1moviecrew.Url] = dos{p1movie.Name, person1.Name, p1movie.Role, p1moviecrew.Name, p1moviecrew.Role}
 				}
 
 			}
 		}
 
-		fmt.Printf("Visit: %v, %d\n\n", buff.visit, len(buff.visit))
-		fmt.Printf("Visited: %v, %d\n\n", buff.visited, len(buff.visited))
+		//fmt.Printf("Visit: %v, %d\n\n", buff.visit, len(buff.visit))
+		//fmt.Printf("Visited: %v, %d\n\n", buff.visited, len(buff.visited))
 
 	}
 
@@ -214,8 +234,7 @@ func findRelationship() ([]degree, error) {
 // Fetch and parse the incoming json response
 func fetchData(url string) (*info, error) {
 
-	fmt.Println("Request sent to: ", url)
-	// Throttle the data request
+	// Throttle the data request rate
 	time.Sleep(100 * time.Millisecond)
 
 	resp, _ := http.Get(source + url)
