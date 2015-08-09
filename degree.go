@@ -1,4 +1,4 @@
-//Copyright 2014 Mahendra Kathirvel. All rights reserved.
+//Copyright 2015 Mahendra Kathirvel. All rights reserved.
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
@@ -60,6 +60,7 @@ type Moviebuff struct {
 // Moviebuff data url
 const source = "http://data.moviebuff.com/"
 
+// Global variables
 var (
 	buff         Moviebuff
 	totalRequest uint
@@ -108,7 +109,7 @@ func main() {
 	fmt.Println("Time taken: ", t2.Sub(t1))
 }
 
-// Process person data
+// Fetch and store the data in a global variable
 func processPersonData() error {
 
 	detail, err := fetchData(buff.destination)
@@ -131,14 +132,15 @@ func processPersonData() error {
 func findRelationship() ([]degree, error) {
 
 	var d []degree
-	for {
+	for true {
 		fmt.Printf("Visited Person: %v, %d\n\n", buff.visitedPerson, len(buff.visitedPerson))
 		for _, person := range buff.visit {
-
-			if buff.visitedPerson[person] {
+			fmt.Printf("%s\n\n", person)
+			/*if buff.visitedPerson[person] {
 				continue
 			}
 			buff.visitedPerson[person] = true
+			*/
 
 			person1, err := fetchData(person)
 			if err != nil {
