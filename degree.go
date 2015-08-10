@@ -13,6 +13,7 @@ import (
 	"os"
 	"strings"
 	"time"
+    "runtime"
 )
 
 type cast struct {
@@ -74,6 +75,7 @@ var (
 
 func main() {
 
+    runtime.GOMAXPROCS(runtime.NumCPU())
 	// Parsing arguments
 	args := os.Args[1:]
 
