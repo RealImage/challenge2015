@@ -1,6 +1,5 @@
 /*
-Purpose 	  : this file contain the functions
-				that helps calculate the degree
+Purpose 	  : this file contain the functions that helps calculate the degree
 				of connection between two celebrity
 File Name	  : moviebuff.go
 Package		  : moviebuff
@@ -9,9 +8,8 @@ Author 		  : Mayank Patel
 Date		Name		Modification
 */
 
-// moviebuff project moviebuff.go
-//this project get the degree of connection between
-//two celebrity and tells how they are connected
+//moviebuff the degree of connection between two celebrity and tells how they
+//are connected
 package moviebuff
 
 import (
@@ -40,25 +38,23 @@ const (
 	addrNilErr      = "Address cannot be empty"
 )
 
-//Connection struct is used to find out the
-//degree and relationship between two person
+//Connection struct is used to find out the degree and relationship between two
+//person
 type Connection struct {
-	person1          string            //person 1 url
-	person2          string            //person 2 url
-	config           *Conf             //configuration
-	connected        map[string]bool   //to store all already connected person and people
-	p2Mv             map[string]bool   //to store all the movie os person 2
-	p2Detail         *details          //person 2 detail
-	urlBeingExplored []person          //list of people being explored right now
-	urlToExplore     []person          //list of people to be explored in next iteration
-	finish           chan []Relation   //to receive final result from go routines
-	rw               sync.RWMutex      //mutax for connected map
-	wg               sync.WaitGroup    //wait group to synchronize the go routine
-	rl               *rate.RateLimiter //rate limiter
+	person1, person2               string            //person 1 and person 2 url
+	config                         *Conf             //configuration
+	connected                      map[string]bool   //to store all already connected person and movies
+	p2Mv                           map[string]bool   //to store all the movie os person 2
+	p2Detail                       *details          //person 2 detail
+	urlBeingExplored, urlToExplore []person          //list of people being explored right now and list of people to be explored in next iteration
+	finish                         chan []Relation   //to receive final result from go routines
+	rw                             sync.RWMutex      //mutax for connected map
+	wg                             sync.WaitGroup    //wait group to synchronize the go routine
+	rl                             *rate.RateLimiter //rate limiter
 }
 
-//Initialize initialized the connection struct.
-//It takes person 1 and 2 url and configuration
+//Initialize initialized the connection struct. It takes person 1 and 2 url and
+//configuration
 func (c *Connection) Initialize(person1 string, person2 string, config *Conf) error {
 	if config.Address == "" {
 		return errors.New(addrNilErr)
@@ -96,18 +92,19 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 		//0 degree Separation
 		return nil, nil
 	}
+	var p1Details, p2Details *details
+	var err error
 
 	//get details of both person
-	p1Details, err := c.fetchData(c.person1)
-	if err != nil {
+	if p1Details, err = c.fetchData(c.person1); err != nil {
 		return nil, errors.New(usrNotExistErr + c.person1)
 	}
+
 	if p1Details.Typ != "Person" {
 		return nil, errors.New(notPersonErr + c.person1)
 	}
 
-	p2Details, err := c.fetchData(c.person2)
-	if err != nil {
+	if p2Details, err = c.fetchData(c.person2); err != nil {
 		return nil, errors.New(c.person2 + usrNotExistErr)
 	}
 
@@ -197,8 +194,7 @@ func (c *Connection) findRelationShip() error {
 
 					//for each movies checkout the cast and crew
 					cnc, err := c.fetchData(movie.Url)
-					if err != nil {
-						//return false, errors.New("error in retrieving address " + c.config.Address + c.person1 + "\n" + err.Error())
+					if err != nil { //return false, errors.New("error in retrieving address " + c.config.Address + c.person1 + "\n" + err.Error())
 						return
 					}
 
@@ -231,16 +227,15 @@ func (c *Connection) findRelationShip() error {
 }
 
 //fetchData retrieve the data of a person or movie from the s3 bucket
-func (c *Connection) fetchData(url string) (*details, error) {
+func (c *Connection) fetchData(url string) (details *details, err error) {
 	//fetch the data
 	c.rl.Wait()
-	rs, err := http.Get(c.config.Address + url)
-	if err != nil {
+	var rs *http.Response
+	if rs, err = http.Get(c.config.Address + url); err != nil {
 		for i := 0; i < c.config.RetryCount; i++ {
 			//fmt.Println("trying again Error: ", i, err.Error())
 			c.rl.Wait()
-			rs, err = http.Get(c.config.Address + url)
-			if err == nil {
+			if rs, err = http.Get(c.config.Address + url); err == nil {
 				break
 			}
 			if strings.Contains(err.Error(), "too many open files") {
@@ -258,18 +253,16 @@ func (c *Connection) fetchData(url string) (*details, error) {
 	defer rs.Body.Close()
 
 	//read body of the data
-	data, err := ioutil.ReadAll(rs.Body)
-	if err != nil {
+	var data []byte
+	if data, err = ioutil.ReadAll(rs.Body); err != nil {
 		return nil, err
 	}
 
 	//unmarshal data into detail
-	var detail details
-	err = json.Unmarshal(data, &detail)
-	if err != nil {
+	if err = json.Unmarshal(data, &details); err != nil {
 		return nil, err
 	}
-	return &detail, nil
+	return details, nil
 }
 
 //isExplored checks if a given url is already explored.

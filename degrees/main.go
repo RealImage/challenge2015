@@ -56,7 +56,7 @@ func main() {
 		if err != nil {
 			log.Fatalf("Error in finding the degree of connection between %s and %s.\n Error :: %s", src, dest, err.Error())
 		}
-		//wait for the results
+		//print result
 		printResult(result, t1)
 	}
 }
