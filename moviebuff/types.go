@@ -47,9 +47,5 @@ type person struct {
 //Relation describe how two person are connected
 //to each other
 type Relation struct {
-	Movie   string
-	Person1 string
-	Role1   string
-	Person2 string
-	Role2   string
+	Movie, Person1, Role1, Person2, Role2 string
 }

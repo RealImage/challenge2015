@@ -28,7 +28,7 @@
 
 	USASE: degrees <first-person-name><space><second-person-name>
 
-	Example: degrees amitabh-bachchan robert-de-niro
+	Example: degrees Amitabh-Bachchan Robert-De-Niro
 
 #NOTE :
 
@@ -60,6 +60,7 @@ Actress: Kristen Wiig
 Supporting Actor: Gurdeep Singh
 
 2. Movie: Fateh
+
 Executive Producer: Gurdeep Singh
 Supporting Actress: Navneet Nishan
 

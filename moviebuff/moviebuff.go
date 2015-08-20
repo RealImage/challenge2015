@@ -51,6 +51,7 @@ type Connection struct {
 	rw                             sync.RWMutex      //mutax for connected map
 	wg                             sync.WaitGroup    //wait group to synchronize the go routine
 	rl                             *rate.RateLimiter //rate limiter
+	found                          bool
 }
 
 //Initialize initialized the connection struct. It takes person 1 and 2 url and
@@ -136,6 +137,9 @@ func (c *Connection) GetConnection() ([]Relation, error) {
 			if err != nil {
 				log.Fatalln(err.Error())
 			}
+			if c.found {
+				break
+			}
 		}
 	}()
 	return <-c.finish, nil
@@ -179,6 +183,7 @@ func (c *Connection) findRelationShip() error {
 
 					//search complete. finish the program
 					c.finish <- append(p.relation, rel)
+					c.found = true
 					return
 				}
 			}
@@ -202,20 +207,17 @@ func (c *Connection) findRelationShip() error {
 						if c.isExplored(conn.Url) {
 							continue
 						}
-						//new relation
-						rel := Relation{movie.Name, poi.Name, movie.Role, conn.Name, conn.Role}
+
 						//append for next iteration
-						c.urlToExplore = append(c.urlToExplore, person{conn.Url, append(p.relation, rel)})
+						c.urlToExplore = append(c.urlToExplore, person{conn.Url, append(p.relation, Relation{movie.Name, poi.Name, movie.Role, conn.Name, conn.Role})})
 					}
 
 					for _, conn := range cnc.Crew {
 						if c.isExplored(conn.Url) {
 							continue
 						}
-						//new connection
-						rel := Relation{movie.Name, poi.Name, movie.Role, conn.Name, conn.Role}
 						//append for next iteration
-						c.urlToExplore = append(c.urlToExplore, person{conn.Url, append(p.relation, rel)})
+						c.urlToExplore = append(c.urlToExplore, person{conn.Url, append(p.relation, Relation{movie.Name, poi.Name, movie.Role, conn.Name, conn.Role})})
 					}
 				}(movie)
 			}
