@@ -27,7 +27,22 @@ import (
 )
 
 func main() {
+	//profilling
+
 	//defer profile.Start(profile.CPUProfile).Stop()
+
+	//tracing
+
+	//	f, err := os.Create(time.Now().Format("2006-01-02T150405.pprof"))
+	//	if err != nil {
+	//		panic(err)
+	//	}
+	//	defer f.Close()
+
+	//	if err := trace.Start(f); err != nil {
+	//		panic(err)
+	//	}
+	//	defer trace.Stop()
 
 	//check if argument is passed correctly
 	if len(os.Args) != 3 {

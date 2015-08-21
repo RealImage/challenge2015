@@ -41,15 +41,16 @@ const (
 //Connection struct is used to find out the degree and relationship between two
 //person
 type Connection struct {
-	person1, person2               string            //person 1 and person 2 url
-	config                         *Conf             //configuration
-	connected                      map[string]bool   //to store all already connected person and movies
-	p2Mv                           map[string]bool   //to store all the movie os person 2
-	p2Detail                       *details          //person 2 detail
-	urlBeingExplored, urlToExplore []person          //list of people being explored right now and list of people to be explored in next iteration
-	finish                         chan []Relation   //to receive final result from go routines
-	rw                             sync.RWMutex      //mutax for connected map
-	wg                             sync.WaitGroup    //wait group to synchronize the go routine
+	person1, person2               string          //person 1 and person 2 url
+	config                         *Conf           //configuration
+	connected                      map[string]bool //to store all already connected person and movies
+	p2Mv                           map[string]bool //to store all the movie os person 2
+	p2Detail                       *details        //person 2 detail
+	urlBeingExplored, urlToExplore []person        //list of people being explored right now and list of people to be explored in next iteration
+	finish                         chan []Relation //to receive final result from go routines
+	rw                             sync.RWMutex    //mutax for connected map
+	wg                             sync.WaitGroup  //wait group to synchronize the go routine
+	m                              sync.Mutex
 	rl                             *rate.RateLimiter //rate limiter
 	found                          bool
 }
@@ -152,6 +153,9 @@ func (c *Connection) findRelationShip() error {
 	if len(c.urlToExplore) == 0 {
 		return errors.New(notConnectedErr)
 	}
+
+	c.m.Lock()
+	defer c.m.Unlock()
 
 	//swap urlToExplore and urlExplored
 	c.urlBeingExplored, c.urlToExplore = c.urlToExplore, c.urlBeingExplored
