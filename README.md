@@ -34,17 +34,17 @@ Please do not attempt to scrape the Moviebuff website - All the data is availabl
 
 To solve the example above, your solution would fetch at least the following:
 
-https://data.moviebuff.com/amitabh-bachchan
+http://data.moviebuff.com/amitabh-bachchan
 
-https://data.moviebuff.com/the-great-gatsby
+http://data.moviebuff.com/the-great-gatsby
 
-https://data.moviebuff.com/leonardo-dicaprio
+http://data.moviebuff.com/leonardo-dicaprio
 
-https://data.moviebuff.com/the-wolf-of-wall-street
+http://data.moviebuff.com/the-wolf-of-wall-street
 
-https://data.moviebuff.com/martin-scorsese
+http://data.moviebuff.com/martin-scorsese
 
-https://data.moviebuff.com/taxi-driver
+http://data.moviebuff.com/taxi-driver
 
 ##Notes
 * If you receive HTTP errors when trying to fetch the data, that might be the CDN throttling you. Luckily, Go has some very elegant idioms for rate limiting :)
