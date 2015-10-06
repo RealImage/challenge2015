@@ -30,7 +30,7 @@ Your solution should use the Moviebuff data available to figure out the smallest
 
 All the inputs should be Moviebuff URLs for their respective people: For Amitabh Bachchan, his page is on http://www.moviebuff.com/amitabh-bachchan and his Moviebuff URL is `amitabh-bachchan`.
 
-Please do not attempt to scrape the Moviebuff website - All the data is available on an S3 bucket in an easy to parse JSON format here: https://data.moviebuff.com/<moviebuff_url>
+Please do not attempt to scrape the Moviebuff website - All the data is available on an S3 bucket in an easy to parse JSON format here: `https://data.moviebuff.com/{moviebuff_url}`
 
 To solve the example above, your solution would fetch at least the following:
 
