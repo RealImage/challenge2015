@@ -1,6 +1,10 @@
 package main
 
-import "encoding/json"
+import (
+	"encoding/json"	
+	"io/ioutil"
+	"net/http"
+)
 
 type movie struct {
 	Name string `json:"name"`
@@ -22,10 +26,12 @@ type cons struct{
 	Cast   []cast  `json:"cast"`
 }
 
-func getData(body []byte) (*cons, error) {
+func getData(url string) (*cons, error) {
+	resp, err := http.Get(url)
+	defer ErrHandle(err)
+	body, err := ioutil.ReadAll(resp.Body)
 	var data cons
-	err := json.Unmarshal(body, &data)
-	ErrHandle(err)
+	err = json.Unmarshal(body, &data)
 	return &data,  nil
 }
 
