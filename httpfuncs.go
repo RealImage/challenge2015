@@ -15,12 +15,29 @@ func ErrHandle(err error) {
 }
 
 func main(){
-	url := moviebuff + os.Args[1]
+	if len(os.Args) != 3 {
+		fmt.Print("Usage Example : degrees vn-mayekar magie-mathur")
+	}
+	buildTree(os.Args[1], os.Args[2], os.Args[1], true)
+}
 
+func buildTree(argument, destination, parent string, getMovie bool ){
+
+	url := moviebuff + argument
 	json, err := getData(url)
 	defer ErrHandle(err)
 
-	fmt.Println(json.Name, json.Url)
+	if getMovie {
+		parent = argument
+	}
+
+	for _, movie := range json.Movies{
+		fmt.Println(movie.Url)
+		buildTree(movie.Url, destination, argument, false)
+	}
+
+	for _, cast := range json.Cast{
+		fmt.Println(cast.Url)
+	}
 
 }
-
