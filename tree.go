@@ -1,7 +1,9 @@
 package main
 
-var tree map[string][]string
-
-func AddChildren(parName string, children []string) {
-	tree[parName] = children
+type dataset struct{
+	initialUrl string
+	finalUrl string
+	root	*dataset
+	branch  *dataset
+	brMov map[string]movie
 }

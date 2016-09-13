@@ -1,16 +1,17 @@
 package main
 
 import (
-	"encoding/json"
+	//"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
-	"sort"
+	//"sort"
 )
 
 const moviebuff = "http://data.moviebuff.com/"
 
+/*
 func filterQueue(in chan string, out chan string) {
 	var seen = make(map[string]bool)
 	for val := range in {
@@ -20,6 +21,7 @@ func filterQueue(in chan string, out chan string) {
 		}
 	}
 }
+*/
 
 func ErrHandle(err error) {
 	if err != nil {
@@ -28,6 +30,7 @@ func ErrHandle(err error) {
 	}
 }
 
+/*
 func contains(in string, list []string) bool {
 	sort.Strings(list)
 	i := sort.SearchStrings(list, in)
@@ -85,7 +88,7 @@ func enqueue(url string, queue chan string, final string) {
 		ErrHandle(err)
 		//		for _, movie := range movies {
 		//			fmt.Println(movie.Url, Head.Url)
-		//		}
+		//		})
 		//
 		for _, movie := range movies {
 			go func() {
@@ -95,4 +98,16 @@ func enqueue(url string, queue chan string, final string) {
 		}
 
 	}
+}
+*/
+
+func main(){
+	url := moviebuff + os.Args[1]
+	resp, err := http.Get(url)
+	defer ErrHandle(err)
+	body, err := ioutil.ReadAll(resp.Body)
+
+	json, err := getData(body)
+	fmt.Println(json.Name, json.Url)
+
 }
