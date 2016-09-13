@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+	"sort"
 )
 
 const moviebuff = "http://data.moviebuff.com/"
@@ -27,28 +28,32 @@ func ErrHandle(err error) {
 	}
 }
 
+func contains(in string, list []string) bool {
+	sort.Strings(list)
+	i := sort.SearchStrings(list, in)
+	return (i < len(list) && list[i] == in)
+}
+
 func main() {
 
 	url := moviebuff + os.Args[1]
 
-	queue := make(chan []string)
-	parent := make(chan []string)
+	queue := make(chan string)
 	filteredQueue := make(chan string)
 	go func() {
 		queue <- url
-		parent <- url
 	}()
 
 	go filterQueue(queue, filteredQueue)
 
 	for newurl := range filteredQueue {
 		fmt.Println(newurl)
-		enqueue(newurl, queue)
+		enqueue(newurl, queue, os.Args[2])
 	}
 
 }
 
-func enqueue(url string, queue chan string) {
+func enqueue(url string, queue chan string, final string) {
 
 	var Head header
 
@@ -57,7 +62,6 @@ func enqueue(url string, queue chan string) {
 	body, err := ioutil.ReadAll(resp.Body)
 	ErrHandle(err)
 	err = json.Unmarshal(body, &Head)
-
 	switch Head.Typ {
 
 	case "Movie":
@@ -65,7 +69,10 @@ func enqueue(url string, queue chan string) {
 		ErrHandle(err)
 
 		for _, person := range persons {
-			fmt.Println(person.Url, Head.Url)
+			if person.Url == final{
+				fmt.Println(person.Url, url)
+				os.Exit(1)
+			}
 		}
 
 		for _, person := range persons {
