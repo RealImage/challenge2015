@@ -8,9 +8,8 @@ import (
 const moviebuff = "http://data.moviebuff.com/"
 
 var (
-	movieList map[string][]string
+	actorList map[string][]string
 	seen      map[string]bool
-	actors    []string
 	degrees   int
 )
 
@@ -26,18 +25,18 @@ func main() {
 		fmt.Print("Usage Example : degrees vn-mayekar magie-mathur")
 	}
 	seen = make(map[string]bool)
+	actorList = make(map[string][]string)
 	buildTree(os.Args[1], os.Args[2])
 }
 
 func buildTree(argument, destination string) {
 	degrees++
-	actors := []string{}
-	newActors := actors
+	actorList[argument] = []string{}
 	buildActors(argument, destination)
-	for _, actor := range newActors{
+	fmt.Println(actorList[argument])
+	for _, actor := range actorList[argument]{
 		buildTree(actor, destination)
 	}
-
 }
 
 func buildActors(argument, destination string) {
@@ -53,7 +52,7 @@ func buildActors(argument, destination string) {
 
 	for _, cast := range json.Cast {
 		if isSeen(cast.Url) {
-			actors = append(actors, cast.Url)
+			actorList[argument] = append(actorList[argument], cast.Url)
 			if cast.Url == destination {
 				fmt.Println("DONE --> ", cast.Url, degrees)
 				os.Exit(1)
