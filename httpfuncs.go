@@ -26,17 +26,22 @@ func main() {
 	}
 	seen = make(map[string]bool)
 	actorList = make(map[string][]string)
-	buildTree(os.Args[1], os.Args[2])
+	
+	if len(actorList) == 0 {
+		buildTree(os.Args[1], os.Args[2])
+	}
+	if len(actorList) != 0 {
+		for _ , v := range actorList[os.Args[1]]{
+			fmt.Println(v)
+			buildTree(v, os.Args[2])
+		}
+	}
 }
 
 func buildTree(argument, destination string) {
 	degrees++
 	actorList[argument] = []string{}
 	buildActors(argument, argument, destination)
-	fmt.Println(actorList[argument])
-	for _, actor := range actorList[argument]{
-		buildTree(actor, destination)
-	}
 }
 
 func buildActors(argument, parent, destination string) {
