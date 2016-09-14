@@ -32,27 +32,27 @@ func main() {
 func buildTree(argument, destination string) {
 	degrees++
 	actorList[argument] = []string{}
-	buildActors(argument, destination)
+	buildActors(argument, argument, destination)
 	fmt.Println(actorList[argument])
 	for _, actor := range actorList[argument]{
 		buildTree(actor, destination)
 	}
 }
 
-func buildActors(argument, destination string) {
+func buildActors(argument, parent, destination string) {
 	url := moviebuff + argument
 	json, err := getData(url)
 	defer ErrHandle(err)
 
 	for _, movie := range json.Movies {
 		if isSeen(movie.Url) {
-			buildActors(movie.Url, destination)
+			buildActors(movie.Url, argument, destination)
 		}
 	}
 
 	for _, cast := range json.Cast {
 		if isSeen(cast.Url) {
-			actorList[argument] = append(actorList[argument], cast.Url)
+			actorList[parent] = append(actorList[parent], cast.Url)
 			if cast.Url == destination {
 				fmt.Println("DONE --> ", cast.Url, degrees)
 				os.Exit(1)
