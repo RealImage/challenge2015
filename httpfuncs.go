@@ -8,7 +8,6 @@ import (
 const moviebuff = "http://data.moviebuff.com/"
 
 var (
-	actorList map[string][]string
 	seen      map[string]bool
 	degrees   int
 )
@@ -26,13 +25,13 @@ func main() {
 	}
 	seen = make(map[string]bool)
 	retList := make(map[string][]string)
+	var q queue
 
 	degrees++
 	retList = loopMovies(os.Args[1], os.Args[1], os.Args[2])
 
 	if len(retList) != 0 {
 		degrees++
-		fmt.Println(len(retList))
 		for k := range retList {
 			for _, v := range retList[k] {
 				fmt.Println(v)
@@ -70,7 +69,6 @@ func loopActors(argument, parent, destination string, retList []string) []string
 		}
 	}
 	return retList
-
 }
 
 func notSeen(in string) bool {
