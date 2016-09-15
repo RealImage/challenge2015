@@ -26,20 +26,24 @@ func main() {
 	}
 	seen = make(map[string]bool)
 	actorList = make(map[string][]string)
-	
+	//var queue []string
 	if len(actorList) == 0 {
+		degrees++
 		buildTree(os.Args[1], os.Args[2])
 	}
 	if len(actorList) != 0 {
-		for _ , v := range actorList[os.Args[1]]{
-			fmt.Println(v)
-			buildTree(v, os.Args[2])
+		for true {
+			degrees++
+			for _, v := range actorList[os.Args[1]] {
+				fmt.Println(v)
+				buildTree(v, os.Args[2])
+			}
+
 		}
 	}
 }
 
 func buildTree(argument, destination string) {
-	degrees++
 	actorList[argument] = []string{}
 	buildActors(argument, argument, destination)
 }
@@ -50,13 +54,13 @@ func buildActors(argument, parent, destination string) {
 	defer ErrHandle(err)
 
 	for _, movie := range json.Movies {
-		if isSeen(movie.Url) {
+		if notSeen(movie.Url) {
 			buildActors(movie.Url, argument, destination)
 		}
 	}
 
 	for _, cast := range json.Cast {
-		if isSeen(cast.Url) {
+		if notSeen(cast.Url) {
 			actorList[parent] = append(actorList[parent], cast.Url)
 			if cast.Url == destination {
 				fmt.Println("DONE --> ", cast.Url, degrees)
@@ -66,7 +70,7 @@ func buildActors(argument, parent, destination string) {
 	}
 }
 
-func isSeen(in string) bool {
+func notSeen(in string) bool {
 	if !seen[in] {
 		seen[in] = true
 		return true
