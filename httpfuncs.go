@@ -29,7 +29,7 @@ func main() {
 	var q queue
 
 	degrees++
-	retList = loopMovies(os.Args[1], os.Args[1], os.Args[2])
+	retList[os.Args[1]] = loopMovies(os.Args[1], os.Args[1], os.Args[2])
 
 	for k := range retList{
 		q.enqueue(k)
@@ -40,21 +40,22 @@ func main() {
 		q.dequeue()
 			for _, v := range retList[k] {
 				fmt.Println(v)
-				loopMovies(v, v, os.Args[2])
+				retList[k] = loopMovies(v, v, os.Args[2])
+				q.enqueue(k)
 			}
 		}
 	}
 }
 
-func loopMovies(argument, parent, destination string) map[string][]string {
-	retList := make(map[string][]string)
+func loopMovies(argument, parent, destination string) []string {
+	var retList []string
 	url := moviebuff + argument
 	json, err := getData(url)
 	defer ErrHandle(err)
 	for _, movie := range json.Movies {
 		if notSeen(movie.Url) {
-			retList[argument] = loopActors(movie.Url, argument,
-				destination, retList[argument])
+			retList = loopActors(movie.Url, argument,
+				destination, retList)
 		}
 	}
 	return retList
