@@ -18,12 +18,19 @@ type cast struct {
 	Role string `json:"role"`
 }
 
+type crew struct{
+	Name string `json:"name"`
+	Url  string `json:"url"`
+	Role string `json:"role"`
+}
+
 type cons struct{
 	Name   string  `json:"name"`
 	Url    string  `json:"url"`
 	Type   string  `json:"type"`
 	Movies []movie `json:"movies"`
 	Cast   []cast  `json:"cast"`
+	Crew   []crew  `json:"crew"`
 }
 
 func getData(url string) (*cons, error) {

@@ -10,6 +10,7 @@ const moviebuff = "http://data.moviebuff.com/"
 var (
 	seen      map[string]bool
 	degrees   int
+	destination string
 )
 
 func ErrHandle(err error) {
@@ -63,11 +64,21 @@ func loopActors(argument, parent, destination string, retList []string) []string
 	url := moviebuff + argument
 	json, err := getData(url)
 	defer ErrHandle(err)
+
 	for _, cast := range json.Cast {
 		if notSeen(cast.Url) {
 			retList = append(retList, cast.Url)
 			if cast.Url == destination {
 				fmt.Println("DONE --> ", cast.Url, degrees)
+				os.Exit(1)
+			}
+		}
+	}
+	for _, crew := range json.Crew {
+		if notSeen(crew.Url) {
+			retList = append(retList, crew.Url)
+			if crew.Url == destination {
+				fmt.Println("DONE --> ", crew.Url, degrees)
 				os.Exit(1)
 			}
 		}
