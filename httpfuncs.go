@@ -29,36 +29,40 @@ func main() {
 	//var queue []string
 	if len(actorList) == 0 {
 		degrees++
-		buildTree(os.Args[1], os.Args[2])
+		loopMovies(os.Args[1], os.Args[1], os.Args[2])
 	}
 	if len(actorList) != 0 {
 		for true {
 			degrees++
 			for _, v := range actorList[os.Args[1]] {
 				fmt.Println(v)
-				buildTree(v, os.Args[2])
+				loopMovies(v,v, os.Args[2])
 			}
-
 		}
 	}
 }
 
 func buildTree(argument, destination string) {
-	actorList[argument] = []string{}
-	buildActors(argument, argument, destination)
+	//var retList map[string][]string
+	//retList[argument] = append(retList[argument]),loopMovies(argument, argument, destination))
 }
 
-func buildActors(argument, parent, destination string) {
+func loopMovies(argument, parent, destination string) {
+	//var retList []string
 	url := moviebuff + argument
 	json, err := getData(url)
 	defer ErrHandle(err)
-
 	for _, movie := range json.Movies {
 		if notSeen(movie.Url) {
-			buildActors(movie.Url, argument, destination)
+			loopActors(movie.Url, argument, destination)
 		}
 	}
+}
 
+func loopActors(argument, parent, destination string){
+	url := moviebuff + argument
+	json, err := getData(url)
+	defer ErrHandle(err)
 	for _, cast := range json.Cast {
 		if notSeen(cast.Url) {
 			actorList[parent] = append(actorList[parent], cast.Url)
@@ -68,6 +72,7 @@ func buildActors(argument, parent, destination string) {
 			}
 		}
 	}
+
 }
 
 func notSeen(in string) bool {

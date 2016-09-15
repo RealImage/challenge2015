@@ -30,6 +30,7 @@ func getData(url string) (*cons, error) {
 	resp, err := http.Get(url)
 	defer ErrHandle(err)
 	body, err := ioutil.ReadAll(resp.Body)
+	defer resp.Body.Close()
 	var data cons
 	err = json.Unmarshal(body, &data)
 	return &data,  nil
