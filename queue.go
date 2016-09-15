@@ -13,3 +13,7 @@ func(q *queue)dequeue() string{
 	q.value = q.value[1:]
 	return e
 }
+
+func(q *queue)length() int{
+	return len(q.value)
+}

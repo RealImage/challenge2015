@@ -30,9 +30,13 @@ func main() {
 	degrees++
 	retList = loopMovies(os.Args[1], os.Args[1], os.Args[2])
 
-	if len(retList) != 0 {
+	for k := range retList{
+		q.enqueue(k)
+	}
+	for len(q.value) != 0 {
 		degrees++
-		for k := range retList {
+		for _, k := range q.value{
+		q.dequeue()
 			for _, v := range retList[k] {
 				fmt.Println(v)
 				loopMovies(v, v, os.Args[2])
