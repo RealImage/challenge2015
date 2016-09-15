@@ -36,12 +36,14 @@ func main() {
 	}
 	for len(q.value) != 0 {
 		degrees++
+		fmt.Println("Looking into level ",  degrees)
+		fmt.Println(q.value)
 		for _, k := range q.value{
 		q.dequeue()
 			for _, v := range retList[k] {
 				fmt.Println(v)
-				retList[k] = loopMovies(v, v, os.Args[2])
-				q.enqueue(k)
+				retList[v] = loopMovies(v, v, os.Args[2])
+				q.enqueue(v)
 			}
 		}
 	}
