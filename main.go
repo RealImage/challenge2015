@@ -84,6 +84,7 @@ func main() {
 		fmt.Print("Usage Example : degrees vn-mayekar magie-mathur")
 	}
 	now = time.Now()
+	rateLimit := time.Tick(time.Millisecond/10)
 	seen = make(map[string]bool)
 	trace = make(map[string]traceData)
 	retList := make(map[string][]string)
@@ -101,6 +102,7 @@ func main() {
 		for _, k := range q.value {
 			q.dequeue()
 			for _, v := range retList[k] {
+				<-rateLimit
 				retList[v] = loopMovies(v, v, os.Args[2])
 				q.enqueue(v)
 			}
