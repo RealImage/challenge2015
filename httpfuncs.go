@@ -10,18 +10,8 @@ const moviebuff = "http://data.moviebuff.com/"
 var (
 	seen    map[string]bool
 	degrees int
+	trace   map[string]traceData
 )
-
-type traceData struct {
-	movie   string
-	childof map[string]string
-}
-
-func (t *traceData) addTrace(movie, parent, child string) {
-	t.movie = movie
-	t.childof[child] = parent
-}
-
 //General error panic
 func ErrHandle(err error) {
 	if err != nil {
@@ -66,8 +56,13 @@ func loopActors(argument,
 	for _, cast := range json.Cast {
 		if notSeen(cast.Url) {
 			retList = append(retList, cast.Url)
+			if cast.Url != parent{
+				var t traceData
+				t.addTrace(argument, parent)
+				trace[cast.Url] = t
+			}
 			if cast.Url == destination {
-				fmt.Println("DONE --> ", cast.Url, degrees)
+				tracer(cast.Url)
 				os.Exit(1)
 			}
 		}
@@ -75,8 +70,13 @@ func loopActors(argument,
 	for _, crew := range json.Crew {
 		if notSeen(crew.Url) {
 			retList = append(retList, crew.Url)
+			if crew.Url != parent{
+				var t traceData
+				t.addTrace(argument, parent)
+				trace[crew.Url] = t
+			}
 			if crew.Url == destination {
-				fmt.Println("DONE --> ", crew.Url, degrees)
+				tracer(crew.Url)
 				os.Exit(1)
 			}
 		}
@@ -89,6 +89,7 @@ func main() {
 		fmt.Print("Usage Example : degrees vn-mayekar magie-mathur")
 	}
 	seen = make(map[string]bool)
+	trace = make(map[string]traceData)
 	retList := make(map[string][]string)
 	var q queue
 
@@ -101,12 +102,9 @@ func main() {
 	}
 	for len(q.value) != 0 {
 		degrees++
-		fmt.Println("Looking into level ", degrees)
-		fmt.Println(q.value)
 		for _, k := range q.value {
 			q.dequeue()
 			for _, v := range retList[k] {
-				fmt.Println(v)
 				retList[v] = loopMovies(v, v, os.Args[2])
 				q.enqueue(v)
 			}
