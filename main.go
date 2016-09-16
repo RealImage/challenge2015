@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 )
 
 const moviebuff = "http://data.moviebuff.com/"
@@ -11,6 +12,7 @@ var (
 	seen    map[string]bool
 	degrees int
 	trace   map[string]traceData
+	now     time.Time
 )
 
 //General error panic
@@ -30,9 +32,7 @@ func notSeen(in string) bool {
 	}
 }
 
-func loopMovies(argument,
-	parent,
-	destination string) []string {
+func loopMovies(argument, parent, destination string) []string {
 	var retList []string
 	url := moviebuff + argument
 	json, err := getData(url)
@@ -53,6 +53,7 @@ func procD(movie, parent, destination, Url, Name, Role string) {
 	if Url == destination {
 		fmt.Println("Degree of Separation: ", degrees)
 		tracer(Url, parent)
+		fmt.Println("Time taken: ",time.Since(now))
 		os.Exit(1)
 	}
 }
@@ -82,6 +83,7 @@ func main() {
 	if len(os.Args) != 3 {
 		fmt.Print("Usage Example : degrees vn-mayekar magie-mathur")
 	}
+	now = time.Now()
 	seen = make(map[string]bool)
 	trace = make(map[string]traceData)
 	retList := make(map[string][]string)
