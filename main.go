@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"os"
+	"sync"
+	"runtime"
 	"time"
 )
 
@@ -53,13 +55,13 @@ func procD(movie, parent, destination, Url, Name, Role string) {
 	if Url == destination {
 		fmt.Println("Degree of Separation: ", degrees)
 		tracer(Url, parent)
-		fmt.Println("Time taken: ",time.Since(now))
+		fmt.Println("Time taken: ", time.Since(now))
 		os.Exit(1)
 	}
 }
 
 func loopActors(argument, movie, parent, destination string,
-retList []string) []string {
+	retList []string) []string {
 	url := moviebuff + argument
 	json, err := getData(url)
 	defer ErrHandle(err)
@@ -84,11 +86,14 @@ func main() {
 		fmt.Print("Usage Example : degrees vn-mayekar magie-mathur")
 	}
 	now = time.Now()
-	rateLimit := time.Tick(time.Millisecond/10)
+	rateLimit := time.Tick(time.Millisecond / 10)
 	seen = make(map[string]bool)
 	trace = make(map[string]traceData)
 	retList := make(map[string][]string)
+	runtime.GOMAXPROCS(runtime.NumCPU())
+
 	var q queue
+	var wg sync.WaitGroup
 
 	degrees++
 	retList[os.Args[1]] = loopMovies(os.Args[1], os.Args[1], os.Args[2])
@@ -103,8 +108,16 @@ func main() {
 			q.dequeue()
 			for _, v := range retList[k] {
 				<-rateLimit
-				retList[v] = loopMovies(v, v, os.Args[2])
-				q.enqueue(v)
+				done := make(chan struct{})
+				defer close(done)
+				wg.Add(1)
+				go func() {
+					fmt.Println(v)
+					retList[v] = loopMovies(v, v, os.Args[2])
+					q.enqueue(v)
+					wg.Done()
+				}()
+				wg.Wait()
 			}
 		}
 	}
