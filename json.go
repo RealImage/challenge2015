@@ -42,4 +42,3 @@ func getData(url string) (*cons, error) {
 	err = json.Unmarshal(body, &data)
 	return &data,  nil
 }
-

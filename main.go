@@ -46,11 +46,19 @@ func loopMovies(argument,
 	return retList
 }
 
-func loopActors(argument,
-	movie,
-	parent,
-	destination string,
-	retList []string) []string {
+func procD(movie, parent, destination, Url, Name, Role string) {
+	var t traceData
+	t.addTrace(movie, parent, Name, Role)
+	trace[Url] = t
+	if Url == destination {
+		fmt.Println("Degree of Separation: ", degrees)
+		tracer(Url, parent)
+		os.Exit(1)
+	}
+}
+
+func loopActors(argument, movie, parent, destination string,
+retList []string) []string {
 	url := moviebuff + argument
 	json, err := getData(url)
 	defer ErrHandle(err)
@@ -58,27 +66,13 @@ func loopActors(argument,
 	for _, cast := range json.Cast {
 		if notSeen(cast.Url) {
 			retList = append(retList, cast.Url)
-			var t traceData
-			t.addTrace( movie, parent, cast.Name, cast.Role)
-			trace[cast.Url] = t
-			if cast.Url == destination {
-				fmt.Println("Degree of Separation: ", degrees)
-				tracer(cast.Url, parent)
-				os.Exit(1)
-			}
+			procD(movie, parent, destination, cast.Url, cast.Name, cast.Role)
 		}
 	}
 	for _, crew := range json.Crew {
 		if notSeen(crew.Url) {
 			retList = append(retList, crew.Url)
-			var t traceData
-			t.addTrace(movie, parent, crew.Name, crew.Role)
-			trace[crew.Url] = t
-			if crew.Url == destination {
-				fmt.Println("Degree of Separation: ", degrees)
-				tracer(crew.Url, parent)
-				os.Exit(1)
-			}
+			procD(movie, parent, destination, crew.Url, crew.Name, crew.Role)
 		}
 	}
 	return retList
@@ -96,7 +90,7 @@ func main() {
 	degrees++
 	retList[os.Args[1]] = loopMovies(os.Args[1], os.Args[1], os.Args[2])
 
-	/*Queue to employ BFS*/
+	//Queue to employ BFS
 	for k := range retList {
 		q.enqueue(k)
 	}
