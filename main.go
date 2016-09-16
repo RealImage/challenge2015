@@ -12,6 +12,7 @@ var (
 	degrees int
 	trace   map[string]traceData
 )
+
 //General error panic
 func ErrHandle(err error) {
 	if err != nil {
@@ -38,7 +39,7 @@ func loopMovies(argument,
 	defer ErrHandle(err)
 	for _, movie := range json.Movies {
 		if notSeen(movie.Url) {
-			retList = loopActors(movie.Url, argument,
+			retList = loopActors(movie.Url, movie.Name, argument,
 				destination, retList)
 		}
 	}
@@ -46,6 +47,7 @@ func loopMovies(argument,
 }
 
 func loopActors(argument,
+	movie,
 	parent,
 	destination string,
 	retList []string) []string {
@@ -56,13 +58,12 @@ func loopActors(argument,
 	for _, cast := range json.Cast {
 		if notSeen(cast.Url) {
 			retList = append(retList, cast.Url)
-			if cast.Url != parent{
-				var t traceData
-				t.addTrace(argument, parent)
-				trace[cast.Url] = t
-			}
+			var t traceData
+			t.addTrace( movie, parent, cast.Name, cast.Role)
+			trace[cast.Url] = t
 			if cast.Url == destination {
-				tracer(cast.Url)
+				fmt.Println("Degree of Separation: ", degrees)
+				tracer(cast.Url, parent)
 				os.Exit(1)
 			}
 		}
@@ -70,13 +71,12 @@ func loopActors(argument,
 	for _, crew := range json.Crew {
 		if notSeen(crew.Url) {
 			retList = append(retList, crew.Url)
-			if crew.Url != parent{
-				var t traceData
-				t.addTrace(argument, parent)
-				trace[crew.Url] = t
-			}
+			var t traceData
+			t.addTrace(movie, parent, crew.Name, crew.Role)
+			trace[crew.Url] = t
 			if crew.Url == destination {
-				tracer(crew.Url)
+				fmt.Println("Degree of Separation: ", degrees)
+				tracer(crew.Url, parent)
 				os.Exit(1)
 			}
 		}
