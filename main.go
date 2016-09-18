@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"sync"
 	"runtime"
 	"time"
 )
@@ -81,19 +80,33 @@ func loopActors(argument, movie, parent, destination string,
 	return retList
 }
 
+func master(q queue, retList map[string][]string) {
+	rateLimit := time.Tick(time.Millisecond / 10)
+	for len(q.value) != 0 {
+		degrees++ //global
+		for _, k := range q.value {
+			q.dequeue()
+			for _, v := range retList[k] {
+				<-rateLimit
+				fmt.Println(v)
+				retList[v] = loopMovies(v, v, os.Args[2])
+				q.enqueue(v)
+			}
+		}
+	}
+}
+
 func main() {
 	if len(os.Args) != 3 {
 		fmt.Print("Usage Example : degrees vn-mayekar magie-mathur")
 	}
 	now = time.Now()
-	rateLimit := time.Tick(time.Millisecond / 10)
 	seen = make(map[string]bool)
 	trace = make(map[string]traceData)
 	retList := make(map[string][]string)
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
 	var q queue
-	var wg sync.WaitGroup
 
 	degrees++
 	retList[os.Args[1]] = loopMovies(os.Args[1], os.Args[1], os.Args[2])
@@ -102,23 +115,5 @@ func main() {
 	for k := range retList {
 		q.enqueue(k)
 	}
-	for len(q.value) != 0 {
-		degrees++
-		for _, k := range q.value {
-			q.dequeue()
-			for _, v := range retList[k] {
-				<-rateLimit
-				done := make(chan struct{})
-				defer close(done)
-				wg.Add(1)
-				go func() {
-					fmt.Println(v)
-					retList[v] = loopMovies(v, v, os.Args[2])
-					q.enqueue(v)
-					wg.Done()
-				}()
-				wg.Wait()
-			}
-		}
-	}
+	master(q, retList)
 }
