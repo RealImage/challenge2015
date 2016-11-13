@@ -17,7 +17,7 @@ const Template = `<!DOCTYPE html>
 			    $.post('checkDoS',{"actor1":$("#actor1").val(),"actor2":$("#actor2").val()},function(data){
 			    	//alert(data);			    	
 			    	$("#loader").hide();
-			    	$("#result-data").html("<h2>Degrees Of Separation</h2>"+data);
+			    	$("#result-data").html("<h2>Connection Among Them: </h2>"+data);
 			    });
 			}
 		</script>

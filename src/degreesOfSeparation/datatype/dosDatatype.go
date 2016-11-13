@@ -1,9 +1,5 @@
 package datatype
 
-import (
-	"encoding/json"
-)
-
 const DataUri = "http://data.moviebuff.com/"
 // moviebuff json response struct
 type MoviebuffRes struct {
@@ -15,7 +11,7 @@ type MoviebuffRes struct {
 	Crew   []CastAndCrew  `json:"crew"`
 }
 
-// Primary struct to hold the execution data
+// degree of separation structure hold to vist person & link details
 type DegreesOfSeparation struct {
 	source        string
 	destination   string
@@ -25,7 +21,7 @@ type DegreesOfSeparation struct {
 	visitedPerson map[string]bool
 	visit         []string
 	visited       map[string]bool
-	link          map[string]dos
+	link          map[string]Result
 }
 
 type Movie struct {
