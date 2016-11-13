@@ -1,0 +1,214 @@
+{
+    "url": "kaththi",
+    "type": "Movie",
+    "name": "Kaththi",
+    "cast": [
+        {
+            "url": "samantha-ruth-prabhu",
+            "name": "Samantha Ruth Prabhu",
+            "role": "Actress"
+        },
+        {
+            "url": "vijay",
+            "name": "Vijay",
+            "role": "Actor"
+        },
+        {
+            "url": "ar-murugadoss",
+            "name": "AR Murugadoss",
+            "role": "Special Appearance"
+        },
+        {
+            "url": "baby-yuvina",
+            "name": "Baby Yuvina",
+            "role": "Supporting Actress"
+        },
+        {
+            "url": "elisabeth-carpenter",
+            "name": "Elisabeth Carpenter",
+            "role": "Supporting Actress"
+        },
+        {
+            "url": "neil-nitin-mukesh",
+            "name": "Neil Nitin Mukesh",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "panchu-subbu",
+            "name": "Panchu Subbu",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "rupesh-gupta",
+            "name": "Rupesh Gupta",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "satish-1",
+            "name": "Satish",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "sayaji-shinde",
+            "name": "Sayaji Shinde",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "tamiko-brownlee",
+            "name": "Tamiko Brownlee",
+            "role": "Supporting Actress"
+        },
+        {
+            "url": "tota-roy-choudhury",
+            "name": "Tota Roy Choudhury",
+            "role": "Supporting Actor"
+        }
+    ],
+    "crew": [
+        {
+            "name": "AR Murugadoss",
+            "url": "ar-murugadoss",
+            "role": "Director / Direction"
+        },
+        {
+            "name": "A Subashkaran",
+            "url": "a-subashkaran",
+            "role": "Producer / Production"
+        },
+        {
+            "name": "K Karunamoorthy",
+            "url": "k-karunamoorthy",
+            "role": "Producer / Production"
+        },
+        {
+            "name": "Ayngaran International",
+            "url": "ayngaran-international",
+            "role": "Production Company / Production"
+        },
+        {
+            "name": "Lyca Productions",
+            "url": "lyca-productions",
+            "role": "Production Company / Production"
+        },
+        {
+            "name": "Ayngaran International",
+            "url": "ayngaran-international",
+            "role": "Distributor / Distribution"
+        },
+        {
+            "name": "AR Murugadoss",
+            "url": "ar-murugadoss",
+            "role": "Screenplay Writer / Writers"
+        },
+        {
+            "name": "AR Murugadoss",
+            "url": "ar-murugadoss",
+            "role": "Story Writer / Writers"
+        },
+        {
+            "name": "AR Murugadoss",
+            "url": "ar-murugadoss",
+            "role": "Dialogue Writer / Writers"
+        },
+        {
+            "name": "George C Williams",
+            "url": "george-c-williams",
+            "role": "Director of Photography / Camera and Electrical"
+        },
+        {
+            "name": "Anirudh Ravichander",
+            "url": "anirudh-ravichander",
+            "role": "Music Director / Music"
+        },
+        {
+            "name": "Eros Music",
+            "url": "eros-music",
+            "role": "Music Label / Music"
+        },
+        {
+            "name": "Madhan Karky",
+            "url": "madhan-karky",
+            "role": "Lyricist / Music"
+        },
+        {
+            "name": "Pa Vijay",
+            "url": "pa-vijay",
+            "role": "Lyricist / Music"
+        },
+        {
+            "name": "Yugabharathi",
+            "url": "yugabharathi",
+            "role": "Lyricist / Music"
+        },
+        {
+            "name": "Anirudh Ravichander",
+            "url": "anirudh-ravichander",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Hiphop Tamizha Adhi",
+            "url": "hiphop-tamizha-adhi",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "KJ Yesudas",
+            "url": "kj-yesudas",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Shankar Mahadevan",
+            "url": "shankar-mahadevan",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Shweta Mohan",
+            "url": "shweta-mohan",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Sunidhi Chauhan",
+            "url": "sunidhi-chauhan",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Vishal Dadlani",
+            "url": "vishal-dadlani",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Lalgudi Ilayaraja",
+            "url": "lalgudi-ilayaraja",
+            "role": "Art Director / Art"
+        },
+        {
+            "name": "Shobi Paulraj",
+            "url": "shobi-paulraj",
+            "role": "Choreographer / Choreography"
+        },
+        {
+            "name": "A Sreekar Prasad",
+            "url": "a-sreekar-prasad",
+            "role": "Editor / Editorial"
+        },
+        {
+            "name": "Riaz K Ahmed",
+            "url": "riaz-k-ahmed",
+            "role": "Public Relations Officer / Marketing and Public Relations"
+        },
+        {
+            "name": "Anal Arasu",
+            "url": "anal-arasu",
+            "role": "Stunt Director / Stunts"
+        },
+        {
+            "name": "Elisabeth Carpenter",
+            "url": "elisabeth-carpenter",
+            "role": "Stunt Performer / Stunts"
+        },
+        {
+            "name": "Tamiko Brownlee",
+            "url": "tamiko-brownlee",
+            "role": "Stunt Performer / Stunts"
+        }
+    ]
+}
