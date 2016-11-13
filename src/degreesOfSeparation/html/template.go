@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+package html
+
+const Template = `<!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -12,9 +14,9 @@
 			    //alert("Degrees Of Separation");
 			    $("#result-div").show();
 			    $("#loader").show();
-			    $.get('getAjax',function(data){
+			    $.post('checkDoS',{"actor1":$("#actor1").val(),"actor2":$("#actor2").val()},function(data){
 			    	//alert(data);			    	
-			    	// $("#loader").hide();
+			    	$("#loader").hide();
 			    	$("#result-data").html("<h2>Degrees Of Separation</h2>"+data);
 			    });
 			}
@@ -93,23 +95,22 @@
 			<div class="well">
 				<form>
 				  <label>First name:</label><br>
-				  <input type="text" name="firstname" value="vijay" class="txt_box">
+				  <input type="text" id="actor1" name="actor1" value="vijay" class="txt_box">
 				  <br>
 				  <label>Last name:</label><br>
-				  <input type="text" name="lastname" value="ajith-kumar" class="txt_box">
+				  <input type="text" id="actor2" name="actor2" value="ajith-kumar" class="txt_box">
 				  <br><br>
 				  <a onclick="checkDoS()" class="bos_btn pull-right">Check DoS!</a>
 				</form>	
 			</div>	
-			<div class="result" id="result-div">
-				<div id="loader" align="center" style="min-height: 150px;padding: 8% 0px;color: #2f2f2f;">
+			<div class="result" id="result-div" style="display: none;">
+				<div id="loader" align="center" style="padding: 8% 0px;display: none;color: #2f2f2f;">
 					<i class="fa fa-refresh fa-spin fa-5x fa-fw"></i>				
-				</div>
-				<h2>Degrees Of Separation</h2>
+				</div>				
 				<div class="result-data" id="result-data">
 				
 				</div>
 			</div>
 		</div>		
 	</body>
-</html>
+</html>`
