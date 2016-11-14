@@ -13,15 +13,15 @@ type MoviebuffRes struct {
 
 // degree of separation structure hold to vist person & link details
 type DegreesOfSeparation struct {
-	source        string
-	destination   string
-	person1       *MoviebuffRes
-	person2       *MoviebuffRes
-	p2Movies      map[string]Movie
-	visitedPerson map[string]bool
-	visit         []string
-	visited       map[string]bool
-	link          map[string]Result
+	Source        string
+	Destination   string
+	Actor1       *MoviebuffRes
+	Actor2       *MoviebuffRes
+	A2Movies      map[string]Movie
+	VisitedPerson map[string]bool
+	Visit         []string
+	Visited       map[string]bool
+	Link          map[string]Result
 }
 
 type Movie struct {
@@ -38,8 +38,8 @@ type CastAndCrew struct {
 
 type Result struct {
 	movie          string
-	person1, role1 string
-	person2, role2 string
+	actor1, role1 string
+	actor2, role2 string
 }
 
 

@@ -8,7 +8,7 @@ import (
 	moviebuffDatatype "degreesOfSeparation/datatype"
 )
 
-var totalRequest uint
+var TotalRequest uint
 
 // Fetch Actor and Movie data from https://data.moviebuff.com/{moviebuff_url}
 func FetchMoviebuffData(url string) (*moviebuffDatatype.MoviebuffRes, error) {
@@ -27,7 +27,7 @@ func FetchMoviebuffData(url string) (*moviebuffDatatype.MoviebuffRes, error) {
 	if err != nil {
 		return nil, err
 	}
-	totalRequest++
+	TotalRequest++
 	// print_response
 	// fmt.Printf("%v\n\n", i)
 	return &i, nil

@@ -1,16 +1,14 @@
 package main 
 
 import (
-"encoding/json"
+	//"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
 	"io"
 	"log"
 	"net/http"
 	"degreesOfSeparation/html"
-	"degreesOfSeparation/httpget"
-	// "os"
-	// "strconv"
+	dosEngine "degreesOfSeparation/dosengine"	
 	"strings"
 )
 
@@ -50,14 +48,8 @@ func checkDoS(w http.ResponseWriter, r *http.Request){
 		if actor1 == actor2 {
 			w.Write([]byte("Degrees of Separation: 0"))
 		} else{
-			res, _:= httpget.FetchMoviebuffData(actor1)
-			res1, _:= httpget.FetchMoviebuffData(actor2)
-			fmt.Println("totalRequest"+totalRequest)
-			result, _ := json.Marshal(res)
-			result1, _ := json.Marshal(res1)
-			w.Header().Set("Content-Type", "application/json")
-			w.Write([]byte(result+result1))
-			// fmt.Printf("%v\n\n", res)
+			result := dosEngine.DoS_Result(actor1,actor2)
+			fmt.Println(result)					
 			// w.Write([]byte(actor1+" DoS "+actor2))
 		}		
 	}	
