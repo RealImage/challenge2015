@@ -1,12 +1,24 @@
 package dosengine
+
 import (
-	"fmt"
-	// "os"
+	"bytes"
+	// "fmt"
+	"html/template"
 	"time"
 	moviebuffDatatype "degreesOfSeparation/datatype"
 	request "degreesOfSeparation/httpget"
 )
 var moviebuff moviebuffDatatype.DegreesOfSeparation
+const ResultTemplate = `
+Degree of separation: {{.DoS}}
+<br />Relation Among Two Actors :<br />
+{{ range $key, $value := .Relation }}
+   <strong>{{ inc $key }} Movie</strong>: {{ $value.Movie }}<br />
+   <strong>{{ $value.Role1 }} </strong>: {{ $value.Actor1 }}<br />
+   <strong>{{ $value.Role2 }} </strong>: {{ $value.Actor2 }}<br /><br />
+{{ end }}
+Total HTTP request sent http://data.moviebuff.com/ : {{.HttpReq}}
+<br />Time taken to find Degrees of separation: {{.Time}}`				
 
 func DoS_Result(actor1, actor2 string) string{	
 	// Initialize Empty Map Variable
@@ -21,17 +33,26 @@ func DoS_Result(actor1, actor2 string) string{
 	result, err := DegreesOfSeparation()
 	checkErr(err)
 	t2 := time.Now()
-
-	// format result data
-	fmt.Printf("\nDegree of separation: %d\n\n", len(result))
-	for i, d := range result {
-		fmt.Printf("%d. Movie: %s\n   %s: %s\n   %s: %s\n\n", i+1, d.Movie, d.Role1, d.Actor1, d.Role2, d.Actor2)
+	// function map to increment $key value
+	funcMap := template.FuncMap{
+		// The name "inc" is what the function will be called in the template text.
+		"inc": func(i int) int {
+			return i + 1
+		},
 	}
-
-	// Optional stats
-	fmt.Println("Total HTTP request sent: ", request.TotalRequest)
-	fmt.Println("Time taken: ", t2.Sub(t1))
-
-	
-	return "DOS"
+	data := map[string]interface{}{
+		"DoS": len(result),
+		"HttpReq": request.TotalRequest,
+		"Time": t2.Sub(t1),
+		"Relation": result,
+	}
+	t := template.Must(template.New("result").Funcs(funcMap).Parse(ResultTemplate))
+	buf := &bytes.Buffer{}
+	if err := t.Execute(buf, data); err != nil {
+		panic(err)
+	}
+	s := buf.String()
+	// reset request.TotalRequest to 0
+	request.TotalRequest = 0
+	return s
 }

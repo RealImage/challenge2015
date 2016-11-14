@@ -49,8 +49,7 @@ func checkDoS(w http.ResponseWriter, r *http.Request){
 			w.Write([]byte("Degrees of Separation: 0"))
 		} else{
 			result := dosEngine.DoS_Result(actor1,actor2)
-			fmt.Println(result)					
-			// w.Write([]byte(actor1+" DoS "+actor2))
+			w.Write([]byte(result))
 		}		
 	}	
 }

@@ -14,6 +14,7 @@ const Template = `<!DOCTYPE html>
 			    //alert("Degrees Of Separation");
 			    $("#result-div").show();
 			    $("#loader").show();
+			    $("#result-data").html("");
 			    $.post('checkDoS',{"actor1":$("#actor1").val(),"actor2":$("#actor2").val()},function(data){
 			    	//alert(data);			    	
 			    	$("#loader").hide();
@@ -25,7 +26,7 @@ const Template = `<!DOCTYPE html>
 			.grey-background {
 			    background-color: #2f2f2f;
 			    color: #f2f0e1;
-			    overflow: hidden;
+			    /*overflow: hidden;*/
 			}
 			h1{
 				text-align: center;
