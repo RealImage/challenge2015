@@ -95,10 +95,10 @@ const Template = `<!DOCTYPE html>
 		<div align="center">
 			<div class="well">
 				<form>
-				  <label>First name:</label><br>
+				  <label>Actor 1:</label><br>
 				  <input type="text" id="actor1" name="actor1" value="vijay" class="txt_box">
 				  <br>
-				  <label>Last name:</label><br>
+				  <label>Actor 2:</label><br>
 				  <input type="text" id="actor2" name="actor2" value="ajith-kumar" class="txt_box">
 				  <br><br>
 				  <a onclick="checkDoS()" class="bos_btn pull-right">Check DoS!</a>
