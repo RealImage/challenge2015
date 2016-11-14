@@ -2,7 +2,7 @@ package dosengine
 
 import (
 	"bytes"
-	// "fmt"
+	"fmt"
 	"html/template"
 	"time"
 	moviebuffDatatype "degreesOfSeparation/datatype"
@@ -21,11 +21,24 @@ Total HTTP request sent http://data.moviebuff.com/ : {{.HttpReq}}
 <br />Time taken to find Degrees of separation: {{.Time}}`				
 
 func DoS_Result(actor1, actor2 string) string{	
-	// Initialize Empty Map Variable
+	// Initialize Empty Map Variable, clear the previous request slice data's
 	moviebuff.A2Movies = make(map[string]moviebuffDatatype.Movie)		
 	moviebuff.Visited  = make(map[string]bool)
 	moviebuff.Link = make(map[string]moviebuffDatatype.Result)
 	moviebuff.VisitedPerson = make(map[string]bool)	
+	moviebuff.Actor1 = &moviebuffDatatype.MoviebuffRes{}
+	moviebuff.Actor2 = &moviebuffDatatype.MoviebuffRes{}
+	moviebuff.Visit = []string{}
+	/*fmt.Printf("moviebuffA2Movies%v\n", moviebuff.A2Movies)
+	fmt.Printf("moviebuffVisited%v\n",moviebuff.Visited)
+	fmt.Printf("moviebuffLink%v\n",moviebuff.Link)
+	fmt.Printf("moviebuffVisit%v\n",moviebuff.Visit)	
+	fmt.Printf("moviebuffVisitedPerson%v\n",moviebuff.VisitedPerson)
+	fmt.Printf("moviebuffActor1%v\n",moviebuff.Actor1)
+	fmt.Printf("moviebuffActor2%v\n\n",moviebuff.Actor2)
+	fmt.Println(actor1)
+	fmt.Println(actor2)
+	fmt.Println()/*
 	err := initMovieBuffData(actor1, actor2)
 	checkErr(err)
 	t1 := time.Now()
@@ -53,6 +66,6 @@ func DoS_Result(actor1, actor2 string) string{
 	}
 	s := buf.String()
 	// reset request.TotalRequest to 0
-	request.TotalRequest = 0
+	request.TotalRequest = 0	
 	return s
 }
