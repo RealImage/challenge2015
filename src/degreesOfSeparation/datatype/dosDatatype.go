@@ -37,9 +37,11 @@ type CastAndCrew struct {
 }
 
 type Result struct {
-	movie          string
-	actor1, role1 string
-	actor2, role2 string
+	Movie string
+	Actor1 string
+	Role1 string
+	Actor2 string
+	Role2 string
 }
 
 

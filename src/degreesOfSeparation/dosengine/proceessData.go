@@ -1,10 +1,19 @@
 package dosengine
+
 import(
-	"fmt"
-	"os"
 	"degreesOfSeparation/httpget"
+	moviebuffDatatype "degreesOfSeparation/datatype"
 	"log"
+	"fmt"
+	// "os"
+	"strings"
 )
+
+/**
+ * [initMovieBuffData description]
+ * @param  {[actor1, actor2]} ) (error [description]
+ * @return {[error]}   [initialize actor1 and actor2 movie buff data]
+ */
 func initMovieBuffData(actor1, actor2 string) error{
 	act1, err := httpget.FetchMoviebuffData(actor1)
 	checkErr(err)
@@ -34,15 +43,76 @@ func initMovieBuffData(actor1, actor2 string) error{
 	}
 	moviebuff.Visit = append(moviebuff.Visit, moviebuff.Source)
 	moviebuff.Visited[moviebuff.Source] = true
-
-
-	fmt.Println(httpget.TotalRequest)	
-	fmt.Println("\n\n\n\n A2Movies buffer data \n\n")
-	fmt.Printf("%v\n\n", moviebuff.A2Movies)
-	fmt.Printf("%v\n\n", moviebuff.Actor1)
-	fmt.Printf("%v\n\n", moviebuff.Source)
-	os.Exit(1)
 	return nil
+}
+
+// Apply BFS to expore the each node
+/**
+ * [findDos description]
+ * @param  {[type]} ) ([]dos,       error [description]
+ * @return {[type]}   [description]
+ */
+func DegreesOfSeparation() ([]moviebuffDatatype.Result, error) {
+	var dosRes []moviebuffDatatype.Result
+	for true {
+		fmt.Printf("Visited Person: %v, %d\n\n", moviebuff.VisitedPerson, len(moviebuff.VisitedPerson))
+		for _, actor := range moviebuff.Visit {
+			fmt.Printf("Current relation actor: %s\n\n", actor)
+			if moviebuff.VisitedPerson[actor] {
+				continue
+			}
+			moviebuff.VisitedPerson[actor] = true
+			fmt.Printf("Visited Person inner:  %v, %d\n\n", moviebuff.VisitedPerson, len(moviebuff.VisitedPerson))
+			/**			
+			 * @type fetch this->actor movie buff data
+			 * actor1-> movie data of -> current actor in the moviebuff.Visit array
+			 */
+			actor1, err := httpget.FetchMoviebuffData(actor)			
+			if err != nil {
+				if strings.Contains(err.Error(), "looking for beginning of value") {
+					continue
+				}
+				return nil, err
+			}
+			/**
+			 * check the relation Among this actor2(global) and this->actor1 
+			 */
+			for _, a1movie := range actor1.Movies {
+				fmt.Printf("%s==%s\n\n", a1movie.Url, moviebuff.A2Movies[a1movie.Url].Url)
+				if moviebuff.A2Movies[a1movie.Url].Url == a1movie.Url {
+					dos := moviebuffDatatype.Result{
+							a1movie.Name, 
+							actor1.Name, 
+							a1movie.Role, 
+							moviebuff.Actor2.Name, 
+							moviebuff.A2Movies[a1movie.Url].Role,
+						}
+					// check this actor is link bewtween them
+					if _, isLinkPerson := moviebuff.Link[actor1.Url]; isLinkPerson {
+						fmt.Printf("actor 1 name: %s\n\n",actor1.Name)
+						fmt.Printf("A2MoviesName %s\n\n",moviebuff.A2Movies[a1movie.Url].Name)
+						fmt.Printf("actor1Url %s\n\n",actor1.Url)
+						fmt.Printf("found link person%s==%s\n\n", moviebuff.Link[actor1.Url], actor1.Url)
+						// store result array
+						dosRes = append(dosRes, moviebuff.Link[actor1.Url], dos)
+					} else {
+						dosRes = append(dosRes, dos)
+					}
+					fmt.Printf("Matches:%v\n\n",dosRes)
+					return dosRes, nil
+				}
+			}
+			fmt.Printf("Matches:%v\n\n",dosRes)
+			// dos{a1movie.Name, actor1.Name, a1movie.Role, moviebuff.Actor2.Name, moviebuff.A2Movies[a1movie.Url].Role}
+
+		}
+		// fmt.Printf("Link: %v, %d\n\n", buff.link, len(buff.link))
+		// fmt.Printf("Visit: %v, %d\n\n", buff.visit, len(buff.visit))
+		// fmt.Printf("Visited: %v, %d\n\n", buff.visited, len(buff.visited))
+
+	}												
+
+	return dosRes, nil
 }
 
 var checkErr = func(err error) {
