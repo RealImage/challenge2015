@@ -10,6 +10,7 @@ import (
 	"degreesOfSeparation/html"
 	dosEngine "degreesOfSeparation/dosengine"	
 	"strings"
+	"runtime"
 )
 
 /**
@@ -21,7 +22,9 @@ func main() {
 	rtr.HandleFunc("/", HandleIndex)
 	rtr.HandleFunc("/checkDoS", checkDoS).Methods("POST")	
 	http.Handle("/", rtr)
+	runtime.GOMAXPROCS(runtime.NumCPU())
 	log.Println(http.ListenAndServe(":3011", nil))
+	// code won't reach here	
 }
 /**
  * [HandleIndex description]

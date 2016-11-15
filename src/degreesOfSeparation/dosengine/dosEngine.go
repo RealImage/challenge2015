@@ -2,7 +2,7 @@ package dosengine
 
 import (
 	"bytes"
-	"fmt"
+	// "fmt"
 	"html/template"
 	"time"
 	moviebuffDatatype "degreesOfSeparation/datatype"
@@ -29,7 +29,8 @@ func DoS_Result(actor1, actor2 string) string{
 	moviebuff.Actor1 = &moviebuffDatatype.MoviebuffRes{}
 	moviebuff.Actor2 = &moviebuffDatatype.MoviebuffRes{}
 	moviebuff.Visit = []string{}
-	/*fmt.Printf("moviebuffA2Movies%v\n", moviebuff.A2Movies)
+	/*	
+	fmt.Printf("moviebuffA2Movies%v\n", moviebuff.A2Movies)
 	fmt.Printf("moviebuffVisited%v\n",moviebuff.Visited)
 	fmt.Printf("moviebuffLink%v\n",moviebuff.Link)
 	fmt.Printf("moviebuffVisit%v\n",moviebuff.Visit)	
@@ -38,7 +39,7 @@ func DoS_Result(actor1, actor2 string) string{
 	fmt.Printf("moviebuffActor2%v\n\n",moviebuff.Actor2)
 	fmt.Println(actor1)
 	fmt.Println(actor2)
-	fmt.Println()/*
+	fmt.Println()*/
 	err := initMovieBuffData(actor1, actor2)
 	checkErr(err)
 	t1 := time.Now()
