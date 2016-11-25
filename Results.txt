@@ -1,0 +1,109 @@
+1 Degree of seperation
+
+Success = true
+Degree of seperation: 1
+Connections :
+1 .Movie: The Great Gatsby
+Actor : Leonardo DiCaprio
+Supporting Actor : Amitabh Bachchan
+Time taken to find degree = 0.7490450000000001  Secs
+
+2 Degree of seperation
+
+Success = true
+Degree of seperation: 2
+Connections :
+1 .Movie: The Departed
+Director : Martin Scorsese
+Actor : Leonardo DiCaprio
+2 .Movie: The Great Gatsby
+Actor : Leonardo DiCaprio
+Supporting Actor : Amitabh Bachchan
+Time taken to find degree = 2.6370827  Secs
+
+3 Degree of seperation
+
+Success = true
+Degree of seperation: 3
+Connections :
+1 .Movie: Maleficent
+Actress : Angelina Jolie
+Supporting Actress : Miranda Richardson
+2 .Movie: Provoked: A True Story
+Supporting Actor : Miranda Richardson
+Music Director / Music : AR Rahman
+3 .Movie: Rana
+Music Director : AR Rahman
+Actor : Rajinikanth
+Time taken to find degree = 7.3995483 Sec
+
+4 Degree of seperation
+
+Success = true
+Degree of seperation: 4
+Connections :
+1 .Movie: Lucy
+Digital Compositor : Yohann Hays
+Actor : Morgan Freeman
+2 .Movie: The Dark Knight
+Supporting Actor : Morgan Freeman
+Supporting Actor : James Fierro
+3 .Movie: Dhoom 3
+Stunt Driver : James Fierro
+Supporting Actor : Abhishek Bachchan
+4 .Movie: Bbuddah Hoga Terra Baap
+Playback Singer : Abhishek Bachchan
+Paint Artist / Visual Effects : Yogendra Tonke
+Time taken to find degree = 227.4346687  Secs
+
+
+
+5 Degree of seperation
+
+Success = true
+Degree of seperation: 5
+Connections :
+1 .Movie: City Lights
+Story Writer : Charles Chaplin
+Music Director / Music : Carl Davis
+2 .Movie: The General
+Music Director : Carl Davis
+Music Director / Music : Joe Hisaishi
+3 .Movie: The Wind Rises
+Music Director : Joe Hisaishi
+Actor : Joseph Gordon-Levitt
+4 .Movie: Sin City: A Dame to Kill For
+Actor : Joseph Gordon-Levitt
+Supporting Actor : Ray Liotta
+5 .Movie: Goodfellas
+Supporting Actor : Ray Liotta
+Supporting Actor : Tony Darrow
+Time taken to find degree = 153.8587394  Secs
+
+6 Degree of seperation
+
+Success = true
+Degree of seperation: 6
+Connections :
+1 .Movie: Modern Times
+Supporting Actor : Stanley J Sandford
+Supporting Actor : Al Ernest Garcia
+2 .Movie: City Lights
+Supporting Actor : Al Ernest Garcia
+Music Director / Music : Carl Davis
+3 .Movie: The General
+Music Director : Carl Davis
+Supporting Actor : John Wilson
+4 .Movie: The Book Thief
+Editor : John Wilson
+Music Director / Music : John Williams
+5 .Movie: Jurassic Park
+Music Director : John Williams
+Supporting Actor : Samuel L Jackson
+6 .Movie: Goodfellas
+Supporting Actor : Samuel L Jackson
+Supporting Actor : Tony Darrow
+Time taken to find degree = 106.6552067 Secs
+
+
+
