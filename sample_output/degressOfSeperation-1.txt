@@ -1,0 +1,257 @@
+
+startedTime:02:35:46
+
+Actor: rajinikanth
+Role: Actor
+Movie: jhonny
+Movie: jhonny
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Supporting Actor
+Movie: kavikkuil
+Movie: kavikkuil
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Supporting Actor
+Movie: aakhri-sangram
+Movie: aakhri-sangram
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: mera-badla
+Movie: mera-badla
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: love-in-singapore
+Movie: love-in-singapore
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: pokkiri-raja-1982-tamil
+Movie: pokkiri-raja-1982-tamil
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Supporting Actor
+Movie: farishtay
+Movie: farishtay
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Supporting Actor
+Movie: thayillamal-naanillai
+Movie: thayillamal-naanillai
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: adutha-varisu
+Movie: adutha-varisu
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: zulm-ki-zanjeer
+Movie: zulm-ki-zanjeer
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Supporting Actor
+Movie: gair-kanooni
+Movie: gair-kanooni
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: gaayathri
+Movie: gaayathri
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: chaal-baaz
+Movie: chaal-baaz
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: vanakathukuriya-kathaliye
+Movie: vanakathukuriya-kathaliye
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Supporting Actor
+Movie: moondru-mudichu
+Movie: moondru-mudichu
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: 16-vayathinile
+Movie: 16-vayathinile
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: aaj-ka-dada
+Movie: aaj-ka-dada
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: thani-kattu-raja
+Movie: thani-kattu-raja
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: naan-adimai-illai
+Movie: naan-adimai-illai
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: ranuva-veeran
+Movie: ranuva-veeran
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: johny-ustad
+Movie: johny-ustad
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Supporting Actor
+Movie: patagadu
+Movie: patagadu
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: bhagwaan-dada
+Movie: bhagwaan-dada
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: priya-1978-tamil
+Movie: priya-1978-tamil
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: 491e876eac2fc4b7f2c0d1b67f12bfb5
+Movie: 491e876eac2fc4b7f2c0d1b67f12bfb5
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: takkari-donga-cb1d
+Movie: takkari-donga-cb1d
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: aayiram-janmangal
+Movie: aayiram-janmangal
+Role: Actress
+Actor: sridevi-kapoor
+
+
+
+Actor: rajinikanth
+Role: Actor
+Movie: dharma-yuddham
+Movie: dharma-yuddham
+Role: Actress
+Actor: sridevi-kapoor
+
+Degrees of seperation is: 1
+endTime:02:35:47
+Visited Person: 2
+visitedMovieList: 0

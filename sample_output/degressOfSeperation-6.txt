@@ -1,0 +1,105 @@
+
+startedTime:10:57:18
+
+
+
+
+
+
+
+
+
+
+
+
+
+Actor: stanley-j-sandford
+Role: Supporting Actor
+Movie: modern-times
+Movie: modern-times
+Role: Actor
+Actor: charles-chaplin
+Actor: charles-chaplin
+Role: Story Writer
+Movie: city-lights-1931-english
+Movie: city-lights-1931-english
+Role: Music Director / Music
+Actor: carl-davis
+Actor: carl-davis
+Role: Music Director
+Movie: the-general
+Movie: the-general
+Role: Music Director / Music
+Actor: joe-hisaishi
+Actor: joe-hisaishi
+Role: Music Director / Music
+Movie: the-wind-rises-2013-english
+Movie: the-wind-rises-2013-english
+Role: Actor
+Actor: joseph-gordon-levitt
+Actor: joseph-gordon-levitt
+Role: Actor
+Movie: sin-city-a-dame-to-kill-for
+Movie: sin-city-a-dame-to-kill-for
+Role: Supporting Actor
+Actor: ray-liotta
+Actor: ray-liotta
+Role: Supporting Actor
+Movie: goodfellas
+Movie: goodfellas
+Role: Supporting Actor
+Actor: tony-darrow
+
+
+
+
+
+
+
+
+
+
+
+
+
+Actor: stanley-j-sandford
+Role: Supporting Actor
+Movie: modern-times
+Movie: modern-times
+Role: Actor
+Actor: charles-chaplin
+Actor: charles-chaplin
+Role: Story Writer
+Movie: city-lights-1931-english
+Movie: city-lights-1931-english
+Role: Music Director / Music
+Actor: carl-davis
+Actor: carl-davis
+Role: Music Director
+Movie: the-general
+Movie: the-general
+Role: Supporting Actor
+Actor: john-wilson
+Actor: john-wilson
+Role: Editor / Editorial
+Movie: the-book-thief
+Movie: the-book-thief
+Role: Foley Artist
+Actor: peter-burgis
+Actor: peter-burgis
+Role: Foley Artist / Sound
+Movie: kingsman-the-secret-service
+Movie: kingsman-the-secret-service
+Role: Supporting Actor
+Actor: samuel-l-jackson
+Actor: samuel-l-jackson
+Role: Supporting Actor
+Movie: goodfellas
+Movie: goodfellas
+Role: Supporting Actor
+Actor: tony-darrow
+
+Degrees of seperation is: 6
+endTime:12:16:12
+Visited Person: 2712
+visitedMovieList: 1424
