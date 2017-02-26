@@ -1,4 +1,4 @@
-__author__ = 'prabakaran'
+__author__ = 'PrabaKarthi'
 
 import requests, json, multiprocessing, time, sys
 
@@ -117,11 +117,12 @@ def Separation(actor_from, actor_to, degree, count, history, check_list):
 
 
 if __name__ == "__main__":
-    fr = input()
-    to = input()
-    m, n, o, p = Separation(fr, to, 3, 0, [], check_list)
-    if m:
-        for i in o:
-            print(i)
+    fr = raw_input()
+    to = raw_input()
+    result, degree, connections, movie_caches = Separation(fr, to, 3, 0, [], check_list)
+    print("Degree of Separation - {0}".format(degree))
+    if result:
+        for connection in connections:
+            print(connection)
     else:
         print("not found")
