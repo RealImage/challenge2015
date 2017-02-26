@@ -119,7 +119,8 @@ def Separation(actor_from, actor_to, degree, count, history, check_list):
 if __name__ == "__main__":
     fr = raw_input()
     to = raw_input()
-    result, degree, connections, movie_caches = Separation(fr, to, 3, 0, [], check_list)
+    tree_depth = 3
+    result, degree, connections, movie_caches = Separation(fr, to, tree_depth, 0, [], check_list)
     print("Degree of Separation - {0}".format(degree))
     if result:
         for connection in connections:
