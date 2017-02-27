@@ -1,11 +1,11 @@
 #Ouput
 
-ubuntu@prabagcloud:~$ python ch.py amitabh-bachchan robert-de-niro
-Degree of Separation - 3
-{'Movie': u'american-hustle', 'Type': 'P', 'robert-de-niro': u'Supporting Actor'}
-{'Movie': u'american-hustle', 'Type': 'M', u'kevin-cannon': u'Supporting Actor'}
-{'Movie': u'kabhi-alvida-naa-kehna', 'Type': 'P', u'kevin-cannon': u'Supporting Actor'}
-{'Movie': u'kabhi-alvida-naa-kehna', 'Type': 'M', 'amitabh-bachchan': u'Supporting Actor'}
+ubuntu@prabagcloud:~$ python ch.py amitabh-bachchan robert-de-niro </br>
+Degree of Separation - 3 </br>
+{'Movie': u'american-hustle', 'Type': 'P', 'robert-de-niro': u'Supporting Actor'} </br>
+{'Movie': u'american-hustle', 'Type': 'M', u'kevin-cannon': u'Supporting Actor'} </b>
+{'Movie': u'kabhi-alvida-naa-kehna', 'Type': 'P', u'kevin-cannon': u'Supporting Actor'} </br>
+{'Movie': u'kabhi-alvida-naa-kehna', 'Type': 'M', 'amitabh-bachchan': u'Supporting Actor'} </br>
 
 #Degrees of Separation
 
