@@ -1,6 +1,7 @@
 __author__ = 'PrabaKarthi'
 
 import requests, json, multiprocessing, time, sys
+import sys
 
 check_list = []
 
@@ -131,8 +132,10 @@ def Separation(actor_from, actor_to, degree, count, history, check_list, main_ch
 
 
 if __name__ == "__main__":
-    fr = raw_input()
-    to = raw_input()
+    fr = sys.argv[0]
+    to = sys.argv[1]
+    # fr = raw_input()
+    # to = raw_input()
     tree_depth = 3
     result, degree, connections, movie_caches = Separation(fr, to, tree_depth, 0, [], check_list, 0)
     print("Degree of Separation - {0}".format(degree))
