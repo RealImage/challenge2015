@@ -132,8 +132,8 @@ def Separation(actor_from, actor_to, degree, count, history, check_list, main_ch
 
 
 if __name__ == "__main__":
-    fr = sys.argv[0]
-    to = sys.argv[1]
+    fr = sys.argv[1]
+    to = sys.argv[2]
     # fr = raw_input()
     # to = raw_input()
     tree_depth = 3
