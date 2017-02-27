@@ -1,3 +1,12 @@
+#Ouput
+
+ubuntu@prabagcloud:~$ python ch.py amitabh-bachchan robert-de-niro
+Degree of Separation - 3
+{'Movie': u'american-hustle', 'Type': 'P', 'robert-de-niro': u'Supporting Actor'}
+{'Movie': u'american-hustle', 'Type': 'M', u'kevin-cannon': u'Supporting Actor'}
+{'Movie': u'kabhi-alvida-naa-kehna', 'Type': 'P', u'kevin-cannon': u'Supporting Actor'}
+{'Movie': u'kabhi-alvida-naa-kehna', 'Type': 'M', 'amitabh-bachchan': u'Supporting Actor'}
+
 #Degrees of Separation
 
 With cinema going global these days, every one of the [A-Z]ollywoods are now connected. Use the wealth of data available at [Moviebuff](http://www.moviebuff.com) to see how. 
