@@ -1,0 +1,739 @@
+Started GET "/" for 127.0.0.1 at 2017-10-12 20:18:45 +0530
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb (3.1ms)
+Completed 200 OK in 447ms (Views: 21.9ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:35:45 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.1ms)
+Completed 200 OK in 1801ms (Views: 1699.5ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:41:43 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 669ms (Views: 13.8ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:42:07 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 111ms (Views: 11.8ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:42:17 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 124ms (Views: 11.7ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:42:48 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 506ms (Views: 12.8ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:42:56 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 125ms (Views: 11.6ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:43:17 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 64ms (Views: 12.2ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:43:24 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 100ms (Views: 11.7ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-10-12 20:45:37 +0530
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb (2.6ms)
+Completed 200 OK in 36ms (Views: 4.6ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 20:46:59 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 1011ms (Views: 12.4ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:02:54 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.7ms)
+Completed 500 Internal Server Error in 398ms
+
+
+  
+SyntaxError (/Users/naveenkrishnan/workspace/movie_connect/app/views/home/index.html.erb:5: syntax error, unexpected keyword_end
+eze;@output_buffer.append=(end);
+                              ^
+/Users/naveenkrishnan/workspace/movie_connect/app/views/home/index.html.erb:8: syntax error, unexpected keyword_ensure, expecting ')'
+          ensure
+                ^
+/Users/naveenkrishnan/workspace/movie_connect/app/views/home/index.html.erb:10: syntax error, unexpected keyword_end, expecting ')'
+          end
+             ^):
+  
+app/views/home/index.html.erb:5: syntax error, unexpected keyword_end
+app/views/home/index.html.erb:8: syntax error, unexpected keyword_ensure, expecting ')'
+app/views/home/index.html.erb:10: syntax error, unexpected keyword_end, expecting ')'
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:03:08 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (4.3ms)
+Completed 500 Internal Server Error in 357ms
+
+
+  
+ActionView::Template::Error (undefined method `each' for #<String:0x007ffdc6fafae8>):
+    1: <h1>Home#index</h1>
+    2: <p>Find me in app/views/home/index.html.erb</p>
+    3: <% @movies.each do  |movie|%>
+    4: <%=movie%>
+    5: <%end%>
+  
+app/views/home/index.html.erb:3:in `_app_views_home_index_html_erb___3011987793572459586_70363970891660'
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:04:10 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (3.3ms)
+Completed 500 Internal Server Error in 567ms
+
+
+  
+ActionView::Template::Error (undefined method `each' for #<String:0x007ffdc72e3e80>):
+    1: <h1>Home#index</h1>
+    2: <p>Find me in app/views/home/index.html.erb</p>
+    3: <% @movies.each do  |movie|%>
+    4: <%=movie%>
+    5: <%end%>
+  
+app/views/home/index.html.erb:3:in `_app_views_home_index_html_erb___3011987793572459586_70363972571640'
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:04:27 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (3.6ms)
+Completed 500 Internal Server Error in 153ms
+
+
+  
+ActionView::Template::Error (undefined method `each' for #<String:0x007ffdc5414860>):
+    1: <h1>Home#index</h1>
+    2: <p>Find me in app/views/home/index.html.erb</p>
+    3: <!-- <% @movies.each do  |movie|%> -->
+    4: <%=movie%>
+    5: <!-- <%end%> -->
+  
+app/views/home/index.html.erb:3:in `_app_views_home_index_html_erb___3011987793572459586_70363956410040'
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:04:32 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (158.1ms)
+Completed 500 Internal Server Error in 251ms
+
+
+  
+ActionView::Template::Error (undefined local variable or method `movie' for #<#<Class:0x007ffdc72e1b58>:0x007ffdc81c0840>
+Did you mean?  @movies):
+    1: <h1>Home#index</h1>
+    2: <p>Find me in app/views/home/index.html.erb</p>
+    3: <%=movie%>
+  
+app/views/home/index.html.erb:3:in `_app_views_home_index_html_erb___3011987793572459586_70363980368320'
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:04:42 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.5ms)
+Completed 200 OK in 131ms (Views: 14.4ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:05:49 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 585ms (Views: 17.8ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:06:05 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 123ms (Views: 14.6ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:06:21 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.7ms)
+Completed 200 OK in 135ms (Views: 12.7ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:06:41 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 125ms (Views: 12.1ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:11:28 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 829ms (Views: 12.0ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:12:59 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 602ms (Views: 18.3ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:13:37 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.7ms)
+Completed 200 OK in 126ms (Views: 12.5ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:15:30 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 563ms (Views: 12.6ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:17:26 +0530
+Processing by HomeController#index as HTML
+Completed 500 Internal Server Error in 833ms
+
+
+  
+NoMethodError (undefined method `to_hash' for #<String:0x007ffdc2f98810>
+Did you mean?  to_s):
+  
+app/controllers/home_controller.rb:12:in `index'
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:18:36 +0530
+Processing by HomeController#index as HTML
+Completed 500 Internal Server Error in 591ms
+
+
+  
+NoMethodError (undefined method `parse' for #<String:0x007ffdc54da768>):
+  
+app/controllers/home_controller.rb:10:in `index'
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:19:09 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.6ms)
+Completed 200 OK in 130ms (Views: 13.8ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:19:22 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.8ms)
+Completed 200 OK in 76ms (Views: 20.6ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-10-12 21:19:43 +0530
+Processing by HomeController#index as HTML
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 594ms (Views: 13.5ms)
+
+
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 21:25:28 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 923ms (Views: 14.3ms)
+
+
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 21:26:32 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.6ms)
+Completed 200 OK in 536ms (Views: 13.5ms)
+
+
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 21:40:10 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+Completed 500 Internal Server Error in 90ms
+
+
+  
+NameError (undefined local variable or method `res' for #<HomeController:0x007ffdc1759178>
+Did you mean?  req):
+  
+app/controllers/home_controller.rb:4:in `index'
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 21:40:45 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (2.4ms)
+Completed 200 OK in 563ms (Views: 21.0ms)
+
+
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 22:14:57 +0530
+  
+SyntaxError (/Users/naveenkrishnan/workspace/movie_connect/app/controllers/home_controller.rb:51: syntax error, unexpected keyword_end, expecting end-of-input):
+  
+app/controllers/home_controller.rb:51: syntax error, unexpected keyword_end, expecting end-of-input
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 22:15:13 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+Completed 500 Internal Server Error in 1880ms
+
+
+  
+TypeError (no implicit conversion of String into Integer):
+  
+app/controllers/home_controller.rb:22:in `[]'
+app/controllers/home_controller.rb:22:in `index'
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 22:15:32 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+Completed 500 Internal Server Error in 211ms
+
+
+  
+NameError (undefined local variable or method `queue' for #<HomeController:0x007ffdc17868d0>):
+  
+app/controllers/home_controller.rb:49:in `index'
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 22:15:51 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.6ms)
+Completed 200 OK in 328ms (Views: 13.9ms)
+
+
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-10-12 22:16:16 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.9ms)
+Completed 200 OK in 680ms (Views: 13.9ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:17:32 +0530
+  
+SyntaxError (/Users/naveenkrishnan/workspace/movie_connect/app/controllers/home_controller.rb:66: syntax error, unexpected keyword_nil, expecting keyword_end
+    return false nil
+                    ^):
+  
+app/controllers/home_controller.rb:66: syntax error, unexpected keyword_nil, expecting keyword_end
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:17:45 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 1088ms
+
+
+  
+NoMethodError (undefined method `+' for #<Hash:0x007ffdc6fcc3f0>):
+  
+app/controllers/home_controller.rb:53:in `movies_iteration'
+app/controllers/home_controller.rb:14:in `block in try_with_degree'
+app/controllers/home_controller.rb:13:in `times'
+app/controllers/home_controller.rb:13:in `try_with_degree'
+app/controllers/home_controller.rb:8:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:20:09 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 51ms
+
+
+  
+JSON::ParserError (743: unexpected token at '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">html,body{height:100%;padding:0;margin:0;}.oc{display:table;width:100%;height:100%;}.ic{display:table-cell;vertical-align:middle;height:100%;}form{display:block;background:#ccc;border:2px solid red;padding:0 0 25px 0;width:600px;font-family:helvetica,sans-serif;font-size:14px;margin:10px auto;}.fel,.fer,.fec{text-align:center;width:350px;margin:0 auto;padding:10px;}.fel{text-align:left;}.fer{text-align:right;}h1{font-weight:bold;font-size:21px;margin:0;padding:20px 10px;text-align:center;}p{margin:15px auto;width:75%;text-align:left;}ul{margin:15px auto;width:75%;}h2{margin:25px 10px;font-weight:bold;text-align:center;}label,h2{font-size:16px;}.logo{background:#eee center 25px url(/XX/YY/ZZ/CI/CFPGCGPGDHPGGGEHNCMEPGHGPGBD) no-repeat;padding-top:130px;}</style><title>Firewall Authentication</title></head><body><div class="oc"><div class="ic"><form action="/" method="post"><input type="hidden" name="4Tredir" value= "http://data.moviebuff.comhttp://data.moviebuff.com/amitabh-bachchan"><input type="hidden" name="magic" value="24837e97d889e9a2"><h1 class="logo">Authentication Required</h1><h2>Please enter your username and password to continue.</h2><div class="fer"><label for="ft_un">Username:</label> <input name="username" id="ft_un" style="width:245px"><br></div><div class="fer"><label for="ft_pd">Password:</label> <input name="password" id="ft_pd" type="password" style="width:245px"></div><div class="fer"><input type="submit" value= "Continue"></div></form></div></div></body></html>
+'):
+  
+app/controllers/home_controller.rb:43:in `get_list'
+app/controllers/home_controller.rb:29:in `init'
+app/controllers/home_controller.rb:7:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:21:32 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 79ms
+
+
+  
+JSON::ParserError (743: unexpected token at '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">html,body{height:100%;padding:0;margin:0;}.oc{display:table;width:100%;height:100%;}.ic{display:table-cell;vertical-align:middle;height:100%;}form{display:block;background:#ccc;border:2px solid red;padding:0 0 25px 0;width:600px;font-family:helvetica,sans-serif;font-size:14px;margin:10px auto;}.fel,.fer,.fec{text-align:center;width:350px;margin:0 auto;padding:10px;}.fel{text-align:left;}.fer{text-align:right;}h1{font-weight:bold;font-size:21px;margin:0;padding:20px 10px;text-align:center;}p{margin:15px auto;width:75%;text-align:left;}ul{margin:15px auto;width:75%;}h2{margin:25px 10px;font-weight:bold;text-align:center;}label,h2{font-size:16px;}.logo{background:#eee center 25px url(/XX/YY/ZZ/CI/CFPGCGPGDHPGGGEHNCMEPGHGPGBD) no-repeat;padding-top:130px;}</style><title>Firewall Authentication</title></head><body><div class="oc"><div class="ic"><form action="/" method="post"><input type="hidden" name="4Tredir" value= "http://data.moviebuff.comhttp://data.moviebuff.com/amitabh-bachchan"><input type="hidden" name="magic" value="21827390debafb66"><h1 class="logo">Authentication Required</h1><h2>Please enter your username and password to continue.</h2><div class="fer"><label for="ft_un">Username:</label> <input name="username" id="ft_un" style="width:245px"><br></div><div class="fer"><label for="ft_pd">Password:</label> <input name="password" id="ft_pd" type="password" style="width:245px"></div><div class="fer"><input type="submit" value= "Continue"></div></form></div></div></body></html>
+'):
+  
+app/controllers/home_controller.rb:47:in `get_list'
+app/controllers/home_controller.rb:30:in `init'
+app/controllers/home_controller.rb:7:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:22:23 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 4ms
+
+
+  
+JSON::ParserError (743: unexpected token at '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">html,body{height:100%;padding:0;margin:0;}.oc{display:table;width:100%;height:100%;}.ic{display:table-cell;vertical-align:middle;height:100%;}form{display:block;background:#ccc;border:2px solid red;padding:0 0 25px 0;width:600px;font-family:helvetica,sans-serif;font-size:14px;margin:10px auto;}.fel,.fer,.fec{text-align:center;width:350px;margin:0 auto;padding:10px;}.fel{text-align:left;}.fer{text-align:right;}h1{font-weight:bold;font-size:21px;margin:0;padding:20px 10px;text-align:center;}p{margin:15px auto;width:75%;text-align:left;}ul{margin:15px auto;width:75%;}h2{margin:25px 10px;font-weight:bold;text-align:center;}label,h2{font-size:16px;}.logo{background:#eee center 25px url(/XX/YY/ZZ/CI/CFPGCGPGDHPGGGEHNCMEPGHGPGBD) no-repeat;padding-top:130px;}</style><title>Firewall Authentication</title></head><body><div class="oc"><div class="ic"><form action="/" method="post"><input type="hidden" name="4Tredir" value= "http://data.moviebuff.comhttp://data.moviebuff.com/amitabh-bachchan"><input type="hidden" name="magic" value="278e7a96d2dae5a0"><h1 class="logo">Authentication Required</h1><h2>Please enter your username and password to continue.</h2><div class="fer"><label for="ft_un">Username:</label> <input name="username" id="ft_un" style="width:245px"><br></div><div class="fer"><label for="ft_pd">Password:</label> <input name="password" id="ft_pd" type="password" style="width:245px"></div><div class="fer"><input type="submit" value= "Continue"></div></form></div></div></body></html>
+'):
+  
+app/controllers/home_controller.rb:47:in `get_list'
+app/controllers/home_controller.rb:30:in `init'
+app/controllers/home_controller.rb:7:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:22:51 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 516ms
+
+
+  
+JSON::ParserError (743: unexpected token at '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">html,body{height:100%;padding:0;margin:0;}.oc{display:table;width:100%;height:100%;}.ic{display:table-cell;vertical-align:middle;height:100%;}form{display:block;background:#ccc;border:2px solid red;padding:0 0 25px 0;width:600px;font-family:helvetica,sans-serif;font-size:14px;margin:10px auto;}.fel,.fer,.fec{text-align:center;width:350px;margin:0 auto;padding:10px;}.fel{text-align:left;}.fer{text-align:right;}h1{font-weight:bold;font-size:21px;margin:0;padding:20px 10px;text-align:center;}p{margin:15px auto;width:75%;text-align:left;}ul{margin:15px auto;width:75%;}h2{margin:25px 10px;font-weight:bold;text-align:center;}label,h2{font-size:16px;}.logo{background:#eee center 25px url(/XX/YY/ZZ/CI/CFPGCGPGDHPGGGEHNCMEPGHGPGBD) no-repeat;padding-top:130px;}</style><title>Firewall Authentication</title></head><body><div class="oc"><div class="ic"><form action="/" method="post"><input type="hidden" name="4Tredir" value= "http://data.moviebuff.comhttp://data.moviebuff.com/amitabh-bachchan"><input type="hidden" name="magic" value="21857b9fd0f6176d"><h1 class="logo">Authentication Required</h1><h2>Please enter your username and password to continue.</h2><div class="fer"><label for="ft_un">Username:</label> <input name="username" id="ft_un" style="width:245px"><br></div><div class="fer"><label for="ft_pd">Password:</label> <input name="password" id="ft_pd" type="password" style="width:245px"></div><div class="fer"><input type="submit" value= "Continue"></div></form></div></div></body></html>
+'):
+  
+app/controllers/home_controller.rb:49:in `get_list'
+app/controllers/home_controller.rb:30:in `init'
+app/controllers/home_controller.rb:7:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:24:10 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 454ms
+
+
+  
+JSON::ParserError (743: unexpected token at '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><style type="text/css">html,body{height:100%;padding:0;margin:0;}.oc{display:table;width:100%;height:100%;}.ic{display:table-cell;vertical-align:middle;height:100%;}form{display:block;background:#ccc;border:2px solid red;padding:0 0 25px 0;width:600px;font-family:helvetica,sans-serif;font-size:14px;margin:10px auto;}.fel,.fer,.fec{text-align:center;width:350px;margin:0 auto;padding:10px;}.fel{text-align:left;}.fer{text-align:right;}h1{font-weight:bold;font-size:21px;margin:0;padding:20px 10px;text-align:center;}p{margin:15px auto;width:75%;text-align:left;}ul{margin:15px auto;width:75%;}h2{margin:25px 10px;font-weight:bold;text-align:center;}label,h2{font-size:16px;}.logo{background:#eee center 25px url(/XX/YY/ZZ/CI/CFPGCGPGDHPGGGEHNCMEPGHGPGBD) no-repeat;padding-top:130px;}</style><title>Firewall Authentication</title></head><body><div class="oc"><div class="ic"><form action="/" method="post"><input type="hidden" name="4Tredir" value= "http://data.moviebuff.comhttp://data.moviebuff.com/amitabh-bachchan"><input type="hidden" name="magic" value="26847d92ef1ce916"><h1 class="logo">Authentication Required</h1><h2>Please enter your username and password to continue.</h2><div class="fer"><label for="ft_un">Username:</label> <input name="username" id="ft_un" style="width:245px"><br></div><div class="fer"><label for="ft_pd">Password:</label> <input name="password" id="ft_pd" type="password" style="width:245px"></div><div class="fer"><input type="submit" value= "Continue"></div></form></div></div></body></html>
+'):
+  
+app/controllers/home_controller.rb:30:in `init'
+app/controllers/home_controller.rb:7:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:24:58 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 5ms
+
+
+  
+NoMethodError (undefined method `each' for nil:NilClass):
+  
+app/controllers/home_controller.rb:33:in `init'
+app/controllers/home_controller.rb:7:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:27:36 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 1278ms
+
+
+  
+TypeError (no implicit conversion of Hash into String):
+  
+app/controllers/home_controller.rb:60:in `movies_iteration'
+app/controllers/home_controller.rb:14:in `block in try_with_degree'
+app/controllers/home_controller.rb:13:in `times'
+app/controllers/home_controller.rb:13:in `try_with_degree'
+app/controllers/home_controller.rb:8:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:29:04 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 704ms
+
+
+  
+NoMethodError (undefined method `<<' for nil:NilClass):
+  
+app/controllers/home_controller.rb:66:in `block in movies_iteration'
+app/controllers/home_controller.rb:61:in `each'
+app/controllers/home_controller.rb:61:in `movies_iteration'
+app/controllers/home_controller.rb:14:in `block in try_with_degree'
+app/controllers/home_controller.rb:13:in `times'
+app/controllers/home_controller.rb:13:in `try_with_degree'
+app/controllers/home_controller.rb:8:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:30:23 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Completed 500 Internal Server Error in 6539ms
+
+
+  
+JSON::ParserError (743: unexpected token at '<?xml version="1.0" encoding="UTF-8"?>
+<Error><Code>AccessDenied</Code><Message>Access Denied</Message><RequestId>6E611BD7067661F9</RequestId><HostId>aAePHdlX0VXROIeTvw3QeKpYCyHQt9nuz1/Bn8mVSJ+RvEw4bwRShhI1r5sEoB+xVV0BoujzWfg=</HostId></Error>'):
+  
+app/controllers/home_controller.rb:49:in `get_list'
+app/controllers/home_controller.rb:57:in `movies_iteration'
+app/controllers/home_controller.rb:14:in `block in try_with_degree'
+app/controllers/home_controller.rb:13:in `times'
+app/controllers/home_controller.rb:13:in `try_with_degree'
+app/controllers/home_controller.rb:8:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=robert-de-niro" for 127.0.0.1 at 2017-10-13 00:34:26 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"robert-de-niro"}
+Started GET "/home/index?a=amitabh-bachchan&b=anees-bazmee" for 127.0.0.1 at 2017-10-13 10:28:33 +0530
+Started GET "/" for 127.0.0.1 at 2017-10-13 11:55:04 +0530
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb (4.2ms)
+Completed 200 OK in 348ms (Views: 23.4ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=anees-bazmee" for 127.0.0.1 at 2017-10-13 11:55:10 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"anees-bazmee"}
+Completed 500 Internal Server Error in 5191060ms
+
+
+  
+Errno::ECONNRESET (Connection reset by peer):
+  
+app/controllers/home_controller.rb:47:in `block in get_list'
+app/controllers/home_controller.rb:46:in `get_list'
+app/controllers/home_controller.rb:63:in `movies_iteration'
+app/controllers/home_controller.rb:14:in `block in try_with_degree'
+app/controllers/home_controller.rb:13:in `times'
+app/controllers/home_controller.rb:13:in `try_with_degree'
+app/controllers/home_controller.rb:8:in `index'
+Started GET "/partner/dashboard" for 127.0.0.1 at 2017-10-13 15:38:02 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/partner/dashboard"):
+  
+actionpack (5.1.4) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.4) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.4) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.4) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/robosoftin?gsku=TSHT" for 127.0.0.1 at 2017-10-24 19:16:15 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/robosoftin"):
+  
+actionpack (5.1.4) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.4) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.4) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.4) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2017-10-24 19:16:38 +0530
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb (3.8ms)
+Completed 200 OK in 432ms (Views: 6.3ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-10-24 19:18:35 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 2186ms (Views: 365.9ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-10-24 19:27:16 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 817ms (Views: 32.0ms)
+
+
+Started GET "/" for 127.0.0.1 at 2017-11-26 12:20:21 +0530
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/naveenkrishnan/.rvm/gems/ruby-2.4.0@rails5/gems/railties-5.1.4/lib/rails/templates/rails/welcome/index.html.erb (3.2ms)
+Completed 200 OK in 361ms (Views: 23.3ms)
+
+
+Started GET "/home/index" for 127.0.0.1 at 2017-11-26 12:20:44 +0530
+Processing by HomeController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+TypeError (no implicit conversion of nil into String):
+  
+app/controllers/home_controller.rb:42:in `+'
+app/controllers/home_controller.rb:42:in `get_list'
+app/controllers/home_controller.rb:30:in `init'
+app/controllers/home_controller.rb:7:in `index'
+Started GET "/home/index?a=amit&b=neiro" for 127.0.0.1 at 2017-11-26 12:20:55 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amit", "b"=>"neiro"}
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:24:19 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.6ms)
+Completed 200 OK in 354ms (Views: 193.2ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:34:35 +0530
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:38:11 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (1.0ms)
+Completed 200 OK in 1716ms (Views: 114.5ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:39:56 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.5ms)
+Completed 200 OK in 601ms (Views: 26.1ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:40:09 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.9ms)
+Completed 200 OK in 181ms (Views: 16.2ms)
+
+
+Started GET "/?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:57:03 +0530
+  
+SyntaxError (/Users/naveenkrishnan/workspace/movie_connect/config/routes.rb:2: syntax error, unexpected ':', expecting keyword_end
+  root: get 'home/index'
+       ^
+/Users/naveenkrishnan/workspace/movie_connect/config/routes.rb:5: syntax error, unexpected keyword_end, expecting end-of-input):
+  
+config/routes.rb:2: syntax error, unexpected ':', expecting keyword_end
+config/routes.rb:5: syntax error, unexpected keyword_end, expecting end-of-input
+Started GET "/?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:58:18 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 586ms (Views: 12.3ms)
+
+
+Started GET "/a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 12:58:37 +0530
+  
+ActionController::RoutingError (No route matches [GET] "/a=amitabh-bachchan&b=john-abraham"):
+  
+actionpack (5.1.4) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.4) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.4) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.4) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.1) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.4) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.4) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.4) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 13:08:16 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+  Rendering home/index.html.erb within layouts/application
+  Rendered home/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 1102ms (Views: 12.4ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 13:13:10 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+Completed 200 OK in 580ms (Views: 0.2ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 13:18:35 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+Completed 500 Internal Server Error in 711ms
+
+
+  
+NoMethodError (undefined method `count' for nil:NilClass):
+  
+app/controllers/home_controller.rb:12:in `index'
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 13:18:45 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+Completed 200 OK in 175ms (Views: 0.2ms)
+
+
+Started GET "/home/index?a=amitabh-bachchan&b=john-abraham" for 127.0.0.1 at 2017-11-26 13:19:03 +0530
+Processing by HomeController#index as HTML
+  Parameters: {"a"=>"amitabh-bachchan", "b"=>"john-abraham"}
+Completed 200 OK in 120ms (Views: 1.1ms)
+
+
