@@ -1,0 +1,25 @@
+This code is written in Ruby Language. Input needs to be passed in Console.
+
+Example:
+ruby degrees.rb
+Enter the 2 names with space
+leonardo-dicaprio martin-scorsese
+
+
+#Sample inputs that I tried.
+leonardo-dicaprio martin-scorsese
+amitabh-bachchan leonardo-dicaprio
+amitabh-bachchan robert-de-niro
+amitabh-bachchan raima-sen
+shane-black ben-kingsley
+gwyneth-paltrow kevin-feige
+chris-pratt chris-evans
+colin-trevorrow leonardo-dicaprio
+irrfan-khan chris-evans
+priyanka-chopra vin-diesel
+rajinikanth shah-rukh-khan
+salman-khan rajinikanth
+katrina-kaif rajinikanth
+aamir-khan rajinikanth
+vijay aamir-khan
+ajith-kumar katrina-kaif
