@@ -143,8 +143,8 @@ def degree_of_seperation_2(p1, p2, movies_1, movies_2)
 			end
 			if common_actor_1_role.blank? || first_actor_role.blank?
 				mov_info['crew'].each do |k|
-					common_actor_1_role = k['role'] if k['url'] == common_actor.first
-					first_actor_role = k['role'] if k['url'] == p1
+					common_actor_1_role = k['role'] if k['url'] == common_actor.first if common_actor_1_role.blank?
+					first_actor_role = k['role'] if k['url'] == p1 if first_actor_role.blank?
 				end
 			end
 			puts "#{common_actor_role}: #{common_actor.first}"
@@ -161,8 +161,8 @@ def degree_of_seperation_2(p1, p2, movies_1, movies_2)
 			end
 			if common_actor_2_role.blank? || second_actor_role.blank?
 				mov_2_info['crew'].each do |k|
-					common_actor_2_role = k['role'] if k['url'] == common_actor.first
-					second_actor_role = k['role'] if k['url'] == p2
+					common_actor_2_role = k['role'] if k['url'] == common_actor.first if common_actor_2_role.blank?
+					second_actor_role = k['role'] if k['url'] == p2 if second_actor_role.blank?
 				end
 			end
 			puts "#{common_actor_2_role}: #{common_actor.first}"
