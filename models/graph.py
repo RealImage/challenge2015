@@ -29,6 +29,7 @@ class Graph():
     return self.graph[value]
 
   def build_graph(self, from_person, to_person):
+    print("Building Graph from {0} to {1}\n".format(from_person, to_person))
     persons = deque([{'url': from_person}])
     found = False
     while persons:
@@ -129,17 +130,20 @@ class Graph():
       current_node.searched = True
 
       for edge in current_node.edges:
+        # Search and explore
         if edge.searched == False:
           queue.append(edge)
           edge.searched = True
           edge.parent = current_node
 
   def get_the_shortest_connection(self, from_person, to_person):
+    print("Finding the shortest path to connect both.")
     start_node = self.set_start(from_person)
     current_node = self.set_end(to_person)
     self.path = []
 
     while current_node != start_node:
+      # Traverse till the start node
       self.path.insert(0, current_node)
       current_node = current_node.parent
     self.path.insert(0, start_node)
@@ -159,7 +163,6 @@ class Graph():
           response["person_1_meta"] = response["movie_meta"][response["person_1"]]
           response["person_2_meta"] = response["movie_meta"][response["person_2"]]
           response["movie"] = response["current_meta"][response["movie"]]["name"]
-          # role = response[]
           response.pop('current_meta', None)
           response.pop('movie_meta', None)
           responses.append(response)
@@ -170,9 +173,7 @@ class Graph():
       else:
         if found_p1 and found_p2:
           found_p2 = False
-          # found_p1, found_p2 = False, False
           response = {"person_1": response["person_2"]}
-          # response = {"person_1": response["person_2"], "p1_meta": response["p1_meta"]}
 
         response["movie"] = path.value
         response["movie_meta"] = path.meta
@@ -187,5 +188,5 @@ class Graph():
       print("{0}: {1}".format(person_1_meta["role"], person_1_meta["name"]))
       person_2_meta = response["person_2_meta"]
       print("{0}: {1}".format(person_2_meta["role"], person_2_meta["name"]))
-      print("\n\n")
+      print("\n")
 
