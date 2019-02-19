@@ -7,6 +7,7 @@ from pprint import pprint
 
 class Graph():
   def __init__(self):
+    # A normal graph structure
     self.nodes = []
     self.graph = defaultdict(lambda: None)
     self.end = None
@@ -69,8 +70,6 @@ class Graph():
 
         
         # Loading the movies's data information
-        # with open("data/{0}.json".format(movie['url'])) as data_file:
-          # data = json.load(data_file)
         try:
           with open("data/movies/{0}.json".format(movie['url'])) as data_file:
             data = json.load(data_file)
@@ -97,8 +96,6 @@ class Graph():
         # Attach the person node with the movie node and vice versa
         person_node.add_edge(movie_node, data)
         movie_node.add_edge(person_node, None)
-
-        # actors = deque([i['url'] for i in actors])
 
         for actor in actors:
           actor_node = self.get_node(actor['url'])
@@ -149,6 +146,7 @@ class Graph():
     self.path.insert(0, start_node)
 
   def load_print_path(self, from_person):
+    # This is the naive approach to pull up metas to print the necessary info. (Can be improved too.)
     current_person = from_person
     current_movie = None
     responses = []
