@@ -53,7 +53,7 @@ class Graph():
           continue
         
       # Gathering all his movies
-      # person = {'url': data['url'], 'name': data['name']}
+      person = {'url': data['url'], 'name': data['name']}
       movies = deque(data['movies'])
 
       # Creating person node and adding to graph if needed
@@ -75,8 +75,8 @@ class Graph():
           continue
 
         # Attach the person node with the movie node and vice versa
-        person_node.add_edge(movie_node, person)
-        movie_node.add_edge(person_node, movie)
+        person_node.add_edge(movie_node, movie)
+        movie_node.add_edge(person_node, person)
         
         # Loading the movies's data information
         # with open("data/{0}.json".format(movie['url'])) as data_file:
@@ -103,8 +103,8 @@ class Graph():
             actor_node = Node(actor['url'], "Person")
             self.add_node(actor_node)
 
-          movie_node.add_edge(actor_node, movie)
-          actor_node.add_edge(movie_node, actor)
+          movie_node.add_edge(actor_node, actor)
+          actor_node.add_edge(movie_node, movie)
 
           if actor['url'] == to_person:
             found = True
@@ -138,9 +138,7 @@ class Graph():
 
     while current_node != start_node:
       self.path.insert(0, current_node)
-      # self.path.append(current_node)
       current_node = current_node.parent
-    # self.path.append(start_node)
     self.path.insert(0, start_node)
 
   def print_path(self, from_person):
@@ -150,13 +148,31 @@ class Graph():
     response = None
 
     for path in self.path:
-      pprint(path.meta)
-      print(path.category)
-      print(path.value)
-      print("=====\n")
-      # continue
-      # if path.category == "Person":
+      if path.category == "Person":
+        response = {}
+        response["movie_meta"] = path.meta
+        person_url = path.value
+      else:
+        response["person_meta"] = path.meta[person_url]
+        response["movie_name"] = response["person_meta"]["name"]
+        movie_url = response["person_meta"]["url"]
+        response["person_name"] = response["movie_meta"][movie_url]['name']
+        responses.append(response)
 
+    print(responses)
+
+      # if path.category == "Person":
+      #   if response is None:
+      #     prev_meta = path.meta
+      #     current_person = path.value
+      #     response
+      # else:
+      #   current_meta = path.meta[current_person]
+      #   response["Movie"] = current_meta["name"]
+      #   response[current_meta["role"]] = prev_meta[current_meta["url"]]
+
+      # responses.append(response)
+      # print(responses)
 
       # if response is None:
       #   response = {}
@@ -181,7 +197,7 @@ class Graph():
       #     responses.append(response)
           # response = None
     
-    # for response in responses:
-      # for key, value in response.items():
-        # print("{0}: {1}\n".format(key, value))
-      # print("------")
+    for response in responses:
+      for key, value in response.items():
+        print("{0}: {1}\n".format(key, value))
+      print("------")
