@@ -145,59 +145,47 @@ class Graph():
     current_person = from_person
     current_movie = None
     responses = []
-    response = None
-
     for path in self.path:
+      response = {}
       if path.category == "Person":
-        response = {}
-        response["movie_meta"] = path.meta
         person_url = path.value
+        person_meta = path.meta
+
       else:
-        response["person_meta"] = path.meta[person_url]
-        response["movie_name"] = response["person_meta"]["name"]
-        movie_url = response["person_meta"]["url"]
-        response["person_name"] = response["movie_meta"][movie_url]['name']
+        movie_metas = path.meta
+        movie_meta = movie_metas[person_url]
+        movie_url = movie_meta['url']
+        movie_name = movie_meta['name']
+        role = movie_meta['role']
+        person_name = person_meta[movie_url]['name']
+        response["Movie"] = movie_name
+        response[role] = person_name
         responses.append(response)
 
-    print(responses)
 
-      # if path.category == "Person":
-      #   if response is None:
-      #     prev_meta = path.meta
-      #     current_person = path.value
-      #     response
-      # else:
-      #   current_meta = path.meta[current_person]
-      #   response["Movie"] = current_meta["name"]
-      #   response[current_meta["role"]] = prev_meta[current_meta["url"]]
+    response["name"] = movie_meta["name"]
+    movie_meta = path.meta[movie_url]
+    response[movie_meta["role"]] = movie_meta["name"]
+    responses.append(response)
 
-      # responses.append(response)
-      # print(responses)
 
-      # if response is None:
-      #   response = {}
-      #   current_meta = path.meta[current_person]
-      #   current_movie = current_meta['url']
-      #   current_movie_name = current_meta['name']
-      #   response['Movie'] = current_movie_name
-      #   # current_person_name = current_meta[current_movie]['name']
-      #   response[current_meta['role']] = current_person
-      # else:
-      #   if path.category == "Movie":
-      #     current_meta = path.meta[current_person]
-      #     current_movie = current_meta['url']
-      #     current_movie_name = current_meta['name']
-      #     response['Movie'] = current_movie_name
-      #     response[current_meta['role']] = current_person
-      #   else:
-      #     current_meta = path.meta[current_movie]
-      #     current_person_name = current_meta['name']
-      #     current_person = path.value
-      #     response[current_meta['role']] = current_person_name
-      #     responses.append(response)
-          # response = None
+    # movie_metas = path.meta
+    # movie_meta = movie_metas[person_url]
+    # movie_url = movie_meta['url']
+    # movie_name = movie_meta['name']
+    # role = movie_meta['role']
+    # person_name = person_meta[movie_url]['name']
+    # response["movie_meta"] = movie_meta
+    # response["Movie"] = movie_name
+    # response[role] = person_name
+    # responses.append(response)
+
+
+
+    # print(responses)
     
     for response in responses:
+
       for key, value in response.items():
         print("{0}: {1}\n".format(key, value))
       print("------")
