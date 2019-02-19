@@ -53,7 +53,7 @@ class Graph():
           continue
         
       # Gathering all his movies
-      person = {'url': data['url'], 'name': data['name']}
+      person = data
       movies = deque(data['movies'])
 
       # Creating person node and adding to graph if needed
@@ -61,22 +61,11 @@ class Graph():
         person_node = Node(person['url'], "Person")
         self.add_node(person_node)
 
-      person_node.visited = True
+      # person_node.visited = True
 
       while movies:
         movie = movies.popleft()
-        movie_node = self.get_node(movie['url'])
 
-        # Create the movie node if needed
-        if movie_node is None:
-          movie_node = Node(movie['url'], "Movie")
-          self.add_node(movie_node)
-        if movie_node.visited:
-          continue
-
-        # Attach the person node with the movie node and vice versa
-        person_node.add_edge(movie_node, movie)
-        movie_node.add_edge(person_node, person)
         
         # Loading the movies's data information
         # with open("data/{0}.json".format(movie['url'])) as data_file:
@@ -94,6 +83,20 @@ class Graph():
             continue
 
         actors = data['crew'] + data['cast']
+
+        movie_node = self.get_node(movie['url'])
+
+        # Create the movie node if needed
+        if movie_node is None:
+          movie_node = Node(movie['url'], "Movie")
+          self.add_node(movie_node)
+        if movie_node.visited:
+          continue
+
+        # Attach the person node with the movie node and vice versa
+        person_node.add_edge(movie_node, data)
+        movie_node.add_edge(person_node, None)
+
         # actors = deque([i['url'] for i in actors])
 
         for actor in actors:
@@ -104,7 +107,7 @@ class Graph():
             self.add_node(actor_node)
 
           movie_node.add_edge(actor_node, actor)
-          actor_node.add_edge(movie_node, movie)
+          actor_node.add_edge(movie_node, data)
 
           if actor['url'] == to_person:
             found = True
@@ -141,35 +144,48 @@ class Graph():
       current_node = current_node.parent
     self.path.insert(0, start_node)
 
-  def print_path(self, from_person):
+  def load_print_path(self, from_person):
     current_person = from_person
     current_movie = None
     responses = []
+    response = {}
+    found_p1, found_p2 = False, False
     for path in self.path:
-      response = {}
       if path.category == "Person":
-        person_url = path.value
-        person_meta = path.meta
-
+        if found_p1:
+          response["person_2"] = path.value
+          found_p2 = True
+          response["current_meta"] = path.meta
+          response["person_1_meta"] = response["movie_meta"][response["person_1"]]
+          response["person_2_meta"] = response["movie_meta"][response["person_2"]]
+          response["movie"] = response["current_meta"][response["movie"]]["name"]
+          # role = response[]
+          response.pop('current_meta', None)
+          response.pop('movie_meta', None)
+          responses.append(response)
+        else:
+          if "person_1" not in response:
+            response["person_1"] = path.value
+          found_p1 = True
       else:
-        movie_metas = path.meta
-        movie_meta = movie_metas[person_url]
-        movie_url = movie_meta['url']
-        movie_name = movie_meta['name']
-        role = movie_meta['role']
-        person_name = person_meta[movie_url]['name']
-        response["Movie"] = movie_name
-        response[role] = person_name
-        responses.append(response)
+        if found_p1 and found_p2:
+          found_p2 = False
+          # found_p1, found_p2 = False, False
+          response = {"person_1": response["person_2"]}
+          # response = {"person_1": response["person_2"], "p1_meta": response["p1_meta"]}
 
+        response["movie"] = path.value
+        response["movie_meta"] = path.meta
 
-    response["name"] = movie_meta["name"]
-    movie_meta = path.meta[movie_url]
-    response[movie_meta["role"]] = movie_meta["name"]
-    responses.append(response)
-    
+    return responses
+
+  def print_path(self, from_person):
+    responses = self.load_print_path(from_person)
     for response in responses:
+      print("Movie: {0}".format(response["movie"]))
+      person_1_meta = response["person_1_meta"]
+      print("{0}: {1}".format(person_1_meta["role"], person_1_meta["name"]))
+      person_2_meta = response["person_2_meta"]
+      print("{0}: {1}".format(person_2_meta["role"], person_2_meta["name"]))
+      print("\n\n")
 
-      for key, value in response.items():
-        print("{0}: {1}\n".format(key, value))
-      print("------")

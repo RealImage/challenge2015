@@ -13,10 +13,11 @@ class Node():
   def __str__(self):
     return self.value
 
-  def add_edge(self, node, meta):
+  def add_edge(self, node, meta=None):
     if node == self:
       return
-
+    if meta is not None:
+      if node.value not in self.meta:
+        self.meta[node.value] = meta
     if node not in self.edges:
-      node.meta[self.value] = meta
       self.edges.append(node)
