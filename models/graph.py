@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+from collections import defaultdict, OrderedDict, deque
+import json
+import requests
+from models.node import Node
+from pprint import pprint
 
 class Graph():
   def __init__(self):
@@ -101,16 +106,68 @@ class Graph():
 
           if actor['url'] == to_person:
             found = True
-            print("Found")
             break
           persons.append(actor)
         movie_node.visited = True
-
         if found:
-          print("Found 118")
           break
-      
-      print("Done for {0}".format(person['url']))
       if found:
-        print("Found 121")
         break
+
+  def start_bfs(self, from_person, to_person):
+    start_node = self.set_start(from_person)
+    end_node = self.set_end(to_person)
+    queue = deque([start_node])
+
+    while queue:
+      current_node = queue.popleft()
+      current_node.searched = True
+
+      for edge in current_node.edges:
+        if edge.searched == False:
+          queue.append(edge)
+          edge.searched = True
+          edge.parent = current_node
+
+  def get_the_shortest_connection(self, from_person, to_person):
+    start_node = self.set_start(from_person)
+    current_node = self.set_end(to_person)
+    self.path = []
+
+    while current_node != start_node:
+      self.path.insert(0, current_node)
+      current_node = current_node.parent
+    # self.path(0, start_node)
+
+  def print_path(self, from_person):
+    current_person = from_person
+    current_movie = None
+    responses = []
+    response = None
+    for path in self.path:
+      if response is None:
+        response = {}
+        current_meta = path.meta[current_person]
+        current_movie = current_meta['url']
+        current_movie_name = current_meta['name']
+        response['Movie'] = current_movie_name
+        response[current_meta['role']] = current_person
+      else:
+        if path.category == "Movie":
+          current_meta = path.meta[current_person]
+          current_movie = current_meta['url']
+          current_movie_name = current_meta['name']
+          response['Movie'] = current_movie_name
+          response[current_meta['role']] = current_person
+        else:
+          current_meta = path.meta[current_movie]
+          current_person_name = current_meta['name']
+          current_person = path.value
+          response[current_meta['role']] = current_person_name
+          responses.append(response)
+          response = None
+    
+    for response in responses:
+      for key, value in response.items():
+        print("{0}: {1}\n".format(key, value))
+      print("------")
