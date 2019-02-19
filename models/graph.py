@@ -53,7 +53,7 @@ class Graph():
           continue
         
       # Gathering all his movies
-      person = {'url': data['url'], 'name': data['name']}
+      # person = {'url': data['url'], 'name': data['name']}
       movies = deque(data['movies'])
 
       # Creating person node and adding to graph if needed
@@ -75,8 +75,8 @@ class Graph():
           continue
 
         # Attach the person node with the movie node and vice versa
-        person_node.add_edge(movie_node, movie)
-        movie_node.add_edge(person_node, person)
+        person_node.add_edge(movie_node, person)
+        movie_node.add_edge(person_node, movie)
         
         # Loading the movies's data information
         # with open("data/{0}.json".format(movie['url'])) as data_file:
@@ -103,8 +103,8 @@ class Graph():
             actor_node = Node(actor['url'], "Person")
             self.add_node(actor_node)
 
-          movie_node.add_edge(actor_node, actor)
-          actor_node.add_edge(movie_node, movie)
+          movie_node.add_edge(actor_node, movie)
+          actor_node.add_edge(movie_node, actor)
 
           if actor['url'] == to_person:
             found = True
