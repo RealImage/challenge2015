@@ -167,22 +167,6 @@ class Graph():
     movie_meta = path.meta[movie_url]
     response[movie_meta["role"]] = movie_meta["name"]
     responses.append(response)
-
-
-    # movie_metas = path.meta
-    # movie_meta = movie_metas[person_url]
-    # movie_url = movie_meta['url']
-    # movie_name = movie_meta['name']
-    # role = movie_meta['role']
-    # person_name = person_meta[movie_url]['name']
-    # response["movie_meta"] = movie_meta
-    # response["Movie"] = movie_name
-    # response[role] = person_name
-    # responses.append(response)
-
-
-
-    # print(responses)
     
     for response in responses:
 
