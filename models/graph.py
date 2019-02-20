@@ -22,9 +22,9 @@ class Graph():
     return self.graph[value]
 
   def add_node(self, node):
-    if node not in self.nodes:
-      self.nodes.append(node)
-      self.graph[node.value] = node
+    # if node not in self.nodes:
+    self.nodes.append(node)
+    self.graph[node.value] = node
 
   def get_node(self, value):
     return self.graph[value]
@@ -114,6 +114,7 @@ class Graph():
         movie_node.visited = True
         if found:
           break
+      print("Still searching..")
       if found:
         break
 
@@ -145,6 +146,11 @@ class Graph():
       current_node = current_node.parent
     self.path.insert(0, start_node)
 
+    for path in self.path:
+      print("- {0}".format(path.value))
+
+    print("\n")
+
   def load_print_path(self, from_person):
     # This is the naive approach to pull up metas to print the necessary info. (Can be improved too.)
     current_person = from_person
@@ -153,11 +159,14 @@ class Graph():
     response = {}
     found_p1, found_p2 = False, False
     for path in self.path:
+      print(responses)
       if path.category == "Person":
         if found_p1:
           response["person_2"] = path.value
           found_p2 = True
           response["current_meta"] = path.meta
+
+          print(response["movie_meta"])
           response["person_1_meta"] = response["movie_meta"][response["person_1"]]
           response["person_2_meta"] = response["movie_meta"][response["person_2"]]
           response["movie"] = response["current_meta"][response["movie"]]["name"]
@@ -171,7 +180,7 @@ class Graph():
       else:
         if found_p1 and found_p2:
           found_p2 = False
-          response = {"person_1": response["person_2"]}
+          response = {"person_1": response["person_2"], "person_1_meta": response["person_2_meta"]}
 
         response["movie"] = path.value
         response["movie_meta"] = path.meta

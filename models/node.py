@@ -17,7 +17,7 @@ class Node():
     if node == self:
       return
     if meta is not None:
-      if node.value not in self.meta:
-        self.meta[node.value] = meta
-    if node not in self.edges:
+      # if node.value not in self.meta:
+      self.meta[node.value] = meta
       self.edges.append(node)
+    # if node not in self.edges:
