@@ -114,7 +114,7 @@ class Graph():
         movie_node.visited = True
         if found:
           break
-      print("Still searching..")
+      # print("Still searching..")
       if found:
         break
 
@@ -146,6 +146,25 @@ class Graph():
       current_node = current_node.parent
     self.path.insert(0, start_node)
 
+  def get_person_movie_info(self, person_name, movie_name):
+    request_object = requests.get("http://data.moviebuff.com/{0}".format(person_name))
+    if request_object.status_code == 200:
+      person_data = request_object.json()
+
+    request_object = requests.get("http://data.moviebuff.com/{0}".format(movie_name))
+    if request_object.status_code == 200:
+      movie_data = request_object.json()
+
+    actors = movie_data["cast"] + movie_data["crew"]
+
+    for actor in actors:
+      if actor["url"] == person_name:
+        role = actor["role"]
+        break
+      role = ""
+    
+    return {"name": person_data["name"], "role": role}
+
   def load_print_path(self, from_person):
     # This is the naive approach to pull up metas to print the necessary info. (Can be improved too.)
     current_person = from_person
@@ -159,7 +178,11 @@ class Graph():
           response["person_2"] = path.value
           found_p2 = True
           response["current_meta"] = path.meta
-          response["person_1_meta"] = response["movie_meta"][response["person_1"]]
+          try:
+            0/0
+            response["person_1_meta"] = response["movie_meta"][response["person_1"]]
+          except:
+            response["person_1_meta"] = self.get_person_movie_info(response["person_1"], response["movie"])
           response["person_2_meta"] = response["movie_meta"][response["person_2"]]
           response["movie"] = response["current_meta"][response["movie"]]["name"]
           response.pop('current_meta', None)
@@ -173,7 +196,6 @@ class Graph():
         if found_p1 and found_p2:
           found_p2 = False
           response = {"person_1": response["person_2"], "person_1_meta": response["person_2_meta"]}
-
         response["movie"] = path.value
         response["movie_meta"] = path.meta
 
