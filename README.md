@@ -41,7 +41,7 @@ http://data.moviebuff.com/martin-scorsese
 
 http://data.moviebuff.com/taxi-driver
 
-##Notes
+##Note
 * If you receive HTTP errors when trying to fetch the data, that might be the CDN throttling you. Luckily, Go has some very elegant idioms for rate limiting :)
 * There may be a discrepancy in some cases where a movie appears on an actor's list but not vice versa. This usually happens when we edit data while exporting it, so feel free to either ignore these mismatches or handle them in some way.
 
