@@ -1,0 +1,364 @@
+{
+    "url": "sholay-3d",
+    "type": "Movie",
+    "name": "Sholay 3D",
+    "cast": [
+        {
+            "url": "amitabh-bachchan",
+            "name": "Amitabh Bachchan",
+            "role": "Actor"
+        },
+        {
+            "url": "amjad-khan",
+            "name": "Amjad Khan",
+            "role": "Actor"
+        },
+        {
+            "url": "dharmendra",
+            "name": "Dharmendra",
+            "role": "Actor"
+        },
+        {
+            "url": "hema-malini",
+            "name": "Hema Malini",
+            "role": "Actress"
+        },
+        {
+            "url": "jaya-bachchan",
+            "name": "Jaya Bachchan",
+            "role": "Actress"
+        },
+        {
+            "url": "sanjeev-kumar-1",
+            "name": "Sanjeev Kumar",
+            "role": "Actor"
+        },
+        {
+            "url": "helen-richardson",
+            "name": "Helen Richardson",
+            "role": "Special Appearance"
+        },
+        {
+            "url": "jagdeep-syed",
+            "name": "Jagdeep Syed",
+            "role": "Special Appearance"
+        },
+        {
+            "url": "jalal-agha",
+            "name": "Jalal Agha",
+            "role": "Special Appearance"
+        },
+        {
+            "url": "om-shivpuri",
+            "name": "Om Shivpuri",
+            "role": "Special Appearance"
+        },
+        {
+            "url": "ak-hangal",
+            "name": "AK Hangal",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "alankar-joshi",
+            "name": "Alankar Joshi",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "arvind-joshi",
+            "name": "Arvind Joshi",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "bhagwan-sinha",
+            "name": "Bhagwan Sinha",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "govardhan-asrani",
+            "name": "Govardhan Asrani",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "iftekhar-khan",
+            "name": "Iftekhar Khan",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "iftekhar-khan",
+            "name": "Iftekhar Khan",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "jagdeep-syed",
+            "name": "Jagdeep Syed",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "keshto-mukherjee",
+            "name": "Keshto Mukherjee",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "leela-mishra",
+            "name": "Leela Mishra",
+            "role": "Supporting Actress"
+        },
+        {
+            "url": "mac-mohan",
+            "name": "Mac Mohan",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "mac-mohan",
+            "name": "Mac Mohan",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "sachin-pilgaonkar",
+            "name": "Sachin Pilgaonkar",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "satyen-kappu",
+            "name": "Satyen Kappu",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "viju-khote",
+            "name": "Viju Khote",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "vikas-anand",
+            "name": "Vikas Anand",
+            "role": "Supporting Actor"
+        }
+    ],
+    "crew": [
+        {
+            "name": "Ramesh Sippy",
+            "url": "ramesh-sippy",
+            "role": "Director / Direction"
+        },
+        {
+            "name": "Jimmy Allen",
+            "url": "jimmy-allen",
+            "role": "Second Unit Director / Direction"
+        },
+        {
+            "name": "AR Balan",
+            "url": "ar-balan",
+            "role": "Assistant Director / Direction"
+        },
+        {
+            "name": "Khalish Lucknavi",
+            "url": "khalish-lucknavi",
+            "role": "Assistant Director / Direction"
+        },
+        {
+            "name": "Kishen Bishen",
+            "url": "kishen-bishen",
+            "role": "Assistant Director / Direction"
+        },
+        {
+            "name": "Sharad Palekar",
+            "url": "sharad-palekar",
+            "role": "Assistant Director / Direction"
+        },
+        {
+            "name": "GP Sippy",
+            "url": "gp-sippy",
+            "role": "Producer / Production"
+        },
+        {
+            "name": "Sippy Films",
+            "url": "sippy-films",
+            "role": "Production Company / Production"
+        },
+        {
+            "name": "United Producers",
+            "url": "united-producers",
+            "role": "Production Company / Production"
+        },
+        {
+            "name": "Aziz Bhai",
+            "url": "aziz-bhai",
+            "role": "Production Manager / Production"
+        },
+        {
+            "name": "Rajan Walia",
+            "url": "rajan-walia",
+            "role": "Production Manager / Production"
+        },
+        {
+            "name": "Suresh Desai",
+            "url": "suresh-desai",
+            "role": "Production Manager / Production"
+        },
+        {
+            "name": "Javed Akhtar",
+            "url": "javed-akhtar",
+            "role": "Screenplay Writer / Writers"
+        },
+        {
+            "name": "Salim Khan",
+            "url": "salim-khan",
+            "role": "Screenplay Writer / Writers"
+        },
+        {
+            "name": "Dwarka Divecha",
+            "url": "dwarka-divecha",
+            "role": "Director of Photography / Camera and Electrical"
+        },
+        {
+            "name": "Omee Kapoor",
+            "url": "omee-kapoor",
+            "role": "Still Photographer / Camera and Electrical"
+        },
+        {
+            "name": "PRL Raman",
+            "url": "prl-raman",
+            "role": "Assistant Cameraman / Camera and Electrical"
+        },
+        {
+            "name": "Vasant Rao",
+            "url": "vasant-rao",
+            "role": "Assistant Cameraman / Camera and Electrical"
+        },
+        {
+            "name": "SM Anwar",
+            "url": "sm-anwar",
+            "role": "Camera Operator / Camera and Electrical"
+        },
+        {
+            "name": "Rahul Dev Burman",
+            "url": "rahul-dev-burman",
+            "role": "Music Director / Music"
+        },
+        {
+            "name": "Anand Bakshi",
+            "url": "anand-bakshi",
+            "role": "Lyricist / Music"
+        },
+        {
+            "name": "Polydor Records",
+            "url": "polydor-records",
+            "role": "Music Label / Music"
+        },
+        {
+            "name": "Hema Malini",
+            "url": "hema-malini",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Kishore Kumar",
+            "url": "kishore-kumar",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Lata Mangeshkar",
+            "url": "lata-mangeshkar",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Manna Dey",
+            "url": "manna-dey",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Rahul Dev Burman",
+            "url": "rahul-dev-burman",
+            "role": "Playback Singer / Music"
+        },
+        {
+            "name": "Basu Deo Chakravarty",
+            "url": "basu-deo-chakravarty",
+            "role": "Music Assistant / Music"
+        },
+        {
+            "name": "Manohari Singh",
+            "url": "manohari-singh",
+            "role": "Music Assistant / Music"
+        },
+        {
+            "name": "Maruti Rao",
+            "url": "maruti-rao",
+            "role": "Music Assistant / Music"
+        },
+        {
+            "name": "Gerry Humphreys",
+            "url": "gerry-humphreys",
+            "role": "Sound Re-recording Mixer / Sound"
+        },
+        {
+            "name": "Mangesh Desai",
+            "url": "mangesh-desai-1",
+            "role": "Sound Re-recording Mixer / Sound"
+        },
+        {
+            "name": "Baba Iqbal",
+            "url": "baba-iqbal",
+            "role": "Audio Assistant / Sound"
+        },
+        {
+            "name": "Ram Yedekar",
+            "url": "ram-yedekar",
+            "role": "Art Director / Art"
+        },
+        {
+            "name": "Babu Ghanekar",
+            "url": "babu-ghanekar",
+            "role": "Costume Assistant / Costume and Wardrobe"
+        },
+        {
+            "name": "Vithal Thorat",
+            "url": "vithal-thorat",
+            "role": "Costume Assistant / Costume and Wardrobe"
+        },
+        {
+            "name": "MS Shinde",
+            "url": "ms-shinde",
+            "role": "Editor / Editorial"
+        },
+        {
+            "name": "B Naag",
+            "url": "b-naag",
+            "role": "Assistant Editor / Editorial"
+        },
+        {
+            "name": "NS Lingayat",
+            "url": "ns-lingayat",
+            "role": "Assistant Editor / Editorial"
+        },
+        {
+            "name": "Dinu Indulkar",
+            "url": "dinu-indulkar",
+            "role": "Makeup Artist / Makeup and Hair"
+        },
+        {
+            "name": "MS Deepak",
+            "url": "ms-deepak",
+            "role": "Makeup Artist / Makeup and Hair"
+        },
+        {
+            "name": "Sarosh B Modi",
+            "url": "sarosh-b-modi",
+            "role": "Makeup Artist / Makeup and Hair"
+        },
+        {
+            "name": "Pandu Indulkar",
+            "url": "pandu-indulkar",
+            "role": "Assistant Makeup Artist / Makeup and Hair"
+        },
+        {
+            "name": "Gerry Crampton",
+            "url": "gerry-crampton",
+            "role": "Stunt Coordinator / Stunts"
+        },
+        {
+            "name": "Mohammed Ali",
+            "url": "mohammed-ali",
+            "role": "Stunt Coordinator / Stunts"
+        }
+    ]
+}

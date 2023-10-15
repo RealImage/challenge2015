@@ -1,0 +1,72 @@
+{
+    "url": "martin-scorsese",
+    "type": "Person",
+    "name": "Martin Scorsese",
+    "movies": [
+        {
+            "name": "Silence",
+            "url": "silence-2015-english",
+            "role": "Director"
+        },
+        {
+            "name": "The 50 Year Argument",
+            "url": "the-50-year-argument",
+            "role": "Director"
+        },
+        {
+            "name": "The Wolf of Wall Street",
+            "url": "the-wolf-of-wall-street",
+            "role": "Director"
+        },
+        {
+            "name": "The Departed",
+            "url": "the-departed",
+            "role": "Director"
+        },
+        {
+            "name": "Cape Fear",
+            "url": "cape-fear",
+            "role": "Director"
+        },
+        {
+            "name": "Goodfellas",
+            "url": "goodfellas",
+            "role": "Director"
+        },
+        {
+            "name": "Taxi Driver",
+            "url": "taxi-driver",
+            "role": "Director"
+        },
+        {
+            "name": "The 50 Year Argument",
+            "url": "the-50-year-argument",
+            "role": "Producer"
+        },
+        {
+            "name": "The Third Side of the River",
+            "url": "the-third-side-of-the-river",
+            "role": "Executive Producer"
+        },
+        {
+            "name": "The Wolf of Wall Street",
+            "url": "the-wolf-of-wall-street",
+            "role": "Producer"
+        },
+        {
+            "name": "Malavita",
+            "url": "the-family",
+            "role": "Executive Producer"
+        },
+        {
+            "name": "Taxi Driver",
+            "url": "taxi-driver",
+            "role": "Supporting Actor"
+        },
+        {
+            "name": "Goodfellas",
+            "url": "goodfellas",
+            "role": "Screenplay Writer"
+        }
+    ]
+}

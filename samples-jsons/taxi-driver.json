@@ -1,0 +1,144 @@
+{
+    "url": "taxi-driver",
+    "type": "Movie",
+    "name": "Taxi Driver",
+    "cast": [
+        {
+            "url": "cybill-shepherd",
+            "name": "Cybill Shepherd",
+            "role": "Actress"
+        },
+        {
+            "url": "jodie-foster",
+            "name": "Jodie Foster",
+            "role": "Actress"
+        },
+        {
+            "url": "robert-de-niro",
+            "name": "Robert De Niro",
+            "role": "Actor"
+        },
+        {
+            "url": "albert-brooks",
+            "name": "Albert Brooks",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "brenda-dickson",
+            "name": "Brenda Dickson",
+            "role": "Supporting Actress"
+        },
+        {
+            "url": "diahnne-abbott",
+            "name": "Diahnne Abbott",
+            "role": "Supporting Actress"
+        },
+        {
+            "url": "frank-adu",
+            "name": "Frank Adu",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "gino-ardito",
+            "name": "Gino Ardito",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "harvey-keitel",
+            "name": "Harvey Keitel",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "martin-scorsese",
+            "name": "Martin Scorsese",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "peter-boyle",
+            "name": "Peter Boyle",
+            "role": "Supporting Actor"
+        },
+        {
+            "url": "victor-argo",
+            "name": "Victor Argo",
+            "role": "Supporting Actor"
+        }
+    ],
+    "crew": [
+        {
+            "name": "Martin Scorsese",
+            "url": "martin-scorsese",
+            "role": "Director / Direction"
+        },
+        {
+            "name": "Julia Phillips",
+            "url": "julia-phillips",
+            "role": "Producer / Production"
+        },
+        {
+            "name": "Michael Phillips",
+            "url": "michael-phillips",
+            "role": "Producer / Production"
+        },
+        {
+            "name": "Columbia Pictures",
+            "url": "columbia-pictures",
+            "role": "Production Company / Production"
+        },
+        {
+            "name": "Phillip M Goldfarb",
+            "url": "phillip-m-goldfarb",
+            "role": "Associate Producer / Production"
+        },
+        {
+            "name": "Columbia Pictures",
+            "url": "columbia-pictures",
+            "role": "Distributor / Distribution"
+        },
+        {
+            "name": "Paul Schrader",
+            "url": "paul-schrader",
+            "role": "Screenplay Writer / Writers"
+        },
+        {
+            "name": "Michael Chapman",
+            "url": "michael-chapman",
+            "role": "Director of Photography / Camera and Electrical"
+        },
+        {
+            "name": "Bernard Herrmann",
+            "url": "bernard-herrmann",
+            "role": "Music Director / Music"
+        },
+        {
+            "name": "Charles Rosen",
+            "url": "charles-rosen",
+            "role": "Art Director / Art"
+        },
+        {
+            "name": "Herbert F Mulligan",
+            "url": "herbert-f-mulligan",
+            "role": "Set Decorator / Art"
+        },
+        {
+            "name": "Ruth Morley",
+            "url": "ruth-morley",
+            "role": "Costume Designer / Costume and Wardrobe"
+        },
+        {
+            "name": "Melvin Shapiro",
+            "url": "melvin-shapiro",
+            "role": "Editor / Editorial"
+        },
+        {
+            "name": "Tom Rolf",
+            "url": "tom-rolf",
+            "role": "Editor / Editorial"
+        },
+        {
+            "name": "Irving Buchman",
+            "url": "irving-buchman",
+            "role": "Makeup Artist / Makeup and Hair"
+        }
+    ]
+}
