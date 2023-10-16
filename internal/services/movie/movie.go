@@ -7,6 +7,7 @@ import (
 	"myproject/challenge2015/dtos"
 	"net/http"
 	"strconv"
+	"sync"
 	"time"
 )
 
@@ -45,78 +46,99 @@ func (m *MovieService) GetMinimumDegreeOfSeperation(person1, person2 string) (in
 	}
 	personDiscovered[person1Node.personURL] = person1Node
 
-	// movieQueue := &Queue{}
+	if root == nil {
+		root = person1Node
+	}
+
 	networkQueue := &Queue{}
 	networkQueue.Enqueue(person1Node)
-	queueLen := 0
+	lock := sync.Mutex{}
+
 	for !networkQueue.IsEmpty() && !isPerson2Found {
-		if queueLen == 0 && !isPerson2Found {
+		if !isPerson2Found {
 			degree++
-			queueLen = networkQueue.Size()
 		}
-		person := networkQueue.Dequeue()
-		queueLen--
-		if root == nil {
-			root = person
-		}
+		wtgrp1 := sync.WaitGroup{}
+		networkQueueInner := &Queue{} // networkQueueInner.Enqueue() update this inside below loop
 
-		personDetails, err := m.GetPersonDetailsByURL(person.personURL)
-		if err != nil {
-			return degree, err
-		}
-		for _, movie := range personDetails.MoviesAndRoles {
-			//if _, ok := movieDiscovered[movie.URL]; !ok { // if we ignore this movie for current person then some edge for current emp may missed.
-			movieDetails, err := m.GetMovieDetailsByURL(movie.URL) //TODO: we can store the this movie details if already fetched
-			if err != nil {
-				return degree, err
+		for {
+
+			person := networkQueue.Dequeue()
+			if person == nil {
+				break
 			}
 
-			//Process cast
-			for _, cast := range movieDetails.Cast {
-				if cast.URL == person2 {
-					isPerson2Found = true
+			wtgrp1.Add(1)
+
+			go func(personURL string) {
+				defer wtgrp1.Done()
+
+				personDetails, err := m.GetPersonDetailsByURL(personURL)
+				if err != nil {
+					log.Printf("GetPersonDetailsByURL: %s error: %s", personURL, err.Error())
 				}
-				if _, ok := personDiscovered[cast.URL]; !ok {
-
-					castPersonNode := &PersonNetwork{
-						personURL: cast.URL,
-						associate: []*PersonNetwork{},
+				for _, movie := range personDetails.MoviesAndRoles {
+					//if _, ok := movieDiscovered[movie.URL]; !ok { // if we ignore this movie for current person then some edge for current emp may missed.
+					movieDetails, err := m.GetMovieDetailsByURL(movie.URL) //TODO: we can store the this movie details if already fetched
+					if err != nil {
+						log.Printf("GetMovieDetailsByURL: %s error: %s", movie.URL, err.Error())
 					}
-					personDiscovered[cast.URL] = castPersonNode
-					person.associate = append(person.associate, castPersonNode)
-					networkQueue.Enqueue(castPersonNode)
 
-				} else {
-					if person.personURL != cast.URL {
-						person.associate = append(person.associate, personDiscovered[cast.URL])
+					//Process cast
+					for _, cast := range movieDetails.Cast {
+						if cast.URL == person2 {
+							isPerson2Found = true
+						}
+
+						lock.Lock()
+						if _, ok := personDiscovered[cast.URL]; !ok {
+
+							castPersonNode := &PersonNetwork{
+								personURL: cast.URL,
+								associate: []*PersonNetwork{},
+							}
+							personDiscovered[cast.URL] = castPersonNode
+							person.associate = append(person.associate, castPersonNode)
+							networkQueueInner.Enqueue(castPersonNode)
+
+						} else {
+							if person.personURL != cast.URL {
+								person.associate = append(person.associate, personDiscovered[cast.URL])
+							}
+						}
+						lock.Unlock()
 					}
+
+					//Process crew
+					for _, crew := range movieDetails.Crew {
+						if crew.URL == person2 {
+							isPerson2Found = true
+						}
+						lock.Lock()
+						if _, ok := personDiscovered[crew.URL]; !ok {
+
+							crewPersonNode := &PersonNetwork{
+								personURL: crew.URL,
+								associate: []*PersonNetwork{},
+							}
+							personDiscovered[crew.URL] = crewPersonNode
+							person.associate = append(person.associate, crewPersonNode)
+							networkQueueInner.Enqueue(crewPersonNode)
+
+						} else {
+							if person.personURL != crew.URL {
+								person.associate = append(person.associate, personDiscovered[crew.URL])
+							}
+						}
+						lock.Unlock()
+					}
+					//}
 				}
-			}
+			}(person.personURL)
 
-			//Process crew
-			for _, crew := range movieDetails.Crew {
-				if crew.URL == person2 {
-					isPerson2Found = true
-				}
-				if _, ok := personDiscovered[crew.URL]; !ok {
-
-					crewPersonNode := &PersonNetwork{
-						personURL: crew.URL,
-						associate: []*PersonNetwork{},
-					}
-					personDiscovered[crew.URL] = crewPersonNode
-					person.associate = append(person.associate, crewPersonNode)
-					networkQueue.Enqueue(crewPersonNode)
-
-				} else {
-					if person.personURL != crew.URL {
-						person.associate = append(person.associate, personDiscovered[crew.URL])
-					}
-				}
-			}
-			//}
 		}
-
+		wtgrp1.Wait()
+		networkQueue = networkQueueInner
 	}
 
 	return degree, nil
@@ -126,19 +148,23 @@ func (m *MovieService) GetPersonDetailsByURL(personUrl string) (dtos.ActorDetail
 
 	response := dtos.ActorDetails{}
 
-	for i := 0; i < 4; i++ { // retry 3 time
+	for i := 0; i < 10; i++ { // retry 10 time
 
 		resp, err := http.Get("https://data.moviebuff.com/" + personUrl)
 
-		if resp.StatusCode == 429 {
+		if resp != nil && resp.StatusCode == 429 {
 			waitTime, _ := strconv.Atoi(resp.Header.Get("retry-after"))
 			time.Sleep(time.Duration(waitTime) * time.Second)
 
+		} else if err != nil && i < 10 {
+			log.Printf("GetPersonDetailsByURL sleep : %s", err.Error())
+			time.Sleep(time.Duration(60) * time.Second)
 		} else if err != nil {
+			log.Printf("GetPersonDetailsByURL error: %s ", err.Error())
 			return response, err
 		}
 
-		if resp.StatusCode == 200 {
+		if resp != nil && resp.StatusCode == 200 {
 
 			defer resp.Body.Close()
 			body, _ := ioutil.ReadAll(resp.Body)
@@ -159,19 +185,23 @@ func (m *MovieService) GetMovieDetailsByURL(movieNameUrl string) (dtos.MovieDeta
 
 	response := dtos.MovieDetail{}
 
-	for i := 0; i < 4; i++ { // retry 3 time
+	for i := 0; i < 10; i++ { // retry 10 time
 
 		resp, err := http.Get("https://data.moviebuff.com/" + movieNameUrl)
 
-		if resp.StatusCode == 429 {
+		if resp != nil && resp.StatusCode == 429 {
 			waitTime, _ := strconv.Atoi(resp.Header.Get("retry-after"))
 			time.Sleep(time.Duration(waitTime) * time.Second)
 
+		} else if err != nil && i < 10 {
+			log.Printf("GetMovieDetailsByURL sleep : %s", err.Error())
+			time.Sleep(time.Duration(60) * time.Second)
 		} else if err != nil {
+			log.Printf("GetMovieDetailsByURL error: %s", err.Error())
 			return response, err
 		}
 
-		if resp.StatusCode == 200 {
+		if resp != nil && resp.StatusCode == 200 {
 
 			defer resp.Body.Close()
 			body, _ := ioutil.ReadAll(resp.Body)
@@ -187,5 +217,3 @@ func (m *MovieService) GetMovieDetailsByURL(movieNameUrl string) (dtos.MovieDeta
 
 	return response, nil
 }
-
-//TODO check for the case where the get fucntions returns empty.
