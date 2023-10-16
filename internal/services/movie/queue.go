@@ -9,6 +9,9 @@ func (q *Queue) Enqueue(item *PersonNetwork) {
 }
 
 func (q *Queue) Dequeue() *PersonNetwork {
+	if q.IsEmpty() {
+		return nil
+	}
 	item := q.item_value[0]
 	q.item_value = q.item_value[1:] //used to remove items
 	return item

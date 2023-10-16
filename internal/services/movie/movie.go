@@ -23,8 +23,11 @@ type IMovie interface {
 
 // Node represents a node in the graph.
 type PersonNetwork struct {
-	personURL string
-	associate []*PersonNetwork
+	personURL     string
+	personRole    []string
+	associateRole []string
+	movieName     []string
+	associate     []*PersonNetwork
 }
 
 func (n *PersonNetwork) Add_Edge(node *PersonNetwork) {
@@ -78,10 +81,25 @@ func (m *MovieService) GetMinimumDegreeOfSeperation(person1, person2 string) (in
 					log.Printf("GetPersonDetailsByURL: %s error: %s", personURL, err.Error())
 				}
 				for _, movie := range personDetails.MoviesAndRoles {
-					//if _, ok := movieDiscovered[movie.URL]; !ok { // if we ignore this movie for current person then some edge for current emp may missed.
-					movieDetails, err := m.GetMovieDetailsByURL(movie.URL) //TODO: we can store the this movie details if already fetched
+
+					movieDetails, err := m.GetMovieDetailsByURL(movie.URL) //TODO: make get movie detail call concurrent using gorutine
 					if err != nil {
 						log.Printf("GetMovieDetailsByURL: %s error: %s", movie.URL, err.Error())
+					}
+
+					//find person role in movie //from both cast and crew.
+					personRole := ""
+					for _, cast := range movieDetails.Cast {
+						if person.personURL != cast.URL {
+							personRole = cast.Role
+						}
+					}
+					if len(personRole) == 0 {
+						for _, crew := range movieDetails.Crew {
+							if person.personURL != crew.URL {
+								personRole = crew.Role
+							}
+						}
 					}
 
 					//Process cast
@@ -106,6 +124,12 @@ func (m *MovieService) GetMinimumDegreeOfSeperation(person1, person2 string) (in
 								person.associate = append(person.associate, personDiscovered[cast.URL])
 							}
 						}
+						person.movieName = append(person.movieName, movieDetails.Name)
+						person.personRole = append(person.personRole, personRole)
+						person.associateRole = append(person.associateRole, cast.Role)
+
+						//TODO: setting a reverse link
+
 						lock.Unlock()
 					}
 
@@ -130,6 +154,12 @@ func (m *MovieService) GetMinimumDegreeOfSeperation(person1, person2 string) (in
 								person.associate = append(person.associate, personDiscovered[crew.URL])
 							}
 						}
+						person.movieName = append(person.movieName, movieDetails.Name)
+						person.personRole = append(person.personRole, personRole)
+						person.associateRole = append(person.associateRole, crew.Role)
+
+						//TODO: setting a reverse link
+
 						lock.Unlock()
 					}
 					//}
