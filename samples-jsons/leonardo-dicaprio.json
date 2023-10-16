@@ -1,0 +1,67 @@
+{
+  "url": "leonardo-dicaprio",
+  "type": "Person",
+  "name": "Leonardo DiCaprio",
+  "movies": [
+    {
+      "name": "The Revenant",
+      "url": "the-revenant",
+      "role": "Actor"
+    },
+    {
+      "name": "The Wolf of Wall Street",
+      "url": "the-wolf-of-wall-street",
+      "role": "Actor"
+    },
+    {
+      "name": "The Great Gatsby",
+      "url": "the-great-gatsby",
+      "role": "Actor"
+    },
+    {
+      "name": "Django Unchained",
+      "url": "django-unchained",
+      "role": "Actor"
+    },
+    {
+      "name": "Inception",
+      "url": "inception",
+      "role": "Actor"
+    },
+    {
+      "name": "The Departed",
+      "url": "the-departed",
+      "role": "Actor"
+    },
+    {
+      "name": "Catch Me If You Can",
+      "url": "catch-me-if-you-can",
+      "role": "Actor"
+    },
+    {
+      "name": "Titanic",
+      "url": "titanic",
+      "role": "Actor"
+    },
+    {
+      "name": "Live by Night",
+      "url": "live-by-night",
+      "role": "Producer"
+    },
+    {
+      "name": "The Wolf of Wall Street",
+      "url": "the-wolf-of-wall-street",
+      "role": "Producer"
+    },
+    {
+      "name": "Out of the Furnace",
+      "url": "out-of-the-furnace",
+      "role": "Producer"
+    },
+    {
+      "name": "Runner Runner",
+      "url": "runner-runner",
+      "role": "Producer"
+    }
+  ]
+}
