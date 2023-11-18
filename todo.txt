@@ -1,0 +1,7 @@
+1. Add proper error handling, null checking
+2. See if we can use cache and improve the performance
+3. Refactor code into different modules
+4. Add support for test cases
+5. See if we can add test cases in the github pipeline
+6. Add logging to insure we are going good in the background
+7. Add some sleep, backoff to insure we don't throttle the server and we have mechanism incase we do
