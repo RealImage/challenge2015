@@ -1,0 +1,10 @@
+https://data.moviebuff.com/pink-2016-hindi
+panic: runtime error: invalid memory address or nil pointer dereference
+[signal 0xc0000005 code=0x0 addr=0x0 pc=0xe7060d]
+
+goroutine 1 [running]:
+main.findDegreesOfSeparation({0xc0000ac080, 0x10}, {0xc0000ac0b0, 0xe})
+        C:/Users/Maheshwaran S/OneDrive/Documents/interview/qube/challenge2015/chatg.go:133 +0x38d
+main.main()
+        C:/Users/Maheshwaran S/OneDrive/Documents/interview/qube/challenge2015/chatg.go:303 +0xb7
+exit status 2
