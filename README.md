@@ -1,5 +1,10 @@
 # Steps to run the program
 
+## Navigate to the degrees folder
+```
+$ cd degrees
+```
+
 ## Compile the program
 ```
 $ go build -o degrees ./main.go
