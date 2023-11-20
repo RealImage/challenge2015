@@ -6,9 +6,9 @@ $ go build -o degrees ./main.go
 
 ```
 
-## Run the executable by providing input
+## Run the executable by providing person urls as input
 ```
-$ degrees amitabh-bachchan robert-de-niro
+$ ./degrees amitabh-bachchan robert-de-niro
 ```
 
 ## Example of output
