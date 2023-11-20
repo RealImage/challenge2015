@@ -1,24 +1,13 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"io"
 	"net/http"
-	"strings"
 )
 
 func (app *GlobalVar) doHTTPRequest(sURL string) ([]byte, error) {
 	sFunctionName := "doHTTPRequest"
-
-	if !strings.Contains(sURL, "amitabh-bachchan") &&
-		!strings.Contains(sURL, "the-great-gatsby") &&
-		!strings.Contains(sURL, "leonardo-dicaprio") &&
-		!strings.Contains(sURL, "the-wolf-of-wall-street") &&
-		!strings.Contains(sURL, "martin-scorsese") &&
-		!strings.Contains(sURL, "taxi-driver") {
-		return nil, errors.New("Invalid value")
-	}
 
 	// Make GET request
 	response, err := http.Get(sURL)
