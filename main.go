@@ -1,5 +1,5 @@
 package main
-
+// try to run  `go run main.go amitabh-bachchan rajinikanth`
 import (
 	"encoding/json"
 	"fmt"
