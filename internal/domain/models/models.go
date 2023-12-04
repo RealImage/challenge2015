@@ -20,6 +20,7 @@ type ActorData struct {
 type MovieData struct {
 	Url  string `json:"url"`
 	Type string `json:"type"`
+	Name string `json:"name"`
 	Cast []Data `json:"cast"`
 	Crew []Data `json:"crew"`
 }

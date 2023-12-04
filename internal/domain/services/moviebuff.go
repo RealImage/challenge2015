@@ -10,9 +10,11 @@ import (
 )
 
 var (
-	FirstActor               string
-	SecondActor              string
-	actorsDataMap            = map[string]map[string]string{}
+	FirstActor  string
+	SecondActor string
+	// actor->movie->role
+	actorsDataMap = map[string]map[string]string{}
+	// movie->cast
 	movieDataMap             = map[string][]domainmodels.Data{}
 	visitedActorsMap         = map[string]bool{}
 	firstActorMoviesVisited  = map[string]bool{}
@@ -34,12 +36,9 @@ func SmallestDegreeOfSeparation() error {
 		return nil
 	}
 
-	commonCast, err := tryFindingCommonCastMember()
+	err = appendCastMemberToActorsList()
 	if err != nil {
 		return fmt.Errorf("no connection found")
-	}
-	if commonCast != "" {
-		return nil
 	}
 
 	return SmallestDegreeOfSeparation()
@@ -86,7 +85,7 @@ func tryFindingCommonMovie() (string, error) {
 			}
 		}
 
-		commonMovie := searchCommonMovie(firstActorMoviesVisited, secondActorMoviesVisited, firstActor, secondActor)
+		commonMovie := searchCommonMovie(firstActorMoviesVisited, secondActorMoviesVisited)
 		if commonMovie != "" {
 			return commonMovie, nil
 		}
@@ -95,33 +94,33 @@ func tryFindingCommonMovie() (string, error) {
 	return "", nil
 }
 
-// finds common cast member from all movies between two actors and returns if any.
-func tryFindingCommonCastMember() (string, error) {
+// appends all cast members to actors list for first and second actor.
+func appendCastMemberToActorsList() error {
 	if len(moviesListForFirstActor) == 0 || len(moviesListForSecondActor) == 0 {
-		return "", errors.New("try finding common cast member: empty movie lists")
+		return errors.New("try finding common cast member: empty movie lists")
 	}
 
 	for len(moviesListForFirstActor) > 0 && len(moviesListForSecondActor) > 0 {
 
-		firstActorMovies := moviesListForFirstActor[0]
+		firstActorMovie := moviesListForFirstActor[0]
 		moviesListForFirstActor = moviesListForFirstActor[1:]
 
-		secondActorMovies := moviesListForSecondActor[0]
+		secondActorMovie := moviesListForSecondActor[0]
 		moviesListForSecondActor = moviesListForSecondActor[1:]
 
-		moviesDataForFirstActor, err := getMovieData(firstActorMovies)
+		moviesDataForFirstActor, err := getMovieData(firstActorMovie)
 		if err != nil {
-			return "", nil
+			return nil
 		}
-		moviesDataForSecondActor, err := getMovieData(secondActorMovies)
+		moviesDataForSecondActor, err := getMovieData(secondActorMovie)
 		if err != nil {
-			return "", nil
+			return nil
 		}
 
 		firstActorsCast := []domainmodels.Data{}
 		firstActorsCast = append(firstActorsCast, moviesDataForFirstActor.Cast...)
 		firstActorsCast = append(firstActorsCast, moviesDataForFirstActor.Crew...)
-		movieDataMap[firstActorMovies] = append(movieDataMap[firstActorMovies], firstActorsCast...)
+		movieDataMap[firstActorMovie] = append(movieDataMap[firstActorMovie], firstActorsCast...)
 
 		for _, cast := range firstActorsCast {
 			if _, ok := visitedActorsMap[cast.Name]; !ok {
@@ -133,7 +132,7 @@ func tryFindingCommonCastMember() (string, error) {
 		secondActorsCast := []domainmodels.Data{}
 		secondActorsCast = append(secondActorsCast, moviesDataForSecondActor.Cast...)
 		secondActorsCast = append(secondActorsCast, moviesDataForSecondActor.Crew...)
-		movieDataMap[secondActorMovies] = append(movieDataMap[secondActorMovies], secondActorsCast...)
+		movieDataMap[secondActorMovie] = append(movieDataMap[secondActorMovie], secondActorsCast...)
 
 		for _, cast := range secondActorsCast {
 			if _, ok := visitedActorsMap[cast.Name]; !ok {
@@ -144,7 +143,7 @@ func tryFindingCommonCastMember() (string, error) {
 
 	}
 
-	return "", nil
+	return nil
 }
 
 type QueueItem struct {
@@ -187,19 +186,19 @@ func findDegreeOfSeparation(firstActor, secondActor string) {
 }
 
 // output.
-func print(commanActors []string) {
-	fmt.Println("Degrees of separation: ", len(commanActors)-1)
-	for i := 0; i < len(commanActors)-1; i++ {
+func print(commonActors []string) {
+	fmt.Println("Degrees of separation: ", len(commonActors)-1)
+	for i := 0; i < len(commonActors)-1; i++ {
 		fmt.Println()
-		movie, role1, role2 := findCommonMovie(actorsDataMap[commanActors[i]], actorsDataMap[commanActors[i+1]])
+		movie, role1, role2 := findCommonMovie(actorsDataMap[commonActors[i]], actorsDataMap[commonActors[i+1]])
 		fmt.Printf("%d. Movie: %s\n", i+1, movie)
-		fmt.Printf("%s: %s\n", role1, commanActors[i])
-		fmt.Printf("%s: %s\n", role2, commanActors[i+1])
+		fmt.Printf("%s: %s\n", role1, commonActors[i])
+		fmt.Printf("%s: %s\n", role2, commonActors[i+1])
 	}
 }
 
 // returns common movie from first and second actors movies visited map.
-func searchCommonMovie(firstActorMoviesVisited, secondActorMoviesVisited map[string]bool, firstActor, secondActor string) string {
+func searchCommonMovie(firstActorMoviesVisited, secondActorMoviesVisited map[string]bool) string {
 	for k := range firstActorMoviesVisited {
 		if _, ok := secondActorMoviesVisited[k]; ok {
 			if len(movieDataMap[k]) > 1 {
@@ -248,6 +247,7 @@ func getMovieData(movie string) (domainmodels.MovieData, error) {
 	return domainmodels.MovieData{
 		Url:  data.Url,
 		Type: data.Type,
+		Name: data.Name,
 		Cast: data.Cast,
 		Crew: data.Crew,
 	}, nil
