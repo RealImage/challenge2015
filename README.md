@@ -50,3 +50,14 @@ Write a program in any language you want (If you're here from Gophercon, use Go 
 To submit a solution, fork this repo and send a Pull Request on Github.
 
 For any questions or clarifications, raise an issue on this repo and we'll answer your questions as fast as we can.
+
+### Steps to Run
+1. cd cmd/moviebuff
+2. **Run the program with the following command:**
+    ```bash
+    $ go run . amitabh-bachchan john-abraham
+    ```
+   Replace `amitabh-bachchan` and `john-abraham` with the names of the actors you want to process.
+
+
+      ```
