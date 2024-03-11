@@ -103,7 +103,6 @@ type MovieBuff struct {
 
 var (
 	movieBuff    MovieBuff
-	totalRequest uint
 )
 
 func main() {
@@ -146,7 +145,6 @@ func main() {
 		fmt.Printf("%d. Movie: %s\n   %s: %s\n   %s: %s\n\n", i+1, d.Movie, d.Role1, d.Person1, d.Role2, d.Person2)
 	}
 
-	fmt.Println("Total HTTP request sent: ", totalRequest)
 	fmt.Println("Total Time taken: ", t2.Sub(t1))
 }
 
@@ -278,7 +276,6 @@ func fetchData(url string) (*personInfo, error) {
 		return nil, errors.New("Please provide valid actor name input")
 	}
 
-	totalRequest++
 	return &pi, nil
 }
 
